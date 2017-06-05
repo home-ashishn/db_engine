@@ -1,0 +1,19 @@
+FIND HAS FOR TIME - TODAY - 3 MONTHS TO TODAY WITH RALLY DURATRION 30 DAYS
+IF HAS FOUND - 
+1. IDENTIFY PATTERN TYPE BY SUPPLYING endDate as today.
+2. CALCULATE DIFFERENCE BETWEEN endDate and 2nd shoulder top as 'LIVE_SHOULDER_LOW_DURATION'
+2. using pattern_type_id, back test for 3 years -
+	a. FIND HAS FOR TIME - TODAY - 3 YEARS TO TODAY WITH RALLY DURATRION 30 DAYS; BY SUPPLYING cut_off_date = 2nd shoulder top + LIVE_SHOULDER_LOW_DURATION
+	b. FOR EACH HAS FOUND - 
+		i. IDENTIFY PATTERN TYPE BY SUPPLYING cut_off_date = 2nd shoulder top + LIVE_SHOULDER_LOW_DURATION
+		ii. if pattern type =  pattern type in step 1, calculate confidence as - 
+			A. for type 1, (success in cutting neckline within CALCULATED_SHOULDER_LOW_DURATION ) 
+			AND (not crossing 2nd shoulder top) : confidence (percentage) = CALCULATED_SHOULDER_LOW_DURATION * 100 /
+																time taken to touch/cross neckline,
+																
+					ELSE confidence = 0;
+			A. for type 2, (success in getting low from neckline as much as head height ) 
+			AND (not crossing neckline back) : confidence = CALCULATED_SHOULDER_LOW_DURATION * 100/
+																time taken to touch/cross neckline
+					ELSE confidence = 0;
+	c. Take mean of all confidence found in step b.
