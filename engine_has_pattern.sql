@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `engine_has_pattern`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `engine_has_pattern` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `engine_has_pattern`;
-
---
 -- Table structure for table `equity_data_has_pattern`
 --
 
@@ -56,7 +48,7 @@ CREATE TABLE `equity_data_has_pattern` (
 
 LOCK TABLES `equity_data_has_pattern` WRITE;
 /*!40000 ALTER TABLE `equity_data_has_pattern` DISABLE KEYS */;
-INSERT INTO `equity_data_has_pattern` VALUES (1,'SBIN','2017-02-28',268.25,268.90,271.25,268.00,269.00,269.20,269.49,7941592.00,2140204800.00,65573,2816662,35.47),(2,'SBIN','2017-03-01',269.20,270.00,273.30,269.80,271.70,271.75,271.94,7656892.00,2082232064.00,58629,2004506,26.18),(3,'SBIN','2017-03-02',271.75,273.00,274.70,266.50,267.20,267.30,270.99,14220808.00,3853749504.00,80696,4596797,32.32),(4,'SBIN','2017-03-03',267.30,266.25,268.90,264.25,265.55,265.05,265.78,10120034.00,2689695232.00,75478,3907290,38.61),(5,'SBIN','2017-03-06',265.05,266.60,270.35,266.35,270.20,269.85,268.37,9515073.00,2553575424.00,63033,3982426,41.85),(6,'SBIN','2017-03-07',269.85,270.80,270.90,266.40,267.70,267.80,267.78,11599142.00,3106065920.00,65023,6347327,54.72),(7,'SBIN','2017-03-08',267.80,267.80,270.30,266.00,270.05,269.90,268.62,9122987.00,2450644992.00,65561,3081623,33.78),(8,'SBIN','2017-03-09',269.90,269.00,273.90,268.40,273.15,273.25,272.15,15594429.00,4244086528.00,95804,7576329,48.58),(9,'SBIN','2017-03-10',273.25,274.50,275.55,269.50,271.90,272.05,272.67,9557026.00,2605920512.00,77178,3246642,33.97),(10,'SBIN','2017-03-14',272.05,278.40,278.40,273.80,274.75,274.65,275.43,15734886.00,4333927936.00,108786,7747107,49.24),(11,'SBIN','2017-03-15',274.65,272.65,280.50,272.65,276.55,277.35,277.95,20055974.00,5574549504.00,127137,9841167,49.07),(12,'SBIN','2017-03-16',277.35,278.00,280.20,276.05,279.05,279.30,278.38,18005184.00,5012227072.00,139878,8827321,49.03),(13,'SBIN','2017-03-17',279.30,279.45,279.50,273.50,274.00,274.15,275.10,14265642.00,3924494848.00,95520,7240757,50.76),(14,'SBIN','2017-03-20',274.15,274.75,274.75,271.80,273.90,273.90,273.41,9678185.00,2646065920.00,71526,4612235,47.66),(15,'SBIN','2017-03-21',273.90,274.40,277.05,270.15,272.75,272.35,273.52,11898233.00,3254395904.00,72969,4944113,41.55),(16,'SBIN','2017-03-22',272.35,270.30,271.00,266.80,267.75,267.50,268.74,9887203.00,2657109760.00,97564,4670186,47.23),(17,'SBIN','2017-03-23',267.50,269.00,269.40,266.70,268.65,268.50,268.14,7998170.00,2144647552.00,77028,4061076,50.78),(18,'SBIN','2017-03-24',268.50,269.50,278.95,268.65,275.95,276.50,275.33,20133468.00,5543261184.00,135209,8243224,40.94),(19,'SBIN','2017-03-27',276.50,276.00,280.80,275.20,278.90,279.45,278.73,15966114.00,4450236928.00,103411,5464685,34.23),(20,'SBIN','2017-03-28',279.45,280.65,282.90,278.50,282.20,282.10,280.87,18673372.00,5244849152.00,89603,10584347,56.68),(21,'SBIN','2017-03-29',282.10,283.15,289.90,283.15,288.70,288.45,287.10,31008408.00,8902363136.00,160418,16769893,54.08),(22,'SBIN','2017-03-30',288.45,289.00,293.75,288.85,291.40,291.05,291.33,19683170.00,5734340096.00,111949,7306917,37.12),(23,'SBIN','2017-03-31',291.05,292.00,295.00,288.50,293.30,293.40,292.77,20185268.00,5909721088.00,121335,6436380,31.89),(24,'SBIN','2017-04-03',293.40,294.80,295.70,292.20,293.40,293.15,293.83,10509610.00,3088047360.00,63796,3224137,30.68),(25,'SBIN','2017-04-05',293.15,293.30,298.75,289.65,297.00,297.35,294.71,21936648.00,6465018368.00,143045,9434760,43.01),(26,'SBIN','2017-04-06',297.35,295.45,297.55,291.45,292.25,292.85,294.35,18413112.00,5419869696.00,90051,6325489,34.35),(27,'SBIN','2017-04-07',292.85,291.70,294.80,287.65,288.30,289.45,292.04,10765502.00,3143916032.00,67483,3287133,30.53),(28,'SBIN','2017-04-10',289.45,289.80,290.35,286.55,290.00,289.35,288.81,10307875.00,2977057536.00,95079,3192927,30.98),(29,'SBIN','2017-04-11',289.35,289.30,295.15,288.80,294.30,294.50,292.69,11682024.00,3419233536.00,93318,4281388,36.65),(30,'SBIN','2017-04-12',294.50,294.00,295.45,289.10,290.25,290.15,291.41,13251421.00,3861572864.00,88924,4725911,35.66),(31,'SBIN','2017-04-13',290.15,290.25,293.10,290.00,292.00,291.55,291.41,9944020.00,2897768960.00,73697,3191327,32.09),(32,'SBIN','2017-04-17',291.55,291.10,292.75,288.50,290.20,289.90,289.82,8146800.00,2361107200.00,70366,2782552,34.16),(33,'SBIN','2017-04-18',289.90,291.05,296.90,288.40,291.55,164.70,293.26,13457050.00,3946372608.00,112786,3933986,29.23),(34,'SBIN','2017-04-19',290.30,291.55,291.75,282.90,284.90,164.95,286.36,18149996.00,5197413888.00,106330,8414421,46.36),(35,'SBIN','2017-04-20',284.05,283.90,286.90,282.20,284.85,158.50,284.50,14514929.00,4129487360.00,134919,5768064,39.74),(36,'SBIN','2017-04-21',284.80,287.00,287.00,279.25,282.40,156.30,282.73,12042308.00,3404704768.00,90196,3890947,32.31),(37,'SBIN','2017-04-24',282.20,283.25,287.85,280.90,286.05,151.80,284.64,10077853.00,2868591360.00,89547,3206400,31.82),(38,'SBIN','2017-04-25',286.05,287.50,288.80,285.00,285.90,155.90,286.69,11531902.00,3306125568.00,146257,5021274,43.54),(39,'SBIN','2017-04-26',286.05,287.10,289.50,283.35,285.75,158.75,287.17,13836891.00,3973502464.00,124870,5730697,41.42),(40,'SBIN','2017-04-27',286.45,286.45,287.95,281.05,282.90,162.05,283.58,22622372.00,6415248384.00,119362,13404034,59.25),(41,'SBIN','2017-04-28',282.05,283.00,290.75,282.50,289.40,181.15,286.80,14152004.00,4058772992.00,86994,4940261,34.91),(42,'SBIN','2017-05-02',289.75,290.25,292.50,287.10,288.35,182.75,289.61,9754789.00,2825042432.00,79720,3226892,33.08),(43,'SBIN','2017-05-03',288.30,289.40,293.20,285.80,289.40,188.40,289.52,13950914.00,4039031552.00,86140,4756276,34.09),(44,'SBIN','2017-05-04',289.80,294.00,300.00,293.10,299.80,183.35,296.49,24534924.00,7274385408.00,141660,7644530,31.16),(45,'SBIN','2017-05-05',299.05,301.00,304.90,292.15,295.95,183.40,299.21,34756332.00,10399339520.00,192131,9028419,25.98),(46,'SBIN','2017-05-08',296.00,296.10,300.75,293.90,298.80,180.50,298.68,11560550.00,3452853248.00,87129,3497415,30.25),(47,'SBIN','2017-05-09',299.40,300.90,300.90,295.25,296.40,180.10,297.18,7843574.00,2330960384.00,52271,1619122,20.64),(48,'SBIN','2017-05-10',296.50,297.00,298.15,293.00,294.85,181.75,295.51,8699405.00,2570749696.00,54706,2414488,27.75),(49,'SBIN','2017-05-11',294.45,295.90,299.40,294.45,297.70,185.30,297.34,11934889.00,3548713728.00,75103,5119985,42.90),(50,'SBIN','2017-05-12',298.10,300.00,302.60,296.00,297.85,185.20,299.11,13376269.00,4000935168.00,80897,4186552,31.30),(51,'SBIN','2017-05-15',297.90,298.40,302.00,297.50,300.85,186.35,300.31,10383539.00,3118315008.00,85232,4253034,40.96),(52,'SBIN','2017-05-16',301.40,302.00,308.40,299.35,308.05,191.25,304.43,17533440.00,5337697280.00,130379,6038637,34.44),(53,'SBIN','2017-05-17',307.50,308.00,308.80,305.50,307.05,196.80,307.22,14120513.00,4338137600.00,83419,5555959,39.35),(54,'SBIN','2017-05-18',307.65,304.85,307.90,302.00,302.00,197.50,304.49,15471393.00,4710915584.00,109109,5470333,35.36),(55,'SBIN','2017-05-19',302.95,304.45,315.30,302.00,308.95,196.60,308.83,55250968.00,17062912000.00,339663,10945486,19.81),(56,'SBIN','2017-05-22',308.00,308.95,309.40,293.20,294.40,188.30,298.80,35771220.00,10688311296.00,239823,13476242,37.67),(57,'SBIN','2017-05-23',294.30,295.00,295.90,287.25,288.85,189.50,290.25,19846852.00,5760600576.00,133995,5684339,28.64),(58,'SBIN','2017-05-24',288.85,290.05,290.45,281.65,283.25,197.55,285.51,16435958.00,4692594688.00,120004,4768521,29.01),(59,'SBIN','2017-05-25',283.15,284.15,291.35,283.55,290.00,194.25,287.27,15018467.00,4314318336.00,112707,5507686,36.67),(60,'SBIN','2017-05-26',290.10,290.50,291.00,285.30,289.00,195.65,287.71,12304394.00,3540130816.00,139676,4485862,36.46),(61,'SBIN','2017-05-29',288.45,288.90,290.85,283.30,283.60,194.70,286.97,10619968.00,3047571456.00,86060,3905775,36.78);
+INSERT INTO `equity_data_has_pattern` VALUES (1,'SBIN','2017-04-03',293.40,294.80,295.70,292.20,293.40,293.15,293.83,10509610.00,3088047360.00,63796,3224137,30.68),(2,'SBIN','2017-04-05',293.15,293.30,298.75,289.65,297.00,297.35,294.71,21936648.00,6465018368.00,143045,9434760,43.01),(3,'SBIN','2017-04-06',297.35,295.45,297.55,291.45,292.25,292.85,294.35,18413112.00,5419869696.00,90051,6325489,34.35),(4,'SBIN','2017-04-07',292.85,291.70,294.80,287.65,288.30,289.45,292.04,10765502.00,3143916032.00,67483,3287133,30.53),(5,'SBIN','2017-04-10',289.45,289.80,290.35,286.55,290.00,289.35,288.81,10307875.00,2977057536.00,95079,3192927,30.98),(6,'SBIN','2017-04-11',289.35,289.30,295.15,288.80,294.30,294.50,292.69,11682024.00,3419233536.00,93318,4281388,36.65),(7,'SBIN','2017-04-12',294.50,294.00,295.45,289.10,290.25,290.15,291.41,13251421.00,3861572864.00,88924,4725911,35.66),(8,'SBIN','2017-04-13',290.15,290.25,293.10,290.00,292.00,291.55,291.41,9944020.00,2897768960.00,73697,3191327,32.09),(9,'SBIN','2017-04-17',291.55,291.10,292.75,288.50,290.20,289.90,289.82,8146800.00,2361107200.00,70366,2782552,34.16),(10,'SBIN','2017-04-18',289.90,291.05,296.90,288.40,291.55,164.70,293.26,13457050.00,3946372608.00,112786,3933986,29.23),(11,'SBIN','2017-04-19',290.30,291.55,291.75,282.90,284.90,164.95,286.36,18149996.00,5197413888.00,106330,8414421,46.36),(12,'SBIN','2017-04-20',284.05,283.90,286.90,282.20,284.85,158.50,284.50,14514929.00,4129487360.00,134919,5768064,39.74),(13,'SBIN','2017-04-21',284.80,287.00,287.00,279.25,282.40,156.30,282.73,12042308.00,3404704768.00,90196,3890947,32.31),(14,'SBIN','2017-04-24',282.20,283.25,287.85,280.90,286.05,151.80,284.64,10077853.00,2868591360.00,89547,3206400,31.82),(15,'SBIN','2017-04-25',286.05,287.50,288.80,285.00,285.90,155.90,286.69,11531902.00,3306125568.00,146257,5021274,43.54),(16,'SBIN','2017-04-26',286.05,287.10,289.50,283.35,285.75,158.75,287.17,13836891.00,3973502464.00,124870,5730697,41.42),(17,'SBIN','2017-04-27',286.45,286.45,287.95,281.05,282.90,162.05,283.58,22622372.00,6415248384.00,119362,13404034,59.25),(18,'SBIN','2017-04-28',282.05,283.00,290.75,282.50,289.40,181.15,286.80,14152004.00,4058772992.00,86994,4940261,34.91),(19,'SBIN','2017-05-02',289.75,290.25,292.50,287.10,288.35,182.75,289.61,9754789.00,2825042432.00,79720,3226892,33.08),(20,'SBIN','2017-05-03',288.30,289.40,293.20,285.80,289.40,188.40,289.52,13950914.00,4039031552.00,86140,4756276,34.09),(21,'SBIN','2017-05-04',289.80,294.00,300.00,293.10,299.80,183.35,296.49,24534924.00,7274385408.00,141660,7644530,31.16),(22,'SBIN','2017-05-05',299.05,301.00,304.90,292.15,295.95,183.40,299.21,34756332.00,10399339520.00,192131,9028419,25.98),(23,'SBIN','2017-05-08',296.00,296.10,300.75,293.90,298.80,180.50,298.68,11560550.00,3452853248.00,87129,3497415,30.25),(24,'SBIN','2017-05-09',299.40,300.90,300.90,295.25,296.40,180.10,297.18,7843574.00,2330960384.00,52271,1619122,20.64),(25,'SBIN','2017-05-10',296.50,297.00,298.15,293.00,294.85,181.75,295.51,8699405.00,2570749696.00,54706,2414488,27.75),(26,'SBIN','2017-05-11',294.45,295.90,299.40,294.45,297.70,185.30,297.34,11934889.00,3548713728.00,75103,5119985,42.90),(27,'SBIN','2017-05-12',298.10,300.00,302.60,296.00,297.85,185.20,299.11,13376269.00,4000935168.00,80897,4186552,31.30),(28,'SBIN','2017-05-15',297.90,298.40,302.00,297.50,300.85,186.35,300.31,10383539.00,3118315008.00,85232,4253034,40.96),(29,'SBIN','2017-05-16',301.40,302.00,308.40,299.35,308.05,191.25,304.43,17533440.00,5337697280.00,130379,6038637,34.44),(30,'SBIN','2017-05-17',307.50,308.00,308.80,305.50,307.05,196.80,307.22,14120513.00,4338137600.00,83419,5555959,39.35),(31,'SBIN','2017-05-18',307.65,304.85,307.90,302.00,302.00,197.50,304.49,15471393.00,4710915584.00,109109,5470333,35.36),(32,'SBIN','2017-05-19',302.95,304.45,315.30,302.00,308.95,196.60,308.83,55250968.00,17062912000.00,339663,10945486,19.81),(33,'SBIN','2017-05-22',308.00,308.95,309.40,293.20,294.40,188.30,298.80,35771220.00,10688311296.00,239823,13476242,37.67),(34,'SBIN','2017-05-23',294.30,295.00,295.90,287.25,288.85,189.50,290.25,19846852.00,5760600576.00,133995,5684339,28.64),(35,'SBIN','2017-05-24',288.85,290.05,290.45,281.65,283.25,197.55,285.51,16435958.00,4692594688.00,120004,4768521,29.01),(36,'SBIN','2017-05-25',283.15,284.15,291.35,283.55,290.00,194.25,287.27,15018467.00,4314318336.00,112707,5507686,36.67),(37,'SBIN','2017-05-26',290.10,290.50,291.00,285.30,289.00,195.65,287.71,12304394.00,3540130816.00,139676,4485862,36.46),(38,'SBIN','2017-05-29',288.45,288.90,290.85,283.30,283.60,194.70,286.97,10619968.00,3047571456.00,86060,3905775,36.78),(39,'SBIN','2017-05-30',288.45,288.90,290.85,283.30,283.60,193.30,286.97,10620000.00,3047569920.00,86060,3905775,36.78),(40,'SBIN','2017-05-31',288.45,288.90,290.85,283.30,283.60,192.10,286.97,10620000.00,3047569920.00,86060,3905775,36.78);
 /*!40000 ALTER TABLE `equity_data_has_pattern` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +76,7 @@ CREATE TABLE `equity_data_has_pattern_rally_top` (
   `DELIVERABLE_QTY` int(11) DEFAULT NULL,
   `PERCENT_DELIVERABLE_QTY` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1692 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,6 +85,7 @@ CREATE TABLE `equity_data_has_pattern_rally_top` (
 
 LOCK TABLES `equity_data_has_pattern_rally_top` WRITE;
 /*!40000 ALTER TABLE `equity_data_has_pattern_rally_top` DISABLE KEYS */;
+INSERT INTO `equity_data_has_pattern_rally_top` VALUES (2,'SBIN','2017-04-05',293.15,293.30,298.75,289.65,297.00,297.35,294.71,21936648.00,6465018368.00,143045,9434760,43.01),(31,'SBIN','2017-05-18',307.65,304.85,307.90,302.00,302.00,197.50,304.49,15471393.00,4710915584.00,109109,5470333,35.36),(35,'SBIN','2017-05-24',288.85,290.05,290.45,281.65,283.25,197.55,285.51,16435958.00,4692594688.00,120004,4768521,29.01);
 /*!40000 ALTER TABLE `equity_data_has_pattern_rally_top` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,7 +113,7 @@ CREATE TABLE `equity_data_has_pattern_top_temp` (
   `DELIVERABLE_QTY` int(11) DEFAULT NULL,
   `PERCENT_DELIVERABLE_QTY` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1692 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +122,7 @@ CREATE TABLE `equity_data_has_pattern_top_temp` (
 
 LOCK TABLES `equity_data_has_pattern_top_temp` WRITE;
 /*!40000 ALTER TABLE `equity_data_has_pattern_top_temp` DISABLE KEYS */;
-INSERT INTO `equity_data_has_pattern_top_temp` VALUES (2,'SBIN','2017-03-01',269.20,270.00,273.30,269.80,271.70,271.75,271.94,7656892.00,2082232064.00,58629,2004506,26.18),(8,'SBIN','2017-03-09',269.90,269.00,273.90,268.40,273.15,273.25,272.15,15594429.00,4244086528.00,95804,7576329,48.58),(10,'SBIN','2017-03-14',272.05,278.40,278.40,273.80,274.75,274.65,275.43,15734886.00,4333927936.00,108786,7747107,49.24),(11,'SBIN','2017-03-15',274.65,272.65,280.50,272.65,276.55,277.35,277.95,20055974.00,5574549504.00,127137,9841167,49.07),(12,'SBIN','2017-03-16',277.35,278.00,280.20,276.05,279.05,279.30,278.38,18005184.00,5012227072.00,139878,8827321,49.03),(19,'SBIN','2017-03-27',276.50,276.00,280.80,275.20,278.90,279.45,278.73,15966114.00,4450236928.00,103411,5464685,34.23),(20,'SBIN','2017-03-28',279.45,280.65,282.90,278.50,282.20,282.10,280.87,18673372.00,5244849152.00,89603,10584347,56.68),(21,'SBIN','2017-03-29',282.10,283.15,289.90,283.15,288.70,288.45,287.10,31008408.00,8902363136.00,160418,16769893,54.08),(22,'SBIN','2017-03-30',288.45,289.00,293.75,288.85,291.40,291.05,291.33,19683170.00,5734340096.00,111949,7306917,37.12),(23,'SBIN','2017-03-31',291.05,292.00,295.00,288.50,293.30,293.40,292.77,20185268.00,5909721088.00,121335,6436380,31.89),(25,'SBIN','2017-04-05',293.15,293.30,298.75,289.65,297.00,297.35,294.71,21936648.00,6465018368.00,143045,9434760,43.01),(54,'SBIN','2017-05-18',307.65,304.85,307.90,302.00,302.00,197.50,304.49,15471393.00,4710915584.00,109109,5470333,35.36),(58,'SBIN','2017-05-24',288.85,290.05,290.45,281.65,283.25,197.55,285.51,16435958.00,4692594688.00,120004,4768521,29.01);
+INSERT INTO `equity_data_has_pattern_top_temp` VALUES (2,'SBIN','2017-04-05',293.15,293.30,298.75,289.65,297.00,297.35,294.71,21936648.00,6465018368.00,143045,9434760,43.01),(31,'SBIN','2017-05-18',307.65,304.85,307.90,302.00,302.00,197.50,304.49,15471393.00,4710915584.00,109109,5470333,35.36),(35,'SBIN','2017-05-24',288.85,290.05,290.45,281.65,283.25,197.55,285.51,16435958.00,4692594688.00,120004,4768521,29.01);
 /*!40000 ALTER TABLE `equity_data_has_pattern_top_temp` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,7 +160,7 @@ CREATE TABLE `equity_data_has_second_shoulder_top` (
 
 LOCK TABLES `equity_data_has_second_shoulder_top` WRITE;
 /*!40000 ALTER TABLE `equity_data_has_second_shoulder_top` DISABLE KEYS */;
-INSERT INTO `equity_data_has_second_shoulder_top` VALUES (58,60,'SBIN','2017-05-26',290.1,290.5,291,285.3,289,195.65,287.71,12304400,3540130000,139676,4485862,36.46);
+INSERT INTO `equity_data_has_second_shoulder_top` VALUES (35,37,'SBIN','2017-05-26',290.1,290.5,291,285.3,289,195.65,287.71,12304400,3540130000,139676,4485862,36.46);
 /*!40000 ALTER TABLE `equity_data_has_second_shoulder_top` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +219,7 @@ CREATE TABLE `has_first_shoulder_data` (
 
 LOCK TABLES `has_first_shoulder_data` WRITE;
 /*!40000 ALTER TABLE `has_first_shoulder_data` DISABLE KEYS */;
-INSERT INTO `has_first_shoulder_data` VALUES (54,'2017-05-18',197.5,56,'2017-05-22',188.3,58,'2017-05-24',197.55,59,'2017-05-25',194.25);
+INSERT INTO `has_first_shoulder_data` VALUES (31,'2017-05-18',197.5,33,'2017-05-22',188.3,35,'2017-05-24',197.55,36,'2017-05-25',194.25);
 /*!40000 ALTER TABLE `has_first_shoulder_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +234,7 @@ CREATE TABLE `has_neckline_points` (
   `has_id` int(11) NOT NULL,
   `row_id` int(11) NOT NULL,
   `curr_date` date DEFAULT NULL,
-  `price_value` float DEFAULT NULL,
+  `price_value` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`has_id`,`row_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -252,7 +245,7 @@ CREATE TABLE `has_neckline_points` (
 
 LOCK TABLES `has_neckline_points` WRITE;
 /*!40000 ALTER TABLE `has_neckline_points` DISABLE KEYS */;
-INSERT INTO `has_neckline_points` VALUES (68,57,'2017-05-23',189.242),(68,58,'2017-05-24',190.183),(68,59,'2017-05-25',191.124),(68,60,'2017-05-26',192.066),(68,61,'2017-05-29',193.008),(68,62,'2017-05-30',193.949),(68,63,'2017-05-31',194.891),(68,64,'2017-06-01',195.832),(68,65,'2017-06-02',196.773),(68,66,'2017-06-05',197.715),(68,67,'2017-06-06',198.657),(68,68,'2017-06-07',199.598),(68,69,'2017-06-08',200.54),(68,70,'2017-06-09',201.481),(68,71,'2017-06-12',202.423);
+INSERT INTO `has_neckline_points` VALUES (83,34,'2017-05-23',188.85),(83,35,'2017-05-24',189.45),(83,36,'2017-05-25',190.00),(83,37,'2017-05-26',190.55),(83,38,'2017-05-29',191.10),(83,39,'2017-05-30',191.70),(83,40,'2017-05-31',192.25),(83,41,'2017-06-01',192.80),(83,42,'2017-06-02',193.40),(83,43,'2017-06-05',193.95),(83,44,'2017-06-06',194.50),(83,45,'2017-06-07',195.10),(83,46,'2017-06-08',195.65),(83,47,'2017-06-09',196.20),(83,48,'2017-06-12',196.75);
 /*!40000 ALTER TABLE `has_neckline_points` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +272,7 @@ CREATE TABLE `has_pattern_rules` (
 
 LOCK TABLES `has_pattern_rules` WRITE;
 /*!40000 ALTER TABLE `has_pattern_rules` DISABLE KEYS */;
-INSERT INTO `has_pattern_rules` VALUES (1,'HEAD_DURATION_PERCENTAGE_OF_RALLY',5,'TIME TAKEN TO MAKE LOW AFTER IDENTIFYING HEAD PEAK. ALSO SAME TIME IS USED TO VERIFY THAT THIS IS LOW POINT FROM FUTURE VALUES'),(2,'MAX_NECKLINE_SLOPE_ABSOLUTE_VALUE',0.5,'MAX VALUE FOR SLOPE OF NECKLINE IN ABSOLUTE TERMS');
+INSERT INTO `has_pattern_rules` VALUES (1,'HEAD_DURATION_PERCENTAGE_OF_RALLY',5,'TIME TAKEN TO MAKE LOW AFTER IDENTIFYING HEAD PEAK. ALSO SAME TIME IS USED TO VERIFY THAT THIS IS LOW POINT FROM FUTURE VALUES'),(2,'MAX_NECKLINE_SLOPE_ABSOLUTE_VALUE',0.3,'MAX VALUE FOR SLOPE OF NECKLINE IN ABSOLUTE TERMS');
 /*!40000 ALTER TABLE `has_pattern_rules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,7 +330,7 @@ CREATE TABLE `identified_has_data` (
   `second_shoulder_low_date` date DEFAULT NULL,
   `second_shoulder_low_close_price` float DEFAULT NULL,
   PRIMARY KEY (`has_id`,`symbol`,`first_shoulder_top_row_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -346,7 +339,7 @@ CREATE TABLE `identified_has_data` (
 
 LOCK TABLES `identified_has_data` WRITE;
 /*!40000 ALTER TABLE `identified_has_data` DISABLE KEYS */;
-INSERT INTO `identified_has_data` VALUES (68,'SBIN',54,'2017-05-18',197.5,56,'2017-05-22',188.3,58,'2017-05-24',197.55,59,'2017-05-25',194.25,60,'2017-05-26',195.65,61,'2017-05-29',194.7);
+INSERT INTO `identified_has_data` VALUES (83,'SBIN',31,'2017-05-18',197.5,33,'2017-05-22',188.3,35,'2017-05-24',197.55,36,'2017-05-25',194.25,37,'2017-05-26',195.65,40,'2017-05-31',192.1);
 /*!40000 ALTER TABLE `identified_has_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +357,7 @@ CREATE TABLE `identified_has_neckline_data` (
   `first_shoulder_low_close_price` float DEFAULT NULL,
   `neckline_slope_value` float DEFAULT NULL,
   PRIMARY KEY (`has_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +366,7 @@ CREATE TABLE `identified_has_neckline_data` (
 
 LOCK TABLES `identified_has_neckline_data` WRITE;
 /*!40000 ALTER TABLE `identified_has_neckline_data` DISABLE KEYS */;
-INSERT INTO `identified_has_neckline_data` VALUES (68,56,'2017-05-22',188.3,0.5);
+INSERT INTO `identified_has_neckline_data` VALUES (83,33,'2017-05-22',188.3,0.3);
 /*!40000 ALTER TABLE `identified_has_neckline_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,7 +390,7 @@ CREATE TABLE `identified_has_pattern_type` (
 
 LOCK TABLES `identified_has_pattern_type` WRITE;
 /*!40000 ALTER TABLE `identified_has_pattern_type` DISABLE KEYS */;
-INSERT INTO `identified_has_pattern_type` VALUES (68,1);
+INSERT INTO `identified_has_pattern_type` VALUES (83,2);
 /*!40000 ALTER TABLE `identified_has_pattern_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,7 +414,7 @@ CREATE TABLE `market_sessions` (
 
 LOCK TABLES `market_sessions` WRITE;
 /*!40000 ALTER TABLE `market_sessions` DISABLE KEYS */;
-INSERT INTO `market_sessions` VALUES (1,'2017-02-28'),(2,'2017-03-01'),(3,'2017-03-02'),(4,'2017-03-03'),(5,'2017-03-06'),(6,'2017-03-07'),(7,'2017-03-08'),(8,'2017-03-09'),(9,'2017-03-10'),(10,'2017-03-14'),(11,'2017-03-15'),(12,'2017-03-16'),(13,'2017-03-17'),(14,'2017-03-20'),(15,'2017-03-21'),(16,'2017-03-22'),(17,'2017-03-23'),(18,'2017-03-24'),(19,'2017-03-27'),(20,'2017-03-28'),(21,'2017-03-29'),(22,'2017-03-30'),(23,'2017-03-31'),(24,'2017-04-03'),(25,'2017-04-05'),(26,'2017-04-06'),(27,'2017-04-07'),(28,'2017-04-10'),(29,'2017-04-11'),(30,'2017-04-12'),(31,'2017-04-13'),(32,'2017-04-17'),(33,'2017-04-18'),(34,'2017-04-19'),(35,'2017-04-20'),(36,'2017-04-21'),(37,'2017-04-24'),(38,'2017-04-25'),(39,'2017-04-26'),(40,'2017-04-27'),(41,'2017-04-28'),(42,'2017-05-02'),(43,'2017-05-03'),(44,'2017-05-04'),(45,'2017-05-05'),(46,'2017-05-08'),(47,'2017-05-09'),(48,'2017-05-10'),(49,'2017-05-11'),(50,'2017-05-12'),(51,'2017-05-15'),(52,'2017-05-16'),(53,'2017-05-17'),(54,'2017-05-18'),(55,'2017-05-19'),(56,'2017-05-22'),(57,'2017-05-23'),(58,'2017-05-24'),(59,'2017-05-25'),(60,'2017-05-26'),(61,'2017-05-29'),(62,'2017-05-30'),(63,'2017-05-31'),(64,'2017-06-01'),(65,'2017-06-02'),(66,'2017-06-05'),(67,'2017-06-06'),(68,'2017-06-07'),(69,'2017-06-08'),(70,'2017-06-09'),(71,'2017-06-12'),(72,'2017-06-13');
+INSERT INTO `market_sessions` VALUES (1,'2017-04-03'),(2,'2017-04-05'),(3,'2017-04-06'),(4,'2017-04-07'),(5,'2017-04-10'),(6,'2017-04-11'),(7,'2017-04-12'),(8,'2017-04-13'),(9,'2017-04-17'),(10,'2017-04-18'),(11,'2017-04-19'),(12,'2017-04-20'),(13,'2017-04-21'),(14,'2017-04-24'),(15,'2017-04-25'),(16,'2017-04-26'),(17,'2017-04-27'),(18,'2017-04-28'),(19,'2017-05-02'),(20,'2017-05-03'),(21,'2017-05-04'),(22,'2017-05-05'),(23,'2017-05-08'),(24,'2017-05-09'),(25,'2017-05-10'),(26,'2017-05-11'),(27,'2017-05-12'),(28,'2017-05-15'),(29,'2017-05-16'),(30,'2017-05-17'),(31,'2017-05-18'),(32,'2017-05-19'),(33,'2017-05-22'),(34,'2017-05-23'),(35,'2017-05-24'),(36,'2017-05-25'),(37,'2017-05-26'),(38,'2017-05-29'),(39,'2017-05-30'),(40,'2017-05-31'),(41,'2017-06-01'),(42,'2017-06-02'),(43,'2017-06-05'),(44,'2017-06-06'),(45,'2017-06-07'),(46,'2017-06-08'),(47,'2017-06-09'),(48,'2017-06-12'),(49,'2017-06-13'),(50,'2017-06-14'),(51,'2017-06-15');
 /*!40000 ALTER TABLE `market_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,6 +525,9 @@ plot_neckline_loop : LOOP
 
  set calculated_price_value =  input_first_shoulder_low_close_price +
                                  ((loop_counter * input_neckline_slope) * input_first_shoulder_low_close_price/ 100);
+
+
+ set calculated_price_value = (round(calculated_price_value/0.05)) * 0.05;                                
 
 replace INTO engine_has_pattern.has_neckline_points
 ( select  input_has_id,calculated_row_id,a.session_date,calculated_price_value
@@ -1544,6 +1540,10 @@ FETCH identified_neckline_points INTO var_current_row_id,var_current_date,var_cu
  if (input_shoulder_low_min_close_price <=  var_current_close_price)
  then
 
+ select a.curr_date from engine_has_pattern.has_neckline_points a
+ where a.row_id = var_current_row_id
+ into var_current_date;
+
 replace into engine_has_pattern.identified_has_pattern_type values(input_has_id,2);
 
 set output_identified = true;
@@ -1551,7 +1551,7 @@ set output_identified = true;
 update engine_has_pattern.identified_has_data a
 set  second_shoulder_low_row_id = var_current_row_id,
 second_shoulder_low_date =  var_current_date,
-second_shoulder_low_close_price = var_current_close_price
+second_shoulder_low_close_price = input_shoulder_low_min_close_price
 where has_id = input_has_id;
 
 
@@ -1589,9 +1589,11 @@ cut_off_date date,
 input_has_id int,
 input_second_shoulder_top_row_id int,
 input_second_shoulder_top_close_price float,
-CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int,
-out output_cut_off_date_row_id int)
+CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int
+)
 proc_label: BEGIN
+
+declare output_cut_off_date_row_id int;
 
 select a.ROW_ID from engine_has_pattern.equity_data_has_pattern a
 where a.CURR_DATE = cut_off_date into output_cut_off_date_row_id;
@@ -1720,219 +1722,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Current Database: `prediction_has_pattern`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `prediction_has_pattern` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `prediction_has_pattern`;
-
---
--- Table structure for table `has_evaluation_run`
---
-
-DROP TABLE IF EXISTS `has_evaluation_run`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `has_evaluation_run` (
-  `has_evaluation_run_id` int(11) NOT NULL AUTO_INCREMENT,
-  `symbol` varchar(45) DEFAULT NULL,
-  `curr_date` date DEFAULT NULL,
-  `duration_days` int(11) DEFAULT NULL,
-  PRIMARY KEY (`has_evaluation_run_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `has_evaluation_run`
---
-
-LOCK TABLES `has_evaluation_run` WRITE;
-/*!40000 ALTER TABLE `has_evaluation_run` DISABLE KEYS */;
-INSERT INTO `has_evaluation_run` VALUES (1,'SBIN','2017-05-29',30);
-/*!40000 ALTER TABLE `has_evaluation_run` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `identified_has_pattern_type`
---
-
-DROP TABLE IF EXISTS `identified_has_pattern_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `identified_has_pattern_type` (
-  `has_evaluation_run_id` int(11) NOT NULL,
-  `has_id` int(11) NOT NULL,
-  `identified_pattern_type_id` int(11) DEFAULT NULL,
-  `LIVE_SHOULDER_LOW_DURATION` int(11) DEFAULT NULL,
-  PRIMARY KEY (`has_evaluation_run_id`,`has_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `identified_has_pattern_type`
---
-
-LOCK TABLES `identified_has_pattern_type` WRITE;
-/*!40000 ALTER TABLE `identified_has_pattern_type` DISABLE KEYS */;
-/*!40000 ALTER TABLE `identified_has_pattern_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `prediction_type`
---
-
-DROP TABLE IF EXISTS `prediction_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `prediction_type` (
-  `type_id` int(11) NOT NULL,
-  `type_name` varchar(45) DEFAULT NULL,
-  `type_desc` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `prediction_type`
---
-
-LOCK TABLES `prediction_type` WRITE;
-/*!40000 ALTER TABLE `prediction_type` DISABLE KEYS */;
-INSERT INTO `prediction_type` VALUES (1,'current_time','Identify the pattern for current time frame. Not required to analyse wether the pattern was successful. Only needed output is support/resistance types for future dates based on neckline'),(2,'back_testing','Identify the pattern for past dates. Also analyse wether the pattern was successful based upon neckline and volume data.');
-/*!40000 ALTER TABLE `prediction_type` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping routines for database 'prediction_has_pattern'
---
-/*!50003 DROP PROCEDURE IF EXISTS `find_has_main` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `find_has_main`(
-symbol_in varchar(45),
-duration_days INT,
-endDate date)
-BEGIN
-
-
-
-DECLARE identified_has_data_count int;
-
-  DECLARE var_has_id INT;
-  DECLARE var_second_shoulder_top_row_id INT;
-  DECLARE var_second_shoulder_top_date DATE;
-  DECLARE var_second_shoulder_top_close_price FLOAT;
-
-  DECLARE HEAD_DUR_PERC_OF_RALLY float DEFAULT 0.0;
-
-  DECLARE CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int DEFAULT 0;
-
-  DECLARE LIVE_SHOULDER_LOW_DURATION int DEFAULT 0;
-
-  DECLARE var_cut_off_date_row_id int;
-
-  DECLARE var_identified_pattern_type_id int;
-
-  DECLARE var_evaluation_run_id int;
-
-
-
-
-INSERT INTO prediction_has_pattern.has_evaluation_run
-values (null,symbol_in,endDate,duration_days);
-
-
-select max(a.has_evaluation_run_id) from prediction_has_pattern.has_evaluation_run a
-into var_evaluation_run_id;
-
-caLL engine_has_pattern.find_has (symbol_in,duration_days,
-                                  DATE_SUB(endDate, INTERVAL (3*duration_days) day), endDate);
-
-select count(*) from engine_has_pattern.identified_has_data into identified_has_data_count;
-
-if (identified_has_data_count >= 1)   then
-
-SELECT rule_value/100 FROM engine_has_pattern.has_pattern_rules
-where rule_name = 'HEAD_DURATION_PERCENTAGE_OF_RALLY' into  HEAD_DUR_PERC_OF_RALLY;
-
-SET CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION =    ROUND(2 * duration_days * HEAD_DUR_PERC_OF_RALLY );
-
-delete from  engine_has_pattern.identified_has_pattern_type;
-
-select a.has_id,a.second_shoulder_top_row_id,a.second_shoulder_top_date,
-a.second_shoulder_top_close_price from  engine_has_pattern.identified_has_data a
-where a.second_shoulder_top_date =
-(select max(second_shoulder_top_date) from   engine_has_pattern.identified_has_data)
-
-INTO var_has_id,var_second_shoulder_top_row_id,
-                                    var_second_shoulder_top_date,var_second_shoulder_top_close_price;
-
-call engine_has_pattern.identify_has_pattern_type(duration_days,endDate,var_has_id,var_second_shoulder_top_row_id,
-                                    var_second_shoulder_top_close_price,
-                                    CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION,var_cut_off_date_row_id);
-
-select a.identified_pattern_type_id from  engine_has_pattern.identified_has_pattern_type a
-
-where a.has_id = var_has_id
-
-into var_identified_pattern_type_id;
-
-set LIVE_SHOULDER_LOW_DURATION =  var_cut_off_date_row_id -  var_second_shoulder_top_row_id;
-
-end if;
-
-replace INTO prediction_has_pattern.identified_has_pattern_type
-values (var_evaluation_run_id,var_has_id,var_identified_pattern_type_id,LIVE_SHOULDER_LOW_DURATION);
-
--- replace INTO prediction_has_pattern.identified_has_pattern_type
-
-
-
-
-
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `prediction_for_rally_duration` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `prediction_for_rally_duration`(
-duration_days int,
-symbol_in varchar(45)
-)
-BEGIN
-
-  SET @endDate = CURDATE();
-  SET @startDate = DATE_SUB(@endDate,INTERVAL (3*duration_days) day) ;
-
-call engine_has_pattern.find_has(symbol_in,duration_days,@startDate,@endDate,1);
-
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1943,4 +1732,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-05  9:38:41
+-- Dump completed on 2017-06-06 13:23:02
