@@ -76,7 +76,7 @@ CREATE TABLE `equity_data_has_pattern_rally_top` (
   `DELIVERABLE_QTY` int(11) DEFAULT NULL,
   `PERCENT_DELIVERABLE_QTY` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=492 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `equity_data_has_pattern_top_temp` (
   `DELIVERABLE_QTY` int(11) DEFAULT NULL,
   `PERCENT_DELIVERABLE_QTY` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`ROW_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=492 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `has_neckline_points` (
 
 LOCK TABLES `has_neckline_points` WRITE;
 /*!40000 ALTER TABLE `has_neckline_points` DISABLE KEYS */;
-INSERT INTO `has_neckline_points` VALUES (83,34,'2017-05-23',188.85),(83,35,'2017-05-24',189.45),(83,36,'2017-05-25',190.00),(83,37,'2017-05-26',190.55),(83,38,'2017-05-29',191.10),(83,39,'2017-05-30',191.70),(83,40,'2017-05-31',192.25),(83,41,'2017-06-01',192.80),(83,42,'2017-06-02',193.40),(83,43,'2017-06-05',193.95),(83,44,'2017-06-06',194.50),(83,45,'2017-06-07',195.10),(83,46,'2017-06-08',195.65),(83,47,'2017-06-09',196.20),(83,48,'2017-06-12',196.75);
+INSERT INTO `has_neckline_points` VALUES (92,34,'2017-05-23',188.85),(92,35,'2017-05-24',189.45),(92,36,'2017-05-25',190.00),(92,37,'2017-05-26',190.55),(92,38,'2017-05-29',191.10),(92,39,'2017-05-30',191.70),(92,40,'2017-05-31',192.25),(92,41,'2017-06-01',192.80),(92,42,'2017-06-02',193.40),(92,43,'2017-06-05',193.95),(92,44,'2017-06-06',194.50),(92,45,'2017-06-07',195.10),(92,46,'2017-06-08',195.65),(92,47,'2017-06-09',196.20),(92,48,'2017-06-12',196.75);
 /*!40000 ALTER TABLE `has_neckline_points` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -330,7 +330,7 @@ CREATE TABLE `identified_has_data` (
   `second_shoulder_low_date` date DEFAULT NULL,
   `second_shoulder_low_close_price` float DEFAULT NULL,
   PRIMARY KEY (`has_id`,`symbol`,`first_shoulder_top_row_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,7 +339,7 @@ CREATE TABLE `identified_has_data` (
 
 LOCK TABLES `identified_has_data` WRITE;
 /*!40000 ALTER TABLE `identified_has_data` DISABLE KEYS */;
-INSERT INTO `identified_has_data` VALUES (83,'SBIN',31,'2017-05-18',197.5,33,'2017-05-22',188.3,35,'2017-05-24',197.55,36,'2017-05-25',194.25,37,'2017-05-26',195.65,40,'2017-05-31',192.1);
+INSERT INTO `identified_has_data` VALUES (92,'SBIN',31,'2017-05-18',197.5,33,'2017-05-22',188.3,35,'2017-05-24',197.55,36,'2017-05-25',194.25,37,'2017-05-26',195.65,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `identified_has_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +357,7 @@ CREATE TABLE `identified_has_neckline_data` (
   `first_shoulder_low_close_price` float DEFAULT NULL,
   `neckline_slope_value` float DEFAULT NULL,
   PRIMARY KEY (`has_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +366,7 @@ CREATE TABLE `identified_has_neckline_data` (
 
 LOCK TABLES `identified_has_neckline_data` WRITE;
 /*!40000 ALTER TABLE `identified_has_neckline_data` DISABLE KEYS */;
-INSERT INTO `identified_has_neckline_data` VALUES (83,33,'2017-05-22',188.3,0.3);
+INSERT INTO `identified_has_neckline_data` VALUES (92,33,'2017-05-22',188.3,0.3);
 /*!40000 ALTER TABLE `identified_has_neckline_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,7 +390,6 @@ CREATE TABLE `identified_has_pattern_type` (
 
 LOCK TABLES `identified_has_pattern_type` WRITE;
 /*!40000 ALTER TABLE `identified_has_pattern_type` DISABLE KEYS */;
-INSERT INTO `identified_has_pattern_type` VALUES (83,2);
 /*!40000 ALTER TABLE `identified_has_pattern_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,6 +420,100 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'engine_has_pattern'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `backtest_identify_all_has_pattern_type` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `backtest_identify_all_has_pattern_type`(
+duration_days INT)
+BEGIN
+
+  -- Declare variables used just for cursor and loop control
+  DECLARE no_more_rows int;
+  DECLARE loop_cntr INT DEFAULT 1;
+  DECLARE num_rows INT DEFAULT 0;
+
+  DECLARE var_has_id INT;
+  DECLARE var_second_shoulder_top_row_id INT;
+  DECLARE var_second_shoulder_top_close_price FLOAT;
+
+  DECLARE calculated_cut_off_date DATE;
+
+  DECLARE HEAD_DUR_PERC_OF_RALLY float DEFAULT 0.0;
+
+  DECLARE CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int DEFAULT 0;
+    DECLARE var_cut_off_date_row_id int;
+
+
+
+
+      DECLARE identified_has_details CURSOR FOR
+    SELECT DISTINCT
+        has_id,second_shoulder_top_row_id, second_shoulder_top_close_price
+        -- ,CURR_DATE,CLOSE_PRICE
+    FROM engine_has_pattern.identified_has_data
+    ORDER BY has_id ASC
+;
+
+   -- Declare 'handlers' for exceptions
+  DECLARE CONTINUE HANDLER FOR NOT FOUND
+    SET no_more_rows = 1;
+
+SELECT rule_value/100 FROM engine_has_pattern.has_pattern_rules
+where rule_name = 'HEAD_DURATION_PERCENTAGE_OF_RALLY' into  HEAD_DUR_PERC_OF_RALLY;
+
+SET CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION =    ROUND(2 * duration_days * HEAD_DUR_PERC_OF_RALLY );
+
+delete from  engine_has_pattern.identified_has_pattern_type;
+
+OPEN identified_has_details;
+
+ IF no_more_rows = 1 THEN
+ close identified_has_details;
+ END IF;
+
+find_second_shoulder__low_loop : LOOP
+
+ IF no_more_rows = 1 THEN
+ LEAVE find_second_shoulder__low_loop;
+ END IF;
+
+FETCH identified_has_details INTO var_has_id,var_second_shoulder_top_row_id,
+                                    var_second_shoulder_top_close_price;
+
+ IF no_more_rows = 1 THEN
+ LEAVE find_second_shoulder__low_loop;
+ END IF;
+
+set calculated_cut_off_date =  var_second_shoulder_top_row_id +  CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION;
+
+call identify_has_pattern_type(duration_days,calculated_cut_off_date,var_has_id,var_second_shoulder_top_row_id,
+                                    var_second_shoulder_top_close_price,
+                                    CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION
+                                    );
+
+-- call find_second_shoulder_low(current_head_row_id,current_head_close_price,duration_days);
+ IF no_more_rows = 1 THEN
+ LEAVE find_second_shoulder__low_loop;
+ END IF;
+
+END LOOP find_second_shoulder__low_loop;
+
+
+ close identified_has_details;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `calculate_neckline_data` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -859,88 +952,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `find_has_main` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `find_has_main`(
-symbol_in varchar(45),
-duration_days INT,
-endDate date)
-BEGIN
-
-
-DECLARE identified_has_data_count int;
-
-  DECLARE var_has_id INT;
-  DECLARE var_second_shoulder_top_row_id INT;
-  DECLARE var_second_shoulder_top_date DATE;
-  DECLARE var_second_shoulder_top_close_price FLOAT;
-
-  DECLARE HEAD_DUR_PERC_OF_RALLY float DEFAULT 0.0;
-
-  DECLARE CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int DEFAULT 0;
-
-  DECLARE LIVE_SHOULDER_LOW_DURATION int DEFAULT 0;
-
-  DECLARE var_cut_off_date_row_id int;
-
-  DECLARE var_identified_pattern_type_id int;
-
-
-
-
-caLL engine_has_pattern.find_has (symbol_in,duration_days,
-                                  DATE_SUB(endDate, INTERVAL (3*duration_days) day), endDate);
-
-select count(*) from engine_has_pattern.identified_has_data into identified_has_data_count;
-
-if (identified_has_data_count >= 1)   then
-
-SELECT rule_value/100 FROM engine_has_pattern.has_pattern_rules
-where rule_name = 'HEAD_DURATION_PERCENTAGE_OF_RALLY' into  HEAD_DUR_PERC_OF_RALLY;
-
-SET CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION =    ROUND(2 * duration_days * HEAD_DUR_PERC_OF_RALLY );
-
-delete from  engine_has_pattern.identified_has_pattern_type;
-
-select a.has_id,a.second_shoulder_top_row_id,a.second_shoulder_top_date,
-a.second_shoulder_top_close_price from  engine_has_pattern.identified_has_data a
-where a.second_shoulder_top_date =
-(select max(second_shoulder_top_date) from   engine_has_pattern.identified_has_data)
-
-INTO var_has_id,var_second_shoulder_top_row_id,
-                                    var_second_shoulder_top_date,var_second_shoulder_top_close_price;
-
-call engine_has_pattern.identify_has_pattern_type(duration_days,endDate,var_has_id,var_second_shoulder_top_row_id,
-                                    var_second_shoulder_top_close_price,
-                                    CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION,var_cut_off_date_row_id);
-
-select a.identified_pattern_type_id from  engine_has_pattern.identified_has_pattern_type a
-
-where a.has_id = var_has_id
-
-into var_identified_pattern_type_id;
-
-set LIVE_SHOULDER_LOW_DURATION =  var_cut_off_date_row_id -  var_second_shoulder_top_row_id;
-
-end if;
-
-
-
-
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `find_rally_top` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1230,117 +1241,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `has_backtesting` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `has_backtesting`()
-BEGIN
-
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `identify_all_has_pattern_type` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `identify_all_has_pattern_type`(
-duration_days INT,
-cut_off_date date)
-BEGIN
-
-  -- Declare variables used just for cursor and loop control
-  DECLARE no_more_rows int;
-  DECLARE loop_cntr INT DEFAULT 1;
-  DECLARE num_rows INT DEFAULT 0;
-
-  DECLARE var_has_id INT;
-  DECLARE var_second_shoulder_top_row_id INT;
-  DECLARE var_second_shoulder_top_date DATE;
-  DECLARE var_second_shoulder_top_close_price FLOAT;
-
-  DECLARE HEAD_DUR_PERC_OF_RALLY float DEFAULT 0.0;
-
-  DECLARE CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int DEFAULT 0;
-    DECLARE var_cut_off_date_row_id int;
-
-
-
-
-      DECLARE identified_has_details CURSOR FOR
-    SELECT DISTINCT
-        has_id,second_shoulder_top_row_id, second_shoulder_top_date, second_shoulder_top_close_price
-        -- ,CURR_DATE,CLOSE_PRICE
-    FROM engine_has_pattern.identified_has_data
-    ORDER BY has_id ASC
-;
-
-   -- Declare 'handlers' for exceptions
-  DECLARE CONTINUE HANDLER FOR NOT FOUND
-    SET no_more_rows = 1;
-
-SELECT rule_value/100 FROM engine_has_pattern.has_pattern_rules
-where rule_name = 'HEAD_DURATION_PERCENTAGE_OF_RALLY' into  HEAD_DUR_PERC_OF_RALLY;
-
-SET CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION =    ROUND(2 * duration_days * HEAD_DUR_PERC_OF_RALLY );
-
-delete from  engine_has_pattern.identified_has_pattern_type;
-
-OPEN identified_has_details;
-
- IF no_more_rows = 1 THEN
- close identified_has_details;
- END IF;
-
-find_second_shoulder__low_loop : LOOP
-
- IF no_more_rows = 1 THEN
- LEAVE find_second_shoulder__low_loop;
- END IF;
-
-FETCH identified_has_details INTO var_has_id,var_second_shoulder_top_row_id,
-                                    var_second_shoulder_top_date,var_second_shoulder_top_close_price;
-
- IF no_more_rows = 1 THEN
- LEAVE find_second_shoulder__low_loop;
- END IF;
-
-call identify_has_pattern_type(duration_days,cut_off_date,var_has_id,var_second_shoulder_top_row_id,
-                                    var_second_shoulder_top_close_price,
-                                    CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION,
-                                    var_cut_off_date_row_id);
-
--- call find_second_shoulder_low(current_head_row_id,current_head_close_price,duration_days);
- IF no_more_rows = 1 THEN
- LEAVE find_second_shoulder__low_loop;
- END IF;
-
-END LOOP find_second_shoulder__low_loop;
-
-
- close identified_has_details;
-
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `identify_as_pattern_type_1_or_2` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1593,12 +1493,12 @@ CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION int
 )
 proc_label: BEGIN
 
-declare output_cut_off_date_row_id int;
+declare var_cut_off_date_row_id int;
 
 select a.ROW_ID from engine_has_pattern.equity_data_has_pattern a
-where a.CURR_DATE = cut_off_date into output_cut_off_date_row_id;
+where a.CURR_DATE = cut_off_date into var_cut_off_date_row_id;
 
-IF ((output_cut_off_date_row_id -  input_second_shoulder_top_row_id  = 0) AND duration_days <= 30)
+IF ((var_cut_off_date_row_id -  input_second_shoulder_top_row_id  = 0) AND duration_days <= 30)
 THEN
 
 replace into engine_has_pattern.identified_has_pattern_type values(var_has_id,1);
@@ -1609,18 +1509,18 @@ LEAVE proc_label;
 END IF;
 
 
-IF (output_cut_off_date_row_id -  input_second_shoulder_top_row_id <   (0.2 * CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION))
+IF (var_cut_off_date_row_id -  input_second_shoulder_top_row_id <   (0.2 * CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION))
 THEN
 
 LEAVE proc_label;
 
 END IF;
 
-IF (output_cut_off_date_row_id -  input_second_shoulder_top_row_id <=   CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION)
+IF (var_cut_off_date_row_id -  input_second_shoulder_top_row_id <=   CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION)
 THEN
 
 
-call identify_as_pattern_type_1_or_2(output_cut_off_date_row_id,input_has_id,input_second_shoulder_top_row_id,
+call identify_as_pattern_type_1_or_2(var_cut_off_date_row_id,input_has_id,input_second_shoulder_top_row_id,
 input_second_shoulder_top_close_price,
 CALCULATED_SECOND_SHOULDER_TO_LOW_DURATION);
 
@@ -1732,4 +1632,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-06 13:23:02
+-- Dump completed on 2017-06-06 19:02:41
