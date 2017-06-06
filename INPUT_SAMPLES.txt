@@ -1,0 +1,67 @@
+BEGIN
+
+  SET @symbol_in = 'SBIN';
+  SET @duration_days = 30;
+  SET @endDate = '2017-05-31';
+  delete from prediction_has_pattern.identified_has_data;
+  delete from prediction_has_pattern.backtest_has_confidence;
+  delete from prediction_has_pattern.identified_has_data_for_backtest;
+  delete FROM prediction_has_pattern.identified_has_pattern_type;
+  CALL `prediction_has_pattern`.`find_has_main`(@symbol_in, @duration_days, @endDate);
+END
+
+BEGIN
+  SET @symbol_in = 'SBIN';
+  SET @duration_days = 30;
+  SET @endDate = '2015-07-16';
+  SET @startDate = DATE_SUB(@endDate, INTERVAL 3 MONTH);
+  SET @prediction_type = 1;
+  SET @input_pattern_type_id = 1;
+  CALL `engine_has_pattern`.`find_has`(@symbol_in, @duration_days, @startDate, @endDate, @prediction_type, @input_pattern_type_id);
+END
+
+
+BEGIN
+  SET @duration_days = 30;
+  SET @endDate = '2015-07-16';
+  SET @prediction_type = 1;
+  SET @input_pattern_type_id = 1;
+  CALL `engine_has_pattern`.`identify_all_has_pattern_type`(@duration_days, @endDate, @prediction_type, @input_pattern_type_id);
+END
+
+
+
+update engine_has_pattern.equity_data_has_pattern a, engine_has_pattern.equity_data_has_pattern b
+set b.CLOSE_PRICE = a.CLOSE_PRICE
+
+where a.row_id >= 182
+and a.ROW_ID <= 210
+and b.ROW_ID = a.ROW_ID + (494 - 210)
+;
+
+UPDATE engine_ea.equity_data_main a, engine_has_pattern.equity_data_has_pattern b 
+set a.close_price = b.close_price where a.curr_date = b.curr_date;
+
+
+
+LOAD DATA LOCAL INFILE 'D:\\Equity Data Files\\SBI\\SBINEQN.csv' 
+INTO TABLE engine_ea.equity_data_main
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"' 
+LINES TERMINATED BY '\r\n'
+(SYMBOL,
+@my_date,
+PREV_CLOSE,
+OPEN_PRICE,
+HIGH_PRICE,
+LOW_PRICE,
+LAST_PRICE,
+CLOSE_PRICE,
+AVERAGE_PRICE,
+TOTAL_TRADED_QUANTITY,
+TURNOVER,
+NO_OF_TRADES,
+DELIVERABLE_QTY,
+PERCENT_DELIVERABLE_QTY)
+
+set curr_date = str_to_date(@my_date,'%d-%b-%Y')
