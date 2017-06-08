@@ -1,0 +1,25 @@
+HAS pattern
+
+1. incorporate check that head is above 1st shoulder by 0.5 % per 30 days
+
+2. Volume consideration for identification of head and shoulders
+
+3. update holidays and market sessions table frequently.
+
+4. update expiry master table frequently
+
+
+SYMBOL,
+CURR_DATE,
+PREV_CLOSE,
+OPEN_PRICE,
+HIGH_PRICE,
+LOW_PRICE,
+LAST_PRICE,
+CLOSE_PRICE,
+AVERAGE_PRICE,
+TOTAL_TRADED_QUANTITY,
+TURNOVER,
+NO_OF_TRADES,
+DELIVERABLE_QTY,
+PERCENT_DELIVERABLE_QTY 
