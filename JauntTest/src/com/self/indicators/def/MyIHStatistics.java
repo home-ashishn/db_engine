@@ -7,7 +7,7 @@ public interface MyIHStatistics {
 	 * 
 	 * @return
 	 */
-	MyIHInstrument getInstrument();
+	// MyIHInstrument getInstrument();
 
 	/**
 	 * 返回最新的�?交价

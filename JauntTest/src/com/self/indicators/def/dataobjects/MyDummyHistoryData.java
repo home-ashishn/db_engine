@@ -2,9 +2,9 @@ package com.self.indicators.def.dataobjects;
 
 import java.util.Arrays;
 
-import com.ricequant.strategy.def.IHStatisticsHistory;
+import com.self.indicators.def.MyIHStatisticsHistory;
 
-public class MyDummyHistoryData implements IHStatisticsHistory {
+public class MyDummyHistoryData implements MyIHStatisticsHistory {
 
 	private double[] lastPrice;
 

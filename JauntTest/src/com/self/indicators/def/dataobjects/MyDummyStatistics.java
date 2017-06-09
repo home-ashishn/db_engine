@@ -1,30 +1,25 @@
 package com.self.indicators.def.dataobjects;
 
-import com.ricequant.strategy.def.HPeriod;
-import com.ricequant.strategy.def.IHInstrument;
-import com.ricequant.strategy.def.IHStatistics;
-import com.ricequant.strategy.def.IHStatisticsHistory;
-import com.ricequant.strategy.support.HistoryDataProvider;
+import com.self.indicators.def.MyHPeriod;
+import com.self.indicators.def.MyIHStatistics;
+import com.self.indicators.def.MyIHStatisticsHistory;
 
-public class DummyStatistics implements IHStatistics {
+public class MyDummyStatistics implements MyIHStatistics {
 
 	private int startDay;
 
-	private String stockCode;
+	private MyIHStatisticsHistory current;
 
-	private IHStatisticsHistory current;
-
-	public DummyStatistics(int startDay, String stockCode) {
+	public MyDummyStatistics(int startDay) {
 		super();
 		this.startDay = startDay;
-		this.stockCode = stockCode;
-		current = HistoryDataProvider.getData("data/pool/" + stockCode, startDay, startDay + 2);
+		current = MyHistoryDataProvider.getData(startDay, startDay + 2);
 	}
 
-	@Override
+/*	@Override
 	public IHInstrument getInstrument() {
 		return new MyDummyInstrument(stockCode);
-	}
+	}*/
 
 	@Override
 	public double getLastPrice() {
@@ -57,18 +52,18 @@ public class DummyStatistics implements IHStatistics {
 	}
 
 	@Override
-	public double vwap(int numTicks, HPeriod tickPeriod) {
+	public double vwap(int numTicks, MyHPeriod tickPeriod) {
 		throw new IllegalArgumentException("unimplemented");
 	}
 
 	@Override
-	public double mavg(int numTicks, HPeriod tickPeriod) {
+	public double mavg(int numTicks, MyHPeriod tickPeriod) {
 		throw new IllegalArgumentException("unimplemented");
 	}
 
 	@Override
-	public IHStatisticsHistory history(int numTicks, HPeriod tickPeriod) {
-		return HistoryDataProvider.getData("data/pool/" + stockCode, startDay - numTicks, startDay);
+	public MyIHStatisticsHistory history(int numTicks, MyHPeriod tickPeriod) {
+		return MyHistoryDataProvider.getData(startDay - numTicks, startDay);
 	}
 
 }

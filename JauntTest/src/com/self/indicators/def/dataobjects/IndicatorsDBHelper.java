@@ -37,7 +37,7 @@ public class IndicatorsDBHelper {
 	}
 		
 	
-	public void insertOptionData(List<LiveOptionDataSymbolNifty> listLiveOptionDataSymbolNifty,int retryCount)
+	public void getIndicatorsBaseData(int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
 		
 		if(retryCount < 0)
@@ -48,8 +48,8 @@ public class IndicatorsDBHelper {
 		Connection connection = null;
 		ResultSet res = null;
 
-		String sql = "replace into option_chain_data_nifty " + "(CYCLE_NO,OPTION_TYPE,STRIKE_PRICE,NET_CHNG,LTP,"
-				+ "IMPLIED_VOLATILITY,VOLUME,CHNG_IN_OI,OI)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String sql = "SELECT HIGH_PRICE,LOW_PRICE,OPEN_PRICE,CLOSE_PRICE,TURNOVER"
+      		+ " FROM engine_indicators.equity_data_indiactors";
 
 		connection = (Connection) connPool.borrowObject();
 		
@@ -58,51 +58,30 @@ public class IndicatorsDBHelper {
 		PreparedStatement ps = connection.prepareStatement(sql);
 
 		try {
+			
+		      ResultSet rs = ps.executeQuery();
 
-			for (LiveOptionDataSymbolNifty liveOptionDataSymbolNifty : listLiveOptionDataSymbolNifty) {
+		      while (rs.next())
+		      {
+		    	double high_price = rs.getInt("HIGH_PRICE");
+		    	double low_price = rs.getInt("LOW_PRICE");
+		    	double open_price = rs.getInt("OPEN_PRICE");
+		    	double close_price = rs.getInt("CLOSE_PRICE");
+		    	double turnover = rs.getInt("HIGH_PRICE");
 
-				try {
-					ps.setLong(1, liveOptionDataSymbolNifty.getCycleNumber());
-					// ps.setLong(2,
-					// liveOptionDataSymbolNifty.getCycleNumber());
-					//ps.setString(2, "");
-					ps.setString(2, liveOptionDataSymbolNifty.getOptionType());
-					ps.setFloat(3, liveOptionDataSymbolNifty.getStrikePrice());
-					ps.setFloat(4, liveOptionDataSymbolNifty.getNetChange());
-					ps.setFloat(5, liveOptionDataSymbolNifty.getLtp());
-					ps.setFloat(6, liveOptionDataSymbolNifty.getImpliedVolatilty());
-					ps.setLong(7, liveOptionDataSymbolNifty.getVolume());
-					ps.setLong(8, liveOptionDataSymbolNifty.getChangeOI());
-					ps.setLong(9, liveOptionDataSymbolNifty.getOi());
-
-					/*
-					 * String query = "INSERT INTO option_chain_data_nifty" +
-					 * " values(" + liveOptionDataSymbolNifty.getCycleNumber() +
-					 * "," //+ liveOptionDataSymbolNifty.getCurrentDate() +
-					 * "',"' + "NOW()" + ",'" +
-					 * liveOptionDataSymbolNifty.getOptionType() + "'," +
-					 * liveOptionDataSymbolNifty.getStrikePrice() + "," +
-					 * liveOptionDataSymbolNifty.getNetChange() + "," +
-					 * liveOptionDataSymbolNifty.getLtp() + "," +
-					 * liveOptionDataSymbolNifty.getImpliedVolatilty() + "," +
-					 * liveOptionDataSymbolNifty.getVolume() + "," +
-					 * liveOptionDataSymbolNifty.getChangeOI() + "," +
-					 * liveOptionDataSymbolNifty.getOi() + ")";
-					 */
-					ps.addBatch();
-				} catch (Exception e) {
-					continue;
-				}
-			}
-
-			ps.executeBatch();
+		        high.add(high_price);
+		        low.add(low_price);
+				open.add(open_price);
+				close.add(close_price);
+				turnoverVolume.add(turnover);
+		      }
 			ps.close();
 			connection.close();
 
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			insertOptionData(listLiveOptionDataSymbolNifty,retryCount --);
+			getIndicatorsBaseData(retryCount --);
 			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
 		} finally {
 			safeClose(res);
@@ -193,12 +172,60 @@ public class IndicatorsDBHelper {
 		ObjectPool pool;
 		pool = initMySqlConnectionPool();
 
-		List<LiveOptionDataSymbolNifty> testList = prepareDummyData();
+		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(pool);
 
-		IndicatorsDBHelper niftyOptionChainDBHelper = new IndicatorsDBHelper(pool);
+		indicatorsDBHelper.getIndicatorsBaseData(5);
 
-		niftyOptionChainDBHelper.insertOptionData(testList,1);
+	}
 
+
+	public List<Double> getHigh() {
+		return high;
+	}
+
+
+	public void setHigh(List<Double> high) {
+		this.high = high;
+	}
+
+
+	public List<Double> getLow() {
+		return low;
+	}
+
+
+	public void setLow(List<Double> low) {
+		this.low = low;
+	}
+
+
+	public List<Double> getOpen() {
+		return open;
+	}
+
+
+	public void setOpen(List<Double> open) {
+		this.open = open;
+	}
+
+
+	public List<Double> getClose() {
+		return close;
+	}
+
+
+	public void setClose(List<Double> close) {
+		this.close = close;
+	}
+
+
+	public List<Double> getTurnoverVolume() {
+		return turnoverVolume;
+	}
+
+
+	public void setTurnoverVolume(List<Double> turnoverVolume) {
+		this.turnoverVolume = turnoverVolume;
 	}
 
 
