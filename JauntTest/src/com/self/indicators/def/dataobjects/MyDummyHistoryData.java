@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import com.ricequant.strategy.def.IHStatisticsHistory;
 
-public class DummyHistoryData implements IHStatisticsHistory {
+public class MyDummyHistoryData implements IHStatisticsHistory {
 
 	private double[] lastPrice;
 

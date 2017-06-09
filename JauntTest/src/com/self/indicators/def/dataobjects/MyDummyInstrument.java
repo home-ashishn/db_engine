@@ -2,11 +2,11 @@ package com.self.indicators.def.dataobjects;
 
 import com.ricequant.strategy.def.IHInstrument;
 
-public class DummyInstrument implements IHInstrument {
+public class MyDummyInstrument implements IHInstrument {
 
 	private String stockCode;
 
-	public DummyInstrument(String stockCode) {
+	public MyDummyInstrument(String stockCode) {
 		super();
 		this.stockCode = stockCode;
 	}

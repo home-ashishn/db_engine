@@ -1,4 +1,4 @@
-package com.self.scrapper;
+package com.self.indicators.def.dataobjects;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,73 +20,22 @@ import com.self.dataobjects.LiveOptionDataSymbolNifty;
 import com.self.dbconnection.MySqlPoolableException;
 import com.self.dbconnection.MySqlPoolableObjectFactory;
 
-public class NiftyOptionChainDBHelper {
+public class IndicatorsDBHelper {
 
 	// private static final Log LOG =
 	// LogFactory.getLog(ExampleClassUsesMySQLConnectionPool.class);
 	private final ObjectPool connPool;
+	
+	List<Double> high = new ArrayList<Double>();
+	List<Double> low = new ArrayList<Double>();
+	List<Double> open = new ArrayList<Double>();
+	List<Double> close = new ArrayList<Double>();
+	List<Double> turnoverVolume = new ArrayList<Double>();
 
-	public NiftyOptionChainDBHelper(ObjectPool connPool) {
+	public IndicatorsDBHelper(ObjectPool connPool) {
 		this.connPool = connPool;
 	}
-
-/*	
-	private static List<LiveOptionDataSymbolNifty> prepareDummyData() {
-
-		List<LiveOptionDataSymbolNifty> returnList = new ArrayList<LiveOptionDataSymbolNifty>();
-
-		LiveOptionDataSymbolNifty liveOptionDataSymbolNifty = new LiveOptionDataSymbolNifty();
-
-		liveOptionDataSymbolNifty.setOptionType("CE");
-		liveOptionDataSymbolNifty.setStrikePrice(9700);
-		fillDummyData(liveOptionDataSymbolNifty);
-
-		returnList.add(liveOptionDataSymbolNifty);
-
-		LiveOptionDataSymbolNifty liveOptionDataSymbolNifty1 = new LiveOptionDataSymbolNifty();
-
-		liveOptionDataSymbolNifty1.setOptionType("CE");
-		liveOptionDataSymbolNifty1.setStrikePrice(9800);
-		fillDummyData(liveOptionDataSymbolNifty1);
-
-		returnList.add(liveOptionDataSymbolNifty1);
-
-		LiveOptionDataSymbolNifty liveOptionDataSymbolNifty2 = new LiveOptionDataSymbolNifty();
-
-		liveOptionDataSymbolNifty2.setOptionType("PE");
-		liveOptionDataSymbolNifty2.setStrikePrice(9300);
-		fillDummyData(liveOptionDataSymbolNifty2);
-
-		LiveOptionDataSymbolNifty liveOptionDataSymbolNifty3 = new LiveOptionDataSymbolNifty();
-
-		liveOptionDataSymbolNifty3.setOptionType("PE");
-		liveOptionDataSymbolNifty3.setStrikePrice(9200);
-		fillDummyData(liveOptionDataSymbolNifty3);
-
-		returnList.add(liveOptionDataSymbolNifty2);
-		returnList.add(liveOptionDataSymbolNifty3);
-
-		return returnList;
-	}
-
-*/
-
-/*	
-	
-	private static void fillDummyData(LiveOptionDataSymbolNifty liveOptionDataSymbolNifty) {
-
-		liveOptionDataSymbolNifty.setCycleNumber(1);
-		// liveOptionDataSymbolNifty.setCurrentDate(new );
-		liveOptionDataSymbolNifty.setNetChange(5.65f);
-		liveOptionDataSymbolNifty.setLtp(5.35f);
-		liveOptionDataSymbolNifty.setImpliedVolatilty(9.95f);
-		liveOptionDataSymbolNifty.setVolume(158456);
-		liveOptionDataSymbolNifty.setChangeOI(125698);
-		liveOptionDataSymbolNifty.setOi(55641552);
-
-	}
-
-*/
+		
 	
 	public void insertOptionData(List<LiveOptionDataSymbolNifty> listLiveOptionDataSymbolNifty,int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
@@ -220,7 +169,7 @@ public class NiftyOptionChainDBHelper {
 		
 		String host = "localhost";
 		String port = "3306";
-		String schema = "engine_new";
+		String schema = "engine_indicators";
 		String user = "root";
 		String password = "root";
 
@@ -239,7 +188,6 @@ public class NiftyOptionChainDBHelper {
 		return pool;
 	}
 
-/*	
 	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {
 
 		ObjectPool pool;
@@ -247,13 +195,13 @@ public class NiftyOptionChainDBHelper {
 
 		List<LiveOptionDataSymbolNifty> testList = prepareDummyData();
 
-		NiftyOptionChainDBHelper niftyOptionChainDBHelper = new NiftyOptionChainDBHelper(pool);
+		IndicatorsDBHelper niftyOptionChainDBHelper = new IndicatorsDBHelper(pool);
 
 		niftyOptionChainDBHelper.insertOptionData(testList,1);
 
 	}
 
-*/
+
 	
 
 

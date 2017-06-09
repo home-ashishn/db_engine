@@ -23,7 +23,7 @@ public class DummyStatistics implements IHStatistics {
 
 	@Override
 	public IHInstrument getInstrument() {
-		return new DummyInstrument(stockCode);
+		return new MyDummyInstrument(stockCode);
 	}
 
 	@Override

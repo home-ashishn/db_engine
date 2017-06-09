@@ -6,7 +6,7 @@ import java.util.Map;
 import com.ricequant.strategy.def.IHStatisticsHistory;
 import com.ricequant.strategy.support.mock.DummyHistoryData;
 
-public class HistoryDataProvider {
+public class MyHistoryDataProvider {
 
 //	private static FileUtils reader = new FileUtils();
 
