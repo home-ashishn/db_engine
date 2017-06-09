@@ -1,4 +1,4 @@
-package com.self.stochastic;
+package com.self.indicators.stochastic;
 
 import com.self.indicators.def.MyHPeriod;
 import com.self.indicators.def.MyIHStatistics;
