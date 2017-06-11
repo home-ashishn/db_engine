@@ -1,8 +1,8 @@
 package com.self.indicators.def.dataobjects;
 
-import com.ricequant.strategy.def.IHInstrument;
+import com.self.indicators.def.MyIHInstrument;
 
-public class MyDummyInstrument implements IHInstrument {
+public class MyDummyInstrument implements MyIHInstrument {
 
 	private String stockCode;
 

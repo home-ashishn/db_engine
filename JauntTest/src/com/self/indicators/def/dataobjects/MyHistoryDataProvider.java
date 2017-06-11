@@ -2,12 +2,8 @@ package com.self.indicators.def.dataobjects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.ricequant.strategy.def.IHStatisticsHistory;
-import com.ricequant.strategy.support.mock.DummyHistoryData;
 import com.self.indicators.def.MyIHStatisticsHistory;
 import com.self.main.IndicatorsGlobal;
 
@@ -15,7 +11,7 @@ public class MyHistoryDataProvider {
 
 //	private static FileUtils reader = new FileUtils();
 
-	private static Map<String, DummyHistoryData> cache = new HashMap<String, DummyHistoryData>();
+	// private static Map<String, DummyHistoryData> cache = new HashMap<String, DummyHistoryData>();
 	
 	static MyDummyHistoryData data = null;
 	
@@ -85,11 +81,11 @@ public class MyHistoryDataProvider {
 	
 	}
 
-	public static int queryMaxDay(String stockCode) {
+/*	public static int queryMaxDay(String stockCode) {
 		getData();
 		DummyHistoryData data = cache.get(stockCode);
 		return data == null ? 0 : data.getClosingPrice().length;
-	}
+	}*/
 
 	private static double[] copy(Double[] src) {
 		double[] result = new double[src.length];
