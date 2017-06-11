@@ -129,4 +129,36 @@ public class MyStochasticsEntrySignalGenerator implements MyEntrySignalGenerator
 
 		return result;
 	}
+
+	public int getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+
+	public int getMaPeriod() {
+		return maPeriod;
+	}
+
+	public void setMaPeriod(int maPeriod) {
+		this.maPeriod = maPeriod;
+	}
+
+	public double getOversold() {
+		return oversold;
+	}
+
+	public void setOversold(double oversold) {
+		this.oversold = oversold;
+	}
+
+	public double getOverbought() {
+		return overbought;
+	}
+
+	public void setOverbought(double overbought) {
+		this.overbought = overbought;
+	}
 }

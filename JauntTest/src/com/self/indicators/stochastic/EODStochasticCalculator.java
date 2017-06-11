@@ -9,7 +9,11 @@ public class EODStochasticCalculator {
 		
 		MyStochasticsEntrySignalGenerator generator = new MyStochasticsEntrySignalGenerator();
 		
-		int startDay = 5;
+		 generator.setPeriod(5);
+		 generator.setMaPeriod(9);
+
+		
+		int startDay = 6;
 		int endDay = 494;
 		
 		for (int i = startDay; i < endDay; i++) {
