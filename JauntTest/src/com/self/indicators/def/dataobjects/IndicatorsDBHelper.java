@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,11 +30,6 @@ public class IndicatorsDBHelper {
 	// LogFactory.getLog(ExampleClassUsesMySQLConnectionPool.class);
 	private final ObjectPool connPool;
 	
-	List<Double> high = new ArrayList<Double>();
-	List<Double> low = new ArrayList<Double>();
-	List<Double> open = new ArrayList<Double>();
-	List<Double> close = new ArrayList<Double>();
-	List<Double> turnoverVolume = new ArrayList<Double>();
     List<Tick> ticks = new ArrayList<Tick>();
 
 
@@ -42,7 +38,7 @@ public class IndicatorsDBHelper {
 	}
 		
 	
-	public void getIndicatorsBaseData(int retryCount)
+	public void getIndicatorsBaseData(String symbol,int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
 		
 		if(retryCount < 0)
@@ -57,10 +53,13 @@ public class IndicatorsDBHelper {
       		+ ",TURNOVER"
       		+ ",TOTAL_TRADED_QUANTITY"
       		+ " FROM engine_indicators.equity_data_indiactors"
-      		+ " ORDER BY CURR_DATE DESC";
+      		+ " WHERE SYMBOL = '"+symbol+"' "
+      		+ " ORDER BY CURR_DATE ASC";
 
-		connection = (Connection) connPool.borrowObject();
-		
+		while (connection==null || connection.isClosed())
+		{
+			connection = (Connection) connPool.borrowObject();
+		}		
 		connection.setAutoCommit(true);
 
 		PreparedStatement ps = connection.prepareStatement(sql);
@@ -85,11 +84,6 @@ public class IndicatorsDBHelper {
 		        		close_price,turnover_volume));
 
 
-		        high.add(high_price);
-		        low.add(low_price);
-				open.add(open_price);
-				close.add(close_price);
-				turnoverVolume.add(turnover_volume);
 		      }
 			ps.close();
 			connection.close();
@@ -97,7 +91,7 @@ public class IndicatorsDBHelper {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			getIndicatorsBaseData(retryCount --);
+			getIndicatorsBaseData(symbol,retryCount --);
 			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
 		} finally {
 			safeClose(res);
@@ -183,7 +177,7 @@ public class IndicatorsDBHelper {
 		return pool;
 	}
 
-	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {
+	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {/*
 
 		ObjectPool pool;
 		pool = initMySqlConnectionPool();
@@ -192,57 +186,8 @@ public class IndicatorsDBHelper {
 
 		indicatorsDBHelper.getIndicatorsBaseData(5);
 
-	}
+	*/}
 
-
-	public List<Double> getHigh() {
-		return high;
-	}
-
-
-	public void setHigh(List<Double> high) {
-		this.high = high;
-	}
-
-
-	public List<Double> getLow() {
-		return low;
-	}
-
-
-	public void setLow(List<Double> low) {
-		this.low = low;
-	}
-
-
-	public List<Double> getOpen() {
-		return open;
-	}
-
-
-	public void setOpen(List<Double> open) {
-		this.open = open;
-	}
-
-
-	public List<Double> getClose() {
-		return close;
-	}
-
-
-	public void setClose(List<Double> close) {
-		this.close = close;
-	}
-
-
-	public List<Double> getTurnoverVolume() {
-		return turnoverVolume;
-	}
-
-
-	public void setTurnoverVolume(List<Double> turnoverVolume) {
-		this.turnoverVolume = turnoverVolume;
-	}
 
 
 	public List<Tick> getTicks() {
@@ -252,6 +197,139 @@ public class IndicatorsDBHelper {
 
 	public void setTicks(List<Tick> ticks) {
 		this.ticks = ticks;
+	}
+
+
+	public int insertCurrentStochasticSignal(String symbol,DateTime endTime, int currentMarketTrend, 
+			int currentSignal,int retryCount) throws NoSuchElementException, IllegalStateException, Exception 
+	{
+		
+
+		
+		int maxId = 0;
+		
+		if(retryCount < 0)
+		{
+			return 0;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		String sql = "replace into stochastic_evaluation_run_current_data " 
+		+ "(symbol,curr_date,current_market_trend,curr_signal)"
+				+ " values (?, ?, ?,?)";
+
+		while (connection==null || connection.isClosed())
+		{
+			connection = (Connection) connPool.borrowObject();
+		}
+		
+		connection.setAutoCommit(true);
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+
+		try {
+				
+					// String date = new SimpleDateFormat("yyyy-mm-dd").format(endTime);
+
+					ps.setString(1, symbol);
+					ps.setString(2, endTime.toString("yyyy-MM-dd"));
+					ps.setInt(3, currentMarketTrend);
+					ps.setInt(4, currentSignal);
+
+
+			ps.execute();
+
+			sql = "SELECT max(stochastic_evaluation_run_id) max_id FROM engine_indicators.stochastic_evaluation_run_current_data";
+			
+			ps = connection.prepareStatement(sql);
+			
+			  ResultSet rs = ps.executeQuery();
+
+		      while (rs.next())
+		      {
+		    	  
+			    	maxId = rs.getInt("max_id");
+
+		      }
+			
+				ps.close();
+				connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			insertCurrentStochasticSignal(symbol,endTime,currentMarketTrend,currentSignal,retryCount --);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(ps);
+			safeClose(connection);
+		}
+		
+		
+
+	
+		// TODO Auto-generated method stub
+		
+		
+		return maxId;
+		
+	}
+
+
+	public void insertBackTestStochasticSignal(int signalReferenceId,String symbol, DateTime endTime, int currentMarketTrend,
+			int currentSignal,int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
+		
+
+		
+		
+		if(retryCount < 0)
+		{
+			return;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		String sql = "replace into stochastic_evaluation_run_backtest_data " 
+		+ "(stochastic_evaluation_run_id,symbol,curr_date,current_market_trend,curr_signal)"
+				+ " values (?, ?, ?,?,?)";
+
+		while (connection==null || connection.isClosed())
+		{
+			connection = (Connection) connPool.borrowObject();
+		}		
+		connection.setAutoCommit(true);
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+
+		try {
+				
+					// String date = new SimpleDateFormat("yyyy-mm-dd").format(endTime);
+
+					ps.setInt(1, signalReferenceId);
+					ps.setString(2, symbol);
+					ps.setString(3, endTime.toString("yyyy-MM-dd"));
+					ps.setInt(4, currentMarketTrend);
+					ps.setInt(5, currentSignal);
+
+
+			ps.execute();
+
+			ps.close();
+				connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			insertCurrentStochasticSignal(symbol,endTime,currentMarketTrend,currentSignal,retryCount --);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(ps);
+			safeClose(connection);
+		}
+				
 	}
 
 

@@ -23,9 +23,11 @@ public class EODStochasticCalculator {
 		
 		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
 		
+		String symbol = "SBIN";
+		
 		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
 		
-		indicatorsDBHelper.getIndicatorsBaseData(5);
+		indicatorsDBHelper.getIndicatorsBaseData(symbol,5);
 		
 		TimeSeries data = new TimeSeries(indicatorsDBHelper.getTicks());
 
@@ -35,32 +37,40 @@ public class EODStochasticCalculator {
         StochasticOscillatorDIndicator sod = new StochasticOscillatorDIndicator
 				(sof);
 
+        int startDay = data.getBegin() + 14;
 		
-		int endDay = data.getEnd() - 14;
+		int endDay = data.getEnd();
 		
 		EODStochasticCalculator calculator = new EODStochasticCalculator();
 		
-		int currentMarketTrend = calculator.checkMarketTrend(data,0);
+		int currentMarketTrend = calculator.checkMarketTrend(data,endDay);
 		
-		int currentSignal = calculator.generateSignalForIndex(sof,currentMarketTrend,calculator,sod,0);
+		int currentSignal = calculator.generateSignalForIndex(sof,currentMarketTrend,calculator,sod,endDay);
+
+		
+		// insert into DB
+		int signalReferenceId = indicatorsDBHelper.insertCurrentStochasticSignal
+				(symbol,data.getTick(endDay).getEndTime(),
+				currentMarketTrend,currentSignal,2);
 		
 			
 		if(currentSignal != 0)
 		{
-			
-			// insert into DB
 
-		for (int i = 1; i < endDay; i++) {
+		for (int i = endDay-1; i >= startDay; i--) {
 			
 			int marketTrend = calculator.checkMarketTrend(data,i);
 			
 			if(marketTrend == currentMarketTrend)
 			{
-				int signal = calculator.generateSignalForIndex(sof,marketTrend,calculator,sod,0);
+				int signal = calculator.generateSignalForIndex(sof,marketTrend,calculator,sod,i);
 				
 				if(signal == currentSignal)
 				{
 					// insert into DB
+					indicatorsDBHelper.insertBackTestStochasticSignal(signalReferenceId,symbol,
+							data.getTick(i).getEndTime(),
+							currentMarketTrend,currentSignal,2);
 				}
 
 			}
