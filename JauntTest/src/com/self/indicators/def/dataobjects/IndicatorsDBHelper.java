@@ -1,6 +1,7 @@
 package com.self.indicators.def.dataobjects;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +16,12 @@ import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
 import org.apache.commons.pool.impl.GenericObjectPoolFactory;
+import org.joda.time.DateTime;
 
-import com.self.dataobjects.LiveOptionDataSymbolNifty;
 import com.self.dbconnection.MySqlPoolableException;
 import com.self.dbconnection.MySqlPoolableObjectFactory;
+
+import eu.verdelhan.ta4j.Tick;
 
 public class IndicatorsDBHelper {
 
@@ -31,6 +34,8 @@ public class IndicatorsDBHelper {
 	List<Double> open = new ArrayList<Double>();
 	List<Double> close = new ArrayList<Double>();
 	List<Double> turnoverVolume = new ArrayList<Double>();
+    List<Tick> ticks = new ArrayList<Tick>();
+
 
 	public IndicatorsDBHelper(ObjectPool connPool) {
 		this.connPool = connPool;
@@ -48,8 +53,11 @@ public class IndicatorsDBHelper {
 		Connection connection = null;
 		ResultSet res = null;
 
-      String sql = "SELECT HIGH_PRICE,LOW_PRICE,OPEN_PRICE,CLOSE_PRICE,TURNOVER"
-      		+ " FROM engine_indicators.equity_data_indiactors";
+      String sql = "SELECT CURR_DATE,HIGH_PRICE,LOW_PRICE,OPEN_PRICE,CLOSE_PRICE"
+      		+ ",TURNOVER"
+      		+ ",TOTAL_TRADED_QUANTITY"
+      		+ " FROM engine_indicators.equity_data_indiactors"
+      		+ " ORDER BY CURR_DATE DESC";
 
 		connection = (Connection) connPool.borrowObject();
 		
@@ -63,17 +71,25 @@ public class IndicatorsDBHelper {
 
 		      while (rs.next())
 		      {
+			   
+		    	DateTime curr_date = new DateTime(rs.getDate("CURR_DATE"));
+
 		    	double high_price = rs.getInt("HIGH_PRICE");
 		    	double low_price = rs.getInt("LOW_PRICE");
 		    	double open_price = rs.getInt("OPEN_PRICE");
 		    	double close_price = rs.getInt("CLOSE_PRICE");
-		    	double turnover = rs.getInt("HIGH_PRICE");
+		    	double turnover_volume = rs.getInt("TOTAL_TRADED_QUANTITY");
+		    	
+		    	
+		        ticks.add(new Tick(curr_date,open_price,high_price,low_price,
+		        		close_price,turnover_volume));
+
 
 		        high.add(high_price);
 		        low.add(low_price);
 				open.add(open_price);
 				close.add(close_price);
-				turnoverVolume.add(turnover);
+				turnoverVolume.add(turnover_volume);
 		      }
 			ps.close();
 			connection.close();
@@ -226,6 +242,16 @@ public class IndicatorsDBHelper {
 
 	public void setTurnoverVolume(List<Double> turnoverVolume) {
 		this.turnoverVolume = turnoverVolume;
+	}
+
+
+	public List<Tick> getTicks() {
+		return ticks;
+	}
+
+
+	public void setTicks(List<Tick> ticks) {
+		this.ticks = ticks;
 	}
 
 

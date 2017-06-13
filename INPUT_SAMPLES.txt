@@ -65,3 +65,44 @@ DELIVERABLE_QTY,
 PERCENT_DELIVERABLE_QTY)
 
 set curr_date = str_to_date(@my_date,'%d-%b-%Y')
+
+
+
+----------------------------------------------------------------------------------------
+
+
+LOAD DATA LOCAL INFILE 'D:\\NSE_Downloads\\Equity_Daily\\cm09JUN2017bhav.csv' 
+INTO TABLE engine_ea.equity_data_daily_temporary
+FIELDS TERMINATED BY ',' 
+OPTIONALLY ENCLOSED BY '"' 
+LINES TERMINATED BY '\r\n'
+-- IGNORE 1 LINES
+(
+SYMBOL,
+SERIES,
+OPEN_PRICE,
+HIGH_PRICE,
+LOW_PRICE,
+CLOSE_PRICE,
+LAST_PRICE,
+PREV_CLOSE,
+TOTAL_TRADED_QUANTITY,
+TURNOVER,
+@my_date,
+NO_OF_TRADES,
+ISIN
+)
+
+set curr_date = str_to_date(@my_date,'%d-%b-%Y');
+
+delete FROM engine_ea.equity_data_daily_temporary where UPPER(series) != 'EQ';
+
+select distinct symbol from equity_data_daily_temporary b
+order by b.TURNOVER DESC
+limit 25;
+
+SELECT * FROM engine_ea.top_20_equity
+order by count_symbol desc,total_turnover desc
+limit 25;
+
+----------------------------------------------------------------------------------------

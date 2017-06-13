@@ -8,6 +8,8 @@ HAS pattern
 
 4. update expiry master table frequently
 
+5. Make all turnover columns as double datatype
+
 
 
 
