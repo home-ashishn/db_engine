@@ -1,14 +1,16 @@
 package com.self.indicators.stochastic;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.self.indicators.def.dataobjects.IndicatorsBackTestData;
 import com.self.indicators.def.dataobjects.IndicatorsDBHelper;
 import com.self.main.IndicatorsGlobal;
 
 import eu.verdelhan.ta4j.Decimal;
 import eu.verdelhan.ta4j.Rule;
 import eu.verdelhan.ta4j.TimeSeries;
-import eu.verdelhan.ta4j.indicators.CachedIndicator;
 import eu.verdelhan.ta4j.indicators.oscillators.StochasticOscillatorDIndicator;
 import eu.verdelhan.ta4j.indicators.oscillators.StochasticOscillatorKIndicator;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
@@ -57,9 +59,12 @@ public class EODStochasticCalculator {
 		if(currentSignal != 0)
 		{
 
-		for (int i = endDay-1; i >= startDay; i--) {
-			
-			int marketTrend = calculator.checkMarketTrend(data,i);
+				List<IndicatorsBackTestData> listIndicatorsBackTestData = 
+						new ArrayList<IndicatorsBackTestData>();
+			 
+		for (int i = endDay-1; i > startDay; i--) {
+
+				int marketTrend = calculator.checkMarketTrend(data,i);
 			
 			if(marketTrend == currentMarketTrend)
 			{
@@ -68,9 +73,17 @@ public class EODStochasticCalculator {
 				if(signal == currentSignal)
 				{
 					// insert into DB
-					indicatorsDBHelper.insertBackTestStochasticSignal(signalReferenceId,symbol,
-							data.getTick(i).getEndTime(),
-							currentMarketTrend,currentSignal,2);
+					
+					IndicatorsBackTestData indicatorsBackTestData = new IndicatorsBackTestData();
+					
+					indicatorsBackTestData.setSignalReferenceId(signalReferenceId);
+					indicatorsBackTestData.setSymbol(symbol);
+					indicatorsBackTestData.setEndTime(data.getTick(i).getEndTime());
+					indicatorsBackTestData.setCurrentMarketTrend(marketTrend);
+					indicatorsBackTestData.setCurrentSignal(signal);
+					
+					listIndicatorsBackTestData.add(indicatorsBackTestData);
+					
 				}
 
 			}
@@ -79,6 +92,8 @@ public class EODStochasticCalculator {
 			/*value = sof.getValue(i);
 			System.out.println(" value for i = "+i+" is- "+value);*/			
 		}
+		
+		indicatorsDBHelper.insertBackTestStochasticSignal(listIndicatorsBackTestData,2);
 		
 		}
 		
@@ -121,13 +136,15 @@ public class EODStochasticCalculator {
 			Decimal currentValueD = sod.getValue(index);
 			
 			if(currentValueD.toDouble() > 50) return 0; // Indicator did not cross 50 from above, return no signal
+			
+			Decimal prevValueD = null;
 
-			for (int i = index; i <= index+14; i++) {
-				currentValueD = sod.getValue(i);
+			for (int i = index-1; i >= index-14; i--) {
+				prevValueD = sod.getValue(i);
 
 				// Indicator was above 80, and it did cross 50 from above, return -1 signal				
 				
-				if(currentValueD.toDouble() >= 80) return -1;
+				if(prevValueD.toDouble() >= 80) return -1;
 
 			}
 
@@ -140,12 +157,13 @@ public class EODStochasticCalculator {
 			
 			if(currentValueD.toDouble() < 50) return 0; // Indicator did not cross 50 from below, return no signal
 
-			for (int i = index; i <= index+14; i++) {
-				currentValueD = sod.getValue(i);
-				
+			Decimal prevValueD = null;
+
+			for (int i = index-1; i >= index-14; i--) {
+				prevValueD = sod.getValue(i);				
 				// Indicator was below 200, and it did cross 50 from below, return 1 signal				
 
-				if(currentValueD.toDouble() <= 20) return -1;
+				if(prevValueD.toDouble() <= 20) return 1;
 
 			}
 
@@ -182,7 +200,25 @@ public class EODStochasticCalculator {
         EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
         EMAIndicator longEma = new EMAIndicator(closePrice, 26);
         
-        Rule ovRule = new OverIndicatorRule(shortEma, longEma);
+        Decimal shortEmaValue = shortEma.getValue(index);
+        
+        Decimal longEmaValue = longEma.getValue(index);
+
+        if(shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.01))))
+        {
+        	return 1;
+
+        }
+        
+        else if(longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.01))))
+        	
+        {
+        	return -1;
+
+        }
+
+        
+/*        Rule ovRule = new OverIndicatorRule(shortEma, longEma);
         
         if (ovRule.isSatisfied(index))
         	return 1;
@@ -192,7 +228,7 @@ public class EODStochasticCalculator {
         
         if (uiRule.isSatisfied(index))
         	return -1;
-        
+*/        
         return 0;
         
 		
