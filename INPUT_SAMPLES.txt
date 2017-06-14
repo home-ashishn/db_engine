@@ -106,3 +106,22 @@ order by count_symbol desc,total_turnover desc
 limit 25;
 
 ----------------------------------------------------------------------------------------
+
+SELECT a.curr_date,a.AVERAGE_PRICE,b.CURR_DATE,b.AVERAGE_PRICE,
+ round((b.AVERAGE_PRICE - a.AVERAGE_PRICE)/abs(b.AVERAGE_PRICE - a.AVERAGE_PRICE))
+ -- , c.curr_signal
+ FROM 
+engine_indicators.equity_data_indiactors a,engine_indicators.equity_data_indiactors b
+where 1=1
+
+and b.ROW_ID = a.ROW_ID + 1
+and (abs(b.AVERAGE_PRICE - a.AVERAGE_PRICE)/a.AVERAGE_PRICE) >= 0.01
+and a.CURR_DATE =
+(
+SELECT c.curr_date FROM engine_indicators.stochastic_evaluation_run_backtest_data c
+where a.CURR_DATE = c.CURR_DATE
+
+) 
+and  round((b.AVERAGE_PRICE - a.AVERAGE_PRICE)/abs(b.AVERAGE_PRICE - a.AVERAGE_PRICE)) = 1
+
+;
