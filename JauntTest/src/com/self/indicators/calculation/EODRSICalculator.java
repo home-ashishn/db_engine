@@ -1,24 +1,20 @@
-package com.self.indicators.stochastic;
+package com.self.indicators.calculation;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.self.indicators.db.helper.IndicatorsDBHelper;
 import com.self.indicators.def.dataobjects.IndicatorsBackTestData;
-import com.self.indicators.def.dataobjects.IndicatorsDBHelper;
 import com.self.main.IndicatorsGlobal;
 
 import eu.verdelhan.ta4j.Decimal;
-import eu.verdelhan.ta4j.Rule;
 import eu.verdelhan.ta4j.TimeSeries;
-import eu.verdelhan.ta4j.indicators.oscillators.StochasticOscillatorDIndicator;
-import eu.verdelhan.ta4j.indicators.oscillators.StochasticOscillatorKIndicator;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
 import eu.verdelhan.ta4j.indicators.trackers.EMAIndicator;
-import eu.verdelhan.ta4j.trading.rules.OverIndicatorRule;
-import eu.verdelhan.ta4j.trading.rules.UnderIndicatorRule;
+import eu.verdelhan.ta4j.indicators.trackers.RSIIndicator;
 
-public class EODStochasticCalculator {
+public class EODRSICalculator {
 
 	
 	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {
@@ -32,26 +28,26 @@ public class EODStochasticCalculator {
 		indicatorsDBHelper.getIndicatorsBaseData(symbol,5);
 		
 		TimeSeries data = new TimeSeries(indicatorsDBHelper.getTicks());
+		
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(data);
 
 
-        StochasticOscillatorKIndicator sof = new StochasticOscillatorKIndicator
-        										(data, 14);
-        StochasticOscillatorDIndicator sod = new StochasticOscillatorDIndicator
-				(sof);
+
+        RSIIndicator rsi = new RSIIndicator(closePrice, 2);
 
         int startDay = data.getBegin() + 14;
 		
 		int endDay = data.getEnd();
 		
-		EODStochasticCalculator calculator = new EODStochasticCalculator();
+		EODRSICalculator calculator = new EODRSICalculator();
 		
 		int currentMarketTrend = calculator.checkMarketTrend(data,endDay);
 		
-		int currentSignal = calculator.generateSignalForIndex(sof,currentMarketTrend,calculator,sod,endDay);
+		int currentSignal = 0; // calculator.generateSignalForIndex(rsi,currentMarketTrend,calculator,sod,endDay);
 
 		
 		// insert into DB
-		int signalReferenceId = indicatorsDBHelper.insertCurrentStochasticSignal
+		int signalReferenceId = indicatorsDBHelper.insertCurrentRSISignal
 				(symbol,data.getTick(endDay).getEndTime(),
 				currentMarketTrend,currentSignal,2);
 		
@@ -68,7 +64,7 @@ public class EODStochasticCalculator {
 			
 			if(marketTrend == currentMarketTrend)
 			{
-				int signal = calculator.generateSignalForIndex(sof,marketTrend,calculator,sod,i);
+				int signal = 0; // calculator.generateSignalForIndex(rsi,marketTrend,calculator,sod,i);
 				
 				if(signal == currentSignal)
 				{
@@ -93,7 +89,7 @@ public class EODStochasticCalculator {
 			System.out.println(" value for i = "+i+" is- "+value);*/			
 		}
 		
-		indicatorsDBHelper.insertBackTestStochasticSignal(listIndicatorsBackTestData,2);
+		indicatorsDBHelper.insertBackTestRSISignal(listIndicatorsBackTestData,2);
 		
 		}
 		
@@ -102,8 +98,8 @@ public class EODStochasticCalculator {
 	
 
 	
-	private int generateSignalForIndex(StochasticOscillatorKIndicator sof, int marketTrend, EODStochasticCalculator calculator
-			, StochasticOscillatorDIndicator sod,int index) {
+	private int generateSignalForIndex(RSIIndicator sof, int marketTrend, EODRSICalculator calculator
+			, RSIIndicator sod,int index) {
 		
 		Decimal valueK = sof.getValue(index);
 		
@@ -127,7 +123,7 @@ public class EODStochasticCalculator {
 
 
 	private int checkSignalforTrendingMarket(int marketTrend,
-			StochasticOscillatorDIndicator sod, int index) {
+			RSIIndicator sod, int index) {
 		// TODO Auto-generated method stub
 		
 		if(marketTrend == 1)

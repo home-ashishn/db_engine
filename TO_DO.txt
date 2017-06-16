@@ -19,7 +19,7 @@ PENDING
 
 1. Equity data for last 3 years for top 25 securities - MANUAL WORK AS OF NOW.
 
-2. Daily upload of equity data, and then filter based on top 25 securities - MANUAL WORK AS OF NOW.
+2. Daily upload of equity data, and then filter based on top 25 securities - MANUAL WORK AS OF NOW - SP WRITTEN, REST IS WAITING FOR 1 above.
 
 3. Live Capture of Cash Market Data(For Identified Securities as per EOD Analysis) - For Support of EOD Analysis, and to identify triggers for taking trade positions.
 

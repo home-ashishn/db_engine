@@ -7,8 +7,9 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 
 public class EquityHistorical {
@@ -17,11 +18,21 @@ public class EquityHistorical {
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
   
+  public void EquityHistorical(){
+
+	  try {
+		setUp();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+  }
   
-  public static void main(String[] args) throws Exception {
-	  EquityHistorical equityHistorical = new EquityHistorical();
-	  equityHistorical.setUp();
-	  equityHistorical.test2();
+  
+  public void downloadFile(String symbol) throws Exception {
+
+	  downloadFileByDateRangeFixed2Y(symbol);
 }
 
   @SuppressWarnings("deprecation")
@@ -31,7 +42,12 @@ public void setUp() throws Exception {
     // ProfilesIni myprofile = new ProfilesIni();
     
     FirefoxProfile profile = new FirefoxProfile();
-
+    
+    DesiredCapabilities capabilities = DesiredCapabilities.htmlUnit();
+    
+    capabilities.setCapability("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
+			);
+    
 	profile.setPreference("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
 			);
 	profile.setPreference("pref.downloads.disable_button.edit_actions",
@@ -50,9 +66,12 @@ public void setUp() throws Exception {
 	/*System.setProperty("webdriver.gecko.driver", 
 			"D:\\Software\\geckodriver-v0.16.1-win64\\geckodriver.exe");
 	*/
-	driver = new FirefoxDriver(profile);
+	// driver = new FirefoxDriver(profile);
+	
+	driver = new HtmlUnitDriver(capabilities);
+	
 	// 
-   // driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+   driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
   
   
@@ -60,12 +79,19 @@ public void setUp() throws Exception {
   }
 
   
-  public void test2() throws Exception {driver.get(baseUrl + "/products/content/equities/equities/eq_security.htm");
+  public void downloadFileByDateRangeFixed2Y(String symbol) throws Exception {
+	  driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
+	  Thread.sleep(1000);
   driver.findElement(By.id("symbol")).clear();
-  driver.findElement(By.id("symbol")).sendKeys("SBIN");
+  driver.findElement(By.id("symbol")).sendKeys(""+symbol);
   new Select(driver.findElement(By.id("dateRange"))).selectByVisibleText("24 Months");
   driver.findElement(By.id("get")).click();
-  driver.findElement(By.id("submitMe")).click();
+  try {
+	driver.findElement(By.id("submitMe")).click();
+} catch (Exception e) {
+	// TODO Auto-generated catch block
+	// e.printStackTrace();
+}
   driver.findElement(By.linkText("Download file in csv format")).click();}
 
   public void tearDown() throws Exception {
