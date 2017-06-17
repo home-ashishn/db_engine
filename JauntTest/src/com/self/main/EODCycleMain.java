@@ -2,6 +2,9 @@ package com.self.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class EODCycleMain {
 		
 		cleanFolder(folderPath);
 		
-		if(equityCurrentTime == null)
+/*		if(equityCurrentTime == null)
 		{
 			equityCurrentTime = new EquityCurrentTime();
 		}
@@ -74,7 +77,7 @@ public class EODCycleMain {
 			Thread.sleep(5000);
 			
 		}
-		
+*/		
 		listTop50Equities = eodCycleDBHelper.getTop50Equities(5);
 
 	}
@@ -120,10 +123,17 @@ public class EODCycleMain {
 		for (Iterator iterator = listTop50Equities.iterator(); iterator.hasNext();) {
 			String symbol = (String) iterator.next();
 			
+			
 			downloadDataForSymbol(symbol);
 			
 			loadDataForSymbol();
 			
+			for(int i=2;i<=5;i++ ){
+				
+				downloadDataForSymbolVariableRange(symbol,i);
+				loadDataForSymbol();
+			}
+
 			
 			
 		}
@@ -166,6 +176,40 @@ public class EODCycleMain {
 
 		
 		equityHistorical.downloadFileByDateRangeFixed2Y(symbol);
+
+		
+	}
+	
+	private void downloadDataForSymbolVariableRange(String symbol,int noOfYearsBack) throws Exception {
+		
+		String folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		
+		cleanFolder(folderPath);
+		
+		if(equityHistorical == null)
+		{
+			equityHistorical = new EquityHistorical();
+		}
+
+		
+		
+		String dateFrom = getDateRange(new Date(),(365*(noOfYearsBack+1)));
+		String dateTo = getDateRange(new Date(),(365*noOfYearsBack)+1);
+		equityHistorical.downloadFileByDateRange(symbol, dateFrom, dateTo);
+		
+	}
+
+
+	private String getDateRange(Date date, int i) {
+		// TODO Auto-generated method stub
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		
+		cal.add(Calendar.DATE, -1*i);
+		
+		return new SimpleDateFormat("dd-MM-yyyy").format(cal.getTime());
 		
 	}
 }

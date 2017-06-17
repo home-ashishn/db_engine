@@ -73,12 +73,23 @@ public void setUp() throws Exception {
   }
 
   
-  public void downloadFileByDateRange(String symbol,String dateFrom,String DateTo) throws Exception {/*
-	  driver.get(baseUrl + "/products/content/equities/equities/eq_security.htm");
+  public void downloadFileByDateRange(String symbol,String dateFrom,String DateTo) throws Exception 
+  {
+
+	  driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
 	  Thread.sleep(1000);
   driver.findElement(By.id("symbol")).clear();
   driver.findElement(By.id("symbol")).sendKeys(""+symbol);
-  new Select(driver.findElement(By.id("dateRange"))).selectByVisibleText("24 Months");
+  driver.findElement(By.id("rdDateToDate")).click();
+
+  driver.findElement(By.id("fromDate")).click();
+  driver.findElement(By.id("fromDate")).clear();
+  driver.findElement(By.id("fromDate")).sendKeys(dateFrom);
+  
+  driver.findElement(By.id("toDate")).click();
+  driver.findElement(By.id("toDate")).clear();
+  driver.findElement(By.id("toDate")).sendKeys(DateTo);
+  
   driver.findElement(By.id("get")).click();
   try {
 	driver.findElement(By.id("submitMe")).click();
@@ -86,7 +97,13 @@ public void setUp() throws Exception {
 	// TODO Auto-generated catch block
 	// e.printStackTrace();
 }
-  driver.findElement(By.linkText("Download file in csv format")).click();*/}
+  driver.findElement(By.linkText("Download file in csv format")).click();
+  Thread.sleep(15000);
+
+  
+	  
+	  
+  }
 
   
   public void downloadFileByDateRangeFixed2Y(String symbol) throws Exception {

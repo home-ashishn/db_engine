@@ -49,10 +49,12 @@ public class EODCycleDBHelper {
 		
 
 
-		String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main a "
+/*		String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main a "
 				+ "WHERE a.CURR_DATE = (SELECT max(b.curr_date) FROM engine_ea.equity_data_main b) "
 				+ "order by a.TURNOVER desc "
-				+ "limit 50";
+				+ "limit 50";*/
+				
+				String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main_top50 where done = 0";
 
 		while (connection == null || connection.isClosed()) {
 			connection = (Connection) connPool.borrowObject();
