@@ -153,6 +153,11 @@ public class EODCycleMain {
 		{
 			File[] files = folder.listFiles();
 			
+			if(files == null || files.length == 0)
+			{
+				return;
+			}
+			
 			String filePath = files[0].getAbsolutePath();
 
 			

@@ -125,3 +125,6 @@ where a.CURR_DATE = c.CURR_DATE
 and  round((b.AVERAGE_PRICE - a.AVERAGE_PRICE)/abs(b.AVERAGE_PRICE - a.AVERAGE_PRICE)) = 1
 
 ;
+
+
+update equity_data_main_top50  set done = 1 where symbol in ( SELECT distinct symbol FROM engine_ea.equity_data_main where curr_date = '2012-05-22')
