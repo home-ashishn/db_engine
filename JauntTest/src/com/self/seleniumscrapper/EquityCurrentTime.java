@@ -2,17 +2,17 @@ package com.self.seleniumscrapper;
 
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.Select;
 
-public class EquityHistorical {
+public class EquityCurrentTime {
   private WebDriver driver;
   private String baseUrl;
-
-  public EquityHistorical(){
+  private boolean acceptNextAlert = true;
+  private StringBuffer verificationErrors = new StringBuffer();
+  
+  public EquityCurrentTime(){
 
 	  try {
 		setUp();
@@ -24,15 +24,12 @@ public class EquityHistorical {
   }
   
   
-  public void downloadFile(String symbol) throws Exception {
-
-	  downloadFileByDateRangeFixed2Y(symbol);
-}
+  
 
   @SuppressWarnings("deprecation")
 public void setUp() throws Exception {
    // driver = new FirefoxDriver();
-    baseUrl = "https://www.nseindia.com/products/content/equities/equities/eq_security.htm";
+    baseUrl = "http://www.nseindia.com/products/content/sec_bhavdata_full.csv";
     // ProfilesIni myprofile = new ProfilesIni();
     
     FirefoxProfile profile = new FirefoxProfile();
@@ -42,13 +39,13 @@ public void setUp() throws Exception {
     capabilities.setCapability("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
 			);
 */    
-	profile.setPreference("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
+	profile.setPreference("browser.download.dir", "D:\\NSE_Downloads\\Equity_Daily"
 			);
 	profile.setPreference("pref.downloads.disable_button.edit_actions",
 			false);
 	profile.setPreference("browser.download.folderList", 2);
 	profile.setPreference("browser.download.lastDir",
-			"D:\\NSE_Downloads\\Equity_Historical");
+			"D:\\NSE_Downloads\\Equity_Daily");
 	profile.setPreference("browser.download.manager.closeWhenDone", true);
 	profile.setPreference(
 			"browser.helperApps.neverAsk.saveToDisk",
@@ -73,46 +70,14 @@ public void setUp() throws Exception {
   }
 
   
-  public void downloadFileByDateRange(String symbol,String dateFrom,String DateTo) throws Exception {/*
-	  driver.get(baseUrl + "/products/content/equities/equities/eq_security.htm");
-	  Thread.sleep(1000);
-  driver.findElement(By.id("symbol")).clear();
-  driver.findElement(By.id("symbol")).sendKeys(""+symbol);
-  new Select(driver.findElement(By.id("dateRange"))).selectByVisibleText("24 Months");
-  driver.findElement(By.id("get")).click();
-  try {
-	driver.findElement(By.id("submitMe")).click();
-} catch (Exception e) {
-	// TODO Auto-generated catch block
-	// e.printStackTrace();
-}
-  driver.findElement(By.linkText("Download file in csv format")).click();*/}
-
-  
-  public void downloadFileByDateRangeFixed2Y(String symbol) throws Exception {
+  public void downloadCurrentFileFullData() throws Exception {
 	  driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
-	  Thread.sleep(1000);
-  driver.findElement(By.id("symbol")).clear();
-  driver.findElement(By.id("symbol")).sendKeys(""+symbol);
-  new Select(driver.findElement(By.id("dateRange"))).selectByVisibleText("24 Months");
-  driver.findElement(By.id("get")).click();
-  try {
-	driver.findElement(By.id("submitMe")).click();
-} catch (Exception e) {
-	// TODO Auto-generated catch block
-	// e.printStackTrace();
-}
-  driver.findElement(By.linkText("Download file in csv format")).click();
-  Thread.sleep(15000);
-
+	  Thread.sleep(15000);
   }
-
-
   public void tearDown() throws Exception {
     driver.quit();
    
   }
 
-
-}
+  }
 

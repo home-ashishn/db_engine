@@ -18,6 +18,12 @@ public class EODGlobal {
 
 	private int currentCycleNumber;
 	
+
+	/*
+	public void createFireFoxProfile(){
+		
+	}*/
+	
 	private ObjectPool initMySqlConnectionPool() {
 		Properties properties = new Properties();
 		// properties.load(Boot.class.getClassLoader().getResourceAsStream("config.properties"));

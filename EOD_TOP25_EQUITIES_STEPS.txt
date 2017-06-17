@@ -10,7 +10,7 @@ endDate date), with startDate as today's date and endDate as (startDate - 5) fro
 
 INITIAL SETUP ROUTINE - for 3 years -
 
-1. Find top 50 equities by turnover for today.
+1. DOWNLOAD sec_bhavdata_full.csv FROM http://www.nseindia.com/products/content/sec_bhavdata_full.csv.Find top 50 equities by turnover for today.
 2. download data for top 50 found in step 1 for last 3 years from https://www.nseindia.com/products/content/equities/equities/eq_security.htm.
 3. load .csv file downloaded in step 2 into table - engine_ea.equity_data_main; 
 4. delete from engine_ea.equity_data_main where series != 'EQ'.
