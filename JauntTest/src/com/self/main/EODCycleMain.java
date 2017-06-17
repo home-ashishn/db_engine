@@ -97,7 +97,7 @@ public class EODCycleMain {
 
 			downloadDataAndLoadDB();
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}finally{
 			
 			if(equityCurrentTime!=null)
