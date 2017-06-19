@@ -17,7 +17,8 @@ public class RSIDBHelper {
 	
 	
 	public static int insertCurrentRSISignal(Connection connection, String symbol, 
-			DateTime endTime, int currentMarketTrend, int currentSignal, int retryCount) throws MySqlPoolableException, SQLException{
+			DateTime endTime, int currentMarketTrend, int currentSignal,double stop_loss_level
+			, int retryCount) throws MySqlPoolableException, SQLException{
 		
 
 		int maxId = 0;
@@ -30,7 +31,8 @@ public class RSIDBHelper {
 		}
 		
 		String sql = "replace into rsi_evaluation_run_current_data "
-				+ "(symbol,curr_date,current_market_trend,curr_signal)" + " values (?, ?, ?,?)";
+				+ "(symbol,curr_date,current_market_trend,curr_signal,stop_loss_level)" + 
+				" values (?, ?, ?,?,?)";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
 
@@ -45,7 +47,9 @@ public class RSIDBHelper {
 			ps.setString(2, endTime.toString("yyyy-MM-dd"));
 			ps.setInt(3, currentMarketTrend);
 			ps.setInt(4, currentSignal);
+			ps.setDouble(5, stop_loss_level);
 
+			
 			ps.execute();
 
 			sql = "SELECT max(rsi_evaluation_run_id) max_id FROM engine_indicators.rsi_evaluation_run_current_data";
@@ -65,7 +69,7 @@ public class RSIDBHelper {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			insertCurrentRSISignal(connection, symbol, endTime, currentMarketTrend, currentSignal, retryCount--);
+			insertCurrentRSISignal(connection, symbol, endTime, currentMarketTrend, currentSignal,stop_loss_level, retryCount--);
 			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
 		}
 		finally {
@@ -94,8 +98,9 @@ public class RSIDBHelper {
 		}
 		
 		String sql = "replace into rsi_evaluation_run_backtest_data "
-				+ "(rsi_evaluation_run_id,symbol,curr_date,current_market_trend,curr_signal)"
-				+ " values (?, ?, ?,?,?)";
+				+ "(rsi_evaluation_run_id,symbol,curr_date,current_market_trend,curr_signal,stop_loss_level)"
+				
+				+ " values (?, ?, ?,?,?,?)";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
 
@@ -110,6 +115,7 @@ public class RSIDBHelper {
 					ps.setString(3, indicatorsBackTestData.getEndTime().toString("yyyy-MM-dd"));
 					ps.setInt(4, indicatorsBackTestData.getCurrentMarketTrend());
 					ps.setInt(5, indicatorsBackTestData.getCurrentSignal());
+					ps.setDouble(6, indicatorsBackTestData.getStop_loss_level());
 
 					ps.addBatch();
 

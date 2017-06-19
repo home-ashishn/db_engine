@@ -11,6 +11,8 @@ public class IndicatorsBackTestData {
 	private int currentMarketTrend;
 	private int currentSignal;
 	
+	private double stop_loss_level;
+
 	
 	public int getSignalReferenceId() {
 		return signalReferenceId;
@@ -41,6 +43,12 @@ public class IndicatorsBackTestData {
 	}
 	public void setCurrentSignal(int currentSignal) {
 		this.currentSignal = currentSignal;
+	}
+	public double getStop_loss_level() {
+		return stop_loss_level;
+	}
+	public void setStop_loss_level(double stop_loss_level) {
+		this.stop_loss_level = stop_loss_level;
 	}
 
 }

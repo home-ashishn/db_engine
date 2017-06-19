@@ -8,18 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
 import org.apache.commons.pool.ObjectPool;
-import org.apache.commons.pool.PoolableObjectFactory;
-import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.commons.pool.impl.GenericObjectPool.Config;
-import org.apache.commons.pool.impl.GenericObjectPoolFactory;
 import org.joda.time.DateTime;
 
-import com.self.dataobjects.LiveOptionDataSymbolNifty;
 import com.self.dbconnection.MySqlPoolableException;
-import com.self.dbconnection.MySqlPoolableObjectFactory;
 import com.self.indicators.def.dataobjects.IndicatorsBackTestData;
 
 import eu.verdelhan.ta4j.Tick;
@@ -31,6 +24,9 @@ public class IndicatorsDBHelper {
 	private final ObjectPool connPool;
 
 	List<Tick> ticks = new ArrayList<Tick>();
+	
+	// private static Map<String, List<Tick>> cache = new HashMap<String, List<Tick>>();
+
 
 	public IndicatorsDBHelper(ObjectPool connPool) {
 		this.connPool = connPool;
@@ -209,7 +205,8 @@ public class IndicatorsDBHelper {
 
 	}
 
-	public int insertCurrentRSISignal(String symbol, DateTime endTime, int currentMarketTrend, int currentSignal,
+	public int insertCurrentRSISignal(String symbol, DateTime endTime, int currentMarketTrend,
+			int currentSignal,double stop_loss_level,
 			int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
 
 		if (retryCount < 0) {
@@ -225,7 +222,8 @@ public class IndicatorsDBHelper {
 		connection.setAutoCommit(true);
 
 		try {
-			return RSIDBHelper.insertCurrentRSISignal(connection, symbol, endTime, currentMarketTrend, currentSignal,
+			return RSIDBHelper.insertCurrentRSISignal(connection, symbol, endTime, 
+					currentMarketTrend, currentSignal,stop_loss_level,
 					retryCount);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
