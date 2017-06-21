@@ -128,3 +128,19 @@ and  round((b.AVERAGE_PRICE - a.AVERAGE_PRICE)/abs(b.AVERAGE_PRICE - a.AVERAGE_P
 
 
 update equity_data_main_top50  set done = 1 where symbol in ( SELECT distinct symbol FROM engine_ea.equity_data_main where curr_date = '2012-05-22')
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+LOAD DATA LOCAL INFILE 'D:\\NSE_Downloads\\Equity_Daily\\sec_bhavdata_full.csv'  
+INTO TABLE engine_ea.equity_data_main_temporary FIELDS TERMINATED BY ','  OPTIONALLY ENCLOSED BY '"'  LINES TERMINATED BY '\r\n' 
+(SYMBOL, @my_date, PREV_CLOSE, OPEN_PRICE, HIGH_PRICE, LOW_PRICE, LAST_PRICE, CLOSE_PRICE, AVERAGE_PRICE, 
+TOTAL_TRADED_QUANTITY, TURNOVER, NO_OF_TRADES, DELIVERABLE_QTY, PERCENT_DELIVERABLE_QTY)  
+set curr_date = str_to_date(@my_date,'%d-%b-%Y');
+
+call engine_ea.transfer_equity_data();
+call engine_ea.keep_top50();

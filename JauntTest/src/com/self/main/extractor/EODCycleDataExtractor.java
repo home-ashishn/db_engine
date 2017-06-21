@@ -25,10 +25,11 @@ public class EODCycleDataExtractor {
 
 		EODCycleDataExtractor eodCycleMain = new EODCycleDataExtractor();
 
-		eodCycleMain.executeInitialSetup();
+		eodCycleMain.executeDailySetup();
 
 	}
 
+	
 	public void executeInitialSetup() throws Exception {
 
 		EODCycleDataExtractorUtil eodCycleDataExtractorUtil = new EODCycleDataExtractorUtil();
@@ -53,4 +54,34 @@ public class EODCycleDataExtractor {
 		}
 
 	}
+
+
+	
+	public void executeDailySetup() throws Exception {
+
+		EODCycleDataExtractorUtil eodCycleDataExtractorUtil = new EODCycleDataExtractorUtil();
+
+		try {
+
+			// eodCycleDataExtractorUtil.getTodaysFullData();
+			
+			eodCycleDataExtractorUtil.fillGapData();
+
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			if (eodCycleDataExtractorUtil.equityCurrentTime != null) {
+				eodCycleDataExtractorUtil.equityCurrentTime.tearDown();
+			}
+
+			if (eodCycleDataExtractorUtil.equityHistorical != null) {
+				eodCycleDataExtractorUtil.equityHistorical.tearDown();
+			}
+		}
+
+	}
+
+
 }

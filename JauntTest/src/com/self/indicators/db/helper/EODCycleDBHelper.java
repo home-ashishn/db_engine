@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -20,9 +21,7 @@ import org.apache.commons.pool.ObjectPool;
 
 import com.self.dbconnection.MySqlPoolableException;
 import com.self.main.EODGlobal;
-
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
+import com.self.main.extractor.dataobjects.Top25EquityGap;
 
 public class EODCycleDBHelper {
 
@@ -34,6 +33,7 @@ public class EODCycleDBHelper {
 		this.connPool = connPool;
 	}
 
+	
 	public List<String> getTop50Equities(int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
 
@@ -89,6 +89,85 @@ public class EODCycleDBHelper {
 
 	}
 
+
+	
+	public List<Top25EquityGap> getTop25EquityGapData(int retryCount)
+			throws NoSuchElementException, IllegalStateException, Exception {
+
+		List<Top25EquityGap> listData = new ArrayList<Top25EquityGap>();
+
+		if (retryCount < 0) {
+			return listData;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		/*
+		 * String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main a " +
+		 * "WHERE a.CURR_DATE = (SELECT max(b.curr_date) FROM engine_ea.equity_data_main b) "
+		 * + "order by a.TURNOVER desc " + "limit 50";
+		 */
+
+		String sql = "SELECT * FROM engine_ea.top_25_equity_gap "
+				+ "where min_date is not null";
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+		connection.setAutoCommit(true);
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+
+		try {
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+				Top25EquityGap data = new Top25EquityGap();
+				
+				data.setSymbol(rs.getString("SYMBOL"));
+				
+				if (rs.getString("CURR_DATE") != null)
+					
+				{
+				
+				data.setCurrDate(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("CURR_DATE")));
+
+				}
+				
+				if (rs.getString("min_date") != null)
+			
+				{
+					
+				data.setMinDate(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("min_date")));
+
+				}
+				
+
+
+				listData.add(data);
+
+			}
+			ps.close();
+			connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			getTop50Equities(retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(ps);
+			safeClose(connection);
+		}
+
+		return listData;
+
+	}
+
+
 	private void safeClose(Connection conn) {
 		if (conn != null) {
 			try {
@@ -134,22 +213,7 @@ public class EODCycleDBHelper {
 
 		EODCycleDBHelper eodCycleDBHelper = new EODCycleDBHelper(eodGlobal.getPool());
 
-		String folderPath = "D:\\NSE_Downloads\\Equity_Daily";
-
-		File folder = new File(folderPath);
-
-		if (folder.isDirectory()) {
-			File[] files = folder.listFiles();
-
-			String filePath = files[0].getAbsolutePath();
-
-			eodCycleDBHelper.loadDataToDB(filePath, true, 5);
-
-			Thread.sleep(5000);
-
-		}
-
-		eodCycleDBHelper.getTop50Equities(5);
+		eodCycleDBHelper.getTop25EquityGapData(5);
 
 	}
 

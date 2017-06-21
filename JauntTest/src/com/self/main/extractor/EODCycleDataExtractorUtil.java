@@ -7,11 +7,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.commons.io.FileUtils;
 
 import com.self.indicators.db.helper.EODCycleDBHelper;
 import com.self.main.EODGlobal;
+import com.self.main.extractor.dataobjects.Top25EquityGap;
 import com.self.seleniumscrapper.EquityCurrentTime;
 import com.self.seleniumscrapper.EquityHistorical;
 
@@ -31,6 +33,20 @@ public class EODCycleDataExtractorUtil {
 		eodCycleDBHelper = new EODCycleDBHelper(eodGlobal.getPool());
 	}
 
+	public void fillGapData() throws NoSuchElementException, IllegalStateException, Exception {
+
+		List<Top25EquityGap> listGap = eodCycleDBHelper.getTop25EquityGapData(5);
+
+		for (Iterator iterator = listGap.iterator(); iterator.hasNext();) {
+			Top25EquityGap top25EquityGap = (Top25EquityGap) iterator.next();
+
+			downloadDataForSymbolForDateRange(top25EquityGap.getSymbol(), top25EquityGap.getMinDate(),
+					top25EquityGap.getCurrDate());
+
+		}
+
+	}
+
 	public void downloadDataForSymbolForDateRange(String symbol, Date dateFrom, Date dateTo) throws Exception {
 
 		Date dateCounter = dateFrom;
@@ -46,12 +62,18 @@ public class EODCycleDataExtractorUtil {
 			cleanFolder(folderPath);
 
 			String calculatedDateFrom = new SimpleDateFormat("dd-MM-yyyy").format(dateCounter);
-			;
-			String calculatedDateTo = getDateRange(dateCounter, (365 * 1) + 1);
 
-			equityHistorical.downloadFileByDateRange(symbol, calculatedDateFrom, calculatedDateTo);
+			String strCalculatedDateTo = getDateRange(dateCounter, (365 * 1) - 1, true);
 
-			dateCounter = new SimpleDateFormat("dd-MM-yyyy").parse(calculatedDateTo);
+			Date dateCalculatedDateTo = new SimpleDateFormat("dd-MM-yyyy").parse(strCalculatedDateTo);
+
+			if (dateCalculatedDateTo.after(dateTo)) {
+				strCalculatedDateTo = new SimpleDateFormat("dd-MM-yyyy").format(dateTo);
+			}
+
+			equityHistorical.downloadFileByDateRange(symbol, calculatedDateFrom, strCalculatedDateTo);
+
+			dateCounter = new SimpleDateFormat("dd-MM-yyyy").parse(strCalculatedDateTo);
 
 			loadDataForSymbol();
 
@@ -59,14 +81,19 @@ public class EODCycleDataExtractorUtil {
 
 	}
 
-	public String getDateRange(Date date, int i) {
+	public String getDateRange(Date date, int i, boolean forward) {
 		// TODO Auto-generated method stub
 
 		Calendar cal = Calendar.getInstance();
 
 		cal.setTime(date);
 
-		cal.add(Calendar.DATE, -1 * i);
+		if (forward) {
+			cal.add(Calendar.DATE, i);
+
+		} else {
+			cal.add(Calendar.DATE, -1 * i);
+		}
 
 		return new SimpleDateFormat("dd-MM-yyyy").format(cal.getTime());
 
@@ -82,8 +109,8 @@ public class EODCycleDataExtractorUtil {
 			equityHistorical = new EquityHistorical();
 		}
 
-		String dateFrom = getDateRange(new Date(), (365 * (noOfYearsBack + 1)));
-		String dateTo = getDateRange(new Date(), (365 * noOfYearsBack) + 1);
+		String dateFrom = getDateRange(new Date(), (365 * (noOfYearsBack + 1)),false);
+		String dateTo = getDateRange(new Date(), (365 * noOfYearsBack) + 1,false);
 		equityHistorical.downloadFileByDateRange(symbol, dateFrom, dateTo);
 
 	}
