@@ -9,6 +9,7 @@ import org.apache.commons.pool.impl.GenericObjectPoolFactory;
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
 
 import com.self.dbconnection.MySqlPoolableObjectFactory;
+import com.self.main.extractor.TradingCycleDataExtractor;
 
 public class MyApplication {
 	
@@ -23,7 +24,7 @@ public class MyApplication {
 	
 	
 	public static void main(String[] args) {
-		TradingCycleMain tradingCycleMain = new TradingCycleMain();
+		TradingCycleDataExtractor tradingCycleMain = new TradingCycleDataExtractor();
 		tradingCycleMain.executeTradingCycle();
 	}
 

@@ -30,7 +30,6 @@ public class EODCycleDBHelper {
 	// LogFactory.getLog(ExampleClassUsesMySQLConnectionPool.class);
 	private final ObjectPool connPool;
 
-
 	public EODCycleDBHelper(ObjectPool connPool) {
 		this.connPool = connPool;
 	}
@@ -38,7 +37,7 @@ public class EODCycleDBHelper {
 	public List<String> getTop50Equities(int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
 
-		List<String>  listSymbol = new ArrayList<String>();
+		List<String> listSymbol = new ArrayList<String>();
 
 		if (retryCount < 0) {
 			return listSymbol;
@@ -46,15 +45,14 @@ public class EODCycleDBHelper {
 
 		Connection connection = null;
 		ResultSet res = null;
-		
 
+		/*
+		 * String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main a " +
+		 * "WHERE a.CURR_DATE = (SELECT max(b.curr_date) FROM engine_ea.equity_data_main b) "
+		 * + "order by a.TURNOVER desc " + "limit 50";
+		 */
 
-/*		String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main a "
-				+ "WHERE a.CURR_DATE = (SELECT max(b.curr_date) FROM engine_ea.equity_data_main b) "
-				+ "order by a.TURNOVER desc "
-				+ "limit 50";*/
-				
-				String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main_top50 where done = 0";
+		String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main_top50 where done = 0";
 
 		while (connection == null || connection.isClosed()) {
 			connection = (Connection) connPool.borrowObject();
@@ -68,7 +66,6 @@ public class EODCycleDBHelper {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-
 
 				String symbolValue = rs.getString("SYMBOL");
 
@@ -87,7 +84,7 @@ public class EODCycleDBHelper {
 			safeClose(ps);
 			safeClose(connection);
 		}
-		
+
 		return listSymbol;
 
 	}
@@ -132,55 +129,46 @@ public class EODCycleDBHelper {
 		 * indicatorsDBHelper.getIndicatorsBaseData(5);
 		 * 
 		 */
-		
+
 		EODGlobal eodGlobal = EODGlobal.getInstance();
-		
+
 		EODCycleDBHelper eodCycleDBHelper = new EODCycleDBHelper(eodGlobal.getPool());
-		
-	
+
 		String folderPath = "D:\\NSE_Downloads\\Equity_Daily";
-		
-		
+
 		File folder = new File(folderPath);
-		
-		if(folder.isDirectory())
-		{
+
+		if (folder.isDirectory()) {
 			File[] files = folder.listFiles();
-			
-		
+
 			String filePath = files[0].getAbsolutePath();
 
-			
-			eodCycleDBHelper.loadDataToDB(filePath,true, 5);
-			
+			eodCycleDBHelper.loadDataToDB(filePath, true, 5);
+
 			Thread.sleep(5000);
-			
+
 		}
-		
+
 		eodCycleDBHelper.getTop50Equities(5);
 
 	}
 
-
-/*	private void removeHeader(String filePath)
-			throws IOException {
-		
-			CSVReader reader2 = new CSVReader(new FileReader(filePath));
-            List<String[]> allElements = reader2.readAll();
-            allElements.remove(0);
-            FileWriter sw = new FileWriter(filePath);
-            CSVWriter writer = new CSVWriter(sw);
-            writer.writeAll(allElements);
-            reader2.close();
-            writer.close();
-            
-	}*/
-	
+	/*
+	 * private void removeHeader(String filePath) throws IOException {
+	 * 
+	 * CSVReader reader2 = new CSVReader(new FileReader(filePath));
+	 * List<String[]> allElements = reader2.readAll(); allElements.remove(0);
+	 * FileWriter sw = new FileWriter(filePath); CSVWriter writer = new
+	 * CSVWriter(sw); writer.writeAll(allElements); reader2.close();
+	 * writer.close();
+	 * 
+	 * }
+	 */
 
 	private static void removeHeader(String string) throws IOException {
 		File inputFile = new File(string);
 		File tempFile = new File(string + "1");
-		
+
 		BufferedReader reader = new BufferedReader(new FileReader(inputFile));
 		BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
@@ -195,9 +183,8 @@ public class EODCycleDBHelper {
 			if (trimmedLine.contains("DATE") || !trimmedLine.contains("EQ")) {
 				continue;
 			}
-			
 
-			trimmedLine = trimmedLine.replace("\"","") + "\n";
+			trimmedLine = trimmedLine.replace("\"", "") + "\n";
 
 			writer.write(trimmedLine);
 		}
@@ -217,106 +204,88 @@ public class EODCycleDBHelper {
 
 	}
 
+	public void loadDataToDB(String filePath, boolean isKeep50, int retryCount) throws Exception {
 
-
-
-	public void loadDataToDB(String filePath,boolean isKeep50,int retryCount) throws Exception{
-
-
-		
-		
 		// filePath = filePath.replace("\\", "\\\\");
 		filePath = filePath.replace("\\", "/");
-		
+
 		removeHeader(filePath);
 
 		if (retryCount < 0) {
-			return ;
+			return;
 		}
 
 		Connection connection = null;
 		ResultSet res = null;
-		
 
 		String sqlDelete = "delete from engine_ea.equity_data_main_temporary";
 
-		String sql = "LOAD DATA LOCAL INFILE '"
-				+filePath
-				+ "' "
-				+ "INTO TABLE equity_data_main_temporary "
+		String sql = "LOAD DATA LOCAL INFILE '" + filePath + "' " + "INTO TABLE equity_data_main_temporary "
 				+ "FIELDS TERMINATED BY ',' "
-				//+ "OPTIONALLY ENCLOSED BY '\"' "
+				// + "OPTIONALLY ENCLOSED BY '\"' "
 				// + " LINES TERMINATED BY '\r\n' "
 				// + "IGNORE 1 LINES "
 				+ "(SYMBOL,SERIES,@my_date,PREV_CLOSE,OPEN_PRICE,HIGH_PRICE,LOW_PRICE,LAST_PRICE,CLOSE_PRICE,"
 				+ "AVERAGE_PRICE,TOTAL_TRADED_QUANTITY,TURNOVER,NO_OF_TRADES,DELIVERABLE_QTY,"
-				+ "PERCENT_DELIVERABLE_QTY) "
-				+ "set curr_date = str_to_date(@my_date,'%d-%b-%Y')";
-
+				+ "PERCENT_DELIVERABLE_QTY) " + "set curr_date = str_to_date(@my_date,'%d-%b-%Y')";
 
 		while (connection == null || connection.isClosed()) {
 			connection = (Connection) connPool.borrowObject();
 		}
-		
-		
+
 		Statement ps1 = connection.createStatement();
 
-
 		Statement ps = connection.createStatement();
-		
+
 		CallableStatement callSt = connection.prepareCall("call engine_ea.transfer_equity_data()");
-		
+
 		CallableStatement callSt1 = connection.prepareCall("call engine_ea.keep_top50()");
 
 		connection.setAutoCommit(true);
 
 		try {
-			
+
 			ps1.executeUpdate(sqlDelete);
-			
+
 			ps1.close();
-			
-//			connection.commit();
-			
+
+			// connection.commit();
+
 			ps.executeUpdate(sql);
-			
-//			connection.commit();
+
+			// connection.commit();
 
 			ps.close();
 
 			callSt.execute();
-			
+
 			callSt.close();
 
-//			connection.commit();
+			// connection.commit();
 
-			if(isKeep50)
-			{
+			if (isKeep50) {
 				callSt1.execute();
 
 			}
-			
+
 			callSt1.close();
-			
-//			connection.commit();
+
+			// connection.commit();
 
 			connection.setAutoCommit(true);
-			
+
 			connection.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			loadDataToDB(filePath,isKeep50, retryCount--);
+			loadDataToDB(filePath, isKeep50, retryCount--);
 			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
 		} finally {
 			safeClose(res);
 			safeClose(ps);
 			safeClose(connection);
 		}
-		
-		
+
 	}
-	
+
 }
-
-

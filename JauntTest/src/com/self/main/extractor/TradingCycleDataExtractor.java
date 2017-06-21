@@ -1,12 +1,13 @@
-package com.self.main;
+package com.self.main.extractor;
 
 import java.util.NoSuchElementException;
 
 import com.self.dataobjects.MainContainer;
+import com.self.main.ScrapperGlobal;
 import com.self.scrapper.NiftyOptionChainDBHelper;
 import com.self.scrapper.NiftyOptionChainScrapper;
 
-public class TradingCycleMain {
+public class TradingCycleDataExtractor {
 	
 	
 	public void executeTradingCycle(){
