@@ -60,14 +60,14 @@ public class EODRSICalculator {
 			Decimal minPrevValueRSI = mapSignalValues.get("minPrevValueRSI");
 			if(minPrevValueRSI != null)
 			{
-				stop_loss_level = (int) minPrevValueRSI.toDouble();
+				stop_loss_level =  minPrevValueRSI.toDouble();
 
 			}
 			
 			Decimal minPrevValuePrice = mapSignalValues.get("minPrevValuePrice");
 			if(minPrevValuePrice != null)
 			{
-				stop_loss_level_price = (int) minPrevValuePrice.toDouble();
+				stop_loss_level_price =  minPrevValuePrice.toDouble();
 
 			}
 
@@ -76,14 +76,14 @@ public class EODRSICalculator {
 			Decimal maxPrevValueRSI = mapSignalValues.get("maxPrevValueRSI");
 			if(maxPrevValueRSI != null)
 			{
-				stop_loss_level = (int) maxPrevValueRSI.toDouble();
+				stop_loss_level =  maxPrevValueRSI.toDouble();
 
 			}
 			
 			Decimal maxPrevValuePrice = mapSignalValues.get("maxPrevValuePrice");
 			if(maxPrevValuePrice != null)
 			{
-				stop_loss_level_price = (int) maxPrevValuePrice.toDouble();
+				stop_loss_level_price =  maxPrevValuePrice.toDouble();
 
 			}
 
@@ -127,7 +127,7 @@ public class EODRSICalculator {
 						Decimal minPrevValuePrice = mapBTSignalValues.get("minPrevValuePrice");
 						if(minPrevValuePrice != null)
 						{
-							stop_loss_level_price_bt = (int) minPrevValuePrice.toDouble();
+							stop_loss_level_price_bt =  minPrevValuePrice.toDouble();
 
 						}
 
@@ -146,7 +146,7 @@ public class EODRSICalculator {
 						Decimal maxPrevValuePrice = mapBTSignalValues.get("maxPrevValuePrice");
 						if(maxPrevValuePrice != null)
 						{
-							stop_loss_level_price_bt = (int) maxPrevValuePrice.toDouble();
+							stop_loss_level_price_bt =  maxPrevValuePrice.toDouble();
 
 						}
 

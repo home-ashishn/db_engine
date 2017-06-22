@@ -61,11 +61,11 @@ public class IndicatorsDBHelper {
 
 				DateTime curr_date = new DateTime(rs.getDate("CURR_DATE"));
 
-				double high_price = rs.getInt("HIGH_PRICE");
-				double low_price = rs.getInt("LOW_PRICE");
-				double open_price = rs.getInt("OPEN_PRICE");
-				double close_price = rs.getInt("CLOSE_PRICE");
-				double turnover_volume = rs.getInt("TOTAL_TRADED_QUANTITY");
+				double high_price = rs.getFloat("HIGH_PRICE");
+				double low_price = rs.getFloat("LOW_PRICE");
+				double open_price = rs.getFloat("OPEN_PRICE");
+				double close_price = rs.getFloat("CLOSE_PRICE");
+				double turnover_volume = rs.getFloat("TOTAL_TRADED_QUANTITY");
 
 				ticks.add(new Tick(curr_date, open_price, high_price, low_price, close_price, turnover_volume));
 
