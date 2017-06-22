@@ -18,7 +18,7 @@ public class RSIDBHelper {
 	
 	public static int insertCurrentRSISignal(Connection connection, String symbol, 
 			DateTime endTime, int currentMarketTrend, int currentSignal,double stop_loss_level
-			, int retryCount) throws MySqlPoolableException, SQLException{
+			, double stop_loss_level_price, int retryCount) throws MySqlPoolableException, SQLException{
 		
 
 		int maxId = 0;
@@ -26,13 +26,13 @@ public class RSIDBHelper {
 		ResultSet res = null;
 
 		
-		if (retryCount < 0) {
+		if (stop_loss_level_price < 0) {
 			return 0;
 		}
 		
 		String sql = "replace into rsi_evaluation_run_current_data "
-				+ "(symbol,curr_date,current_market_trend,curr_signal,stop_loss_level)" + 
-				" values (?, ?, ?,?,?)";
+				+ "(symbol,curr_date,current_market_trend,curr_signal,stop_loss_level,stop_loss_level_price)" + 
+				" values (?, ?, ?,?,?,?)";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
 
@@ -48,6 +48,7 @@ public class RSIDBHelper {
 			ps.setInt(3, currentMarketTrend);
 			ps.setInt(4, currentSignal);
 			ps.setDouble(5, stop_loss_level);
+			ps.setDouble(6, stop_loss_level_price);
 
 			
 			ps.execute();
@@ -69,7 +70,7 @@ public class RSIDBHelper {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			insertCurrentRSISignal(connection, symbol, endTime, currentMarketTrend, currentSignal,stop_loss_level, retryCount--);
+			insertCurrentRSISignal(connection, symbol, endTime, currentMarketTrend, currentSignal,stop_loss_level, stop_loss_level_price,retryCount--);
 			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
 		}
 		finally {
@@ -98,9 +99,9 @@ public class RSIDBHelper {
 		}
 		
 		String sql = "replace into rsi_evaluation_run_backtest_data "
-				+ "(rsi_evaluation_run_id,symbol,curr_date,current_market_trend,curr_signal,stop_loss_level)"
+				+ "(rsi_evaluation_run_id,symbol,curr_date,current_market_trend,curr_signal,stop_loss_level,stop_loss_level_price)"
 				
-				+ " values (?, ?, ?,?,?,?)";
+				+ " values (?, ?, ?,?,?,?,?)";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
 
@@ -116,6 +117,7 @@ public class RSIDBHelper {
 					ps.setInt(4, indicatorsBackTestData.getCurrentMarketTrend());
 					ps.setInt(5, indicatorsBackTestData.getCurrentSignal());
 					ps.setDouble(6, indicatorsBackTestData.getStop_loss_level());
+					ps.setDouble(7, indicatorsBackTestData.getStop_loss_level_price());
 
 					ps.addBatch();
 

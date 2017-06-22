@@ -52,12 +52,22 @@ public class EODRSICalculator {
 		int currentSignal = (int) mapSignalValues.get("buySellHoldSignal").toDouble();
 
 		double stop_loss_level = 0;
+		
+		double stop_loss_level_price = 0;
+
 
 		if (currentSignal == 1) {
 			Decimal minPrevValueRSI = mapSignalValues.get("minPrevValueRSI");
 			if(minPrevValueRSI != null)
 			{
 				stop_loss_level = (int) minPrevValueRSI.toDouble();
+
+			}
+			
+			Decimal minPrevValuePrice = mapSignalValues.get("minPrevValuePrice");
+			if(minPrevValuePrice != null)
+			{
+				stop_loss_level_price = (int) minPrevValuePrice.toDouble();
 
 			}
 
@@ -69,6 +79,13 @@ public class EODRSICalculator {
 				stop_loss_level = (int) maxPrevValueRSI.toDouble();
 
 			}
+			
+			Decimal maxPrevValuePrice = mapSignalValues.get("maxPrevValuePrice");
+			if(maxPrevValuePrice != null)
+			{
+				stop_loss_level_price = (int) maxPrevValuePrice.toDouble();
+
+			}
 
 		}
 
@@ -77,7 +94,7 @@ public class EODRSICalculator {
 
 		// insert into DB
 		int signalReferenceId = indicatorsDBHelper.insertCurrentRSISignal(symbol, data.getTick(endDay).getEndTime(),
-				currentMarketTrend, currentSignal,stop_loss_level, 2);
+				currentMarketTrend, currentSignal,stop_loss_level,stop_loss_level_price, 2);
 
 		if (currentSignal != 0 || plainBactesting) {
 
@@ -94,6 +111,9 @@ public class EODRSICalculator {
 					int signal = (int) mapBTSignalValues.get("buySellHoldSignal").toDouble();
 
 					double stop_loss_level_bt = 0;
+					
+					double stop_loss_level_price_bt = 0;
+
 
 					if (signal == 1) {
 
@@ -103,6 +123,14 @@ public class EODRSICalculator {
 							stop_loss_level_bt =  minPrevValueRSI.toDouble();
 
 						}
+						
+						Decimal minPrevValuePrice = mapBTSignalValues.get("minPrevValuePrice");
+						if(minPrevValuePrice != null)
+						{
+							stop_loss_level_price_bt = (int) minPrevValuePrice.toDouble();
+
+						}
+
 
 
 
@@ -112,6 +140,13 @@ public class EODRSICalculator {
 						if(maxPrevValueRSI != null)
 						{
 							stop_loss_level_bt = maxPrevValueRSI.toDouble();
+
+						}
+						
+						Decimal maxPrevValuePrice = mapBTSignalValues.get("maxPrevValuePrice");
+						if(maxPrevValuePrice != null)
+						{
+							stop_loss_level_price_bt = (int) maxPrevValuePrice.toDouble();
 
 						}
 
@@ -131,6 +166,8 @@ public class EODRSICalculator {
 						indicatorsBackTestData.setCurrentMarketTrend(marketTrend);
 						indicatorsBackTestData.setCurrentSignal(signal);
 						indicatorsBackTestData.setStop_loss_level(stop_loss_level_bt);
+						indicatorsBackTestData.setStop_loss_level_price(stop_loss_level_price_bt);
+
 
 						listIndicatorsBackTestData.add(indicatorsBackTestData);
 
@@ -195,17 +232,30 @@ public class EODRSICalculator {
 			}
 
 			Decimal prevValueRSI = null;
+			
+			Decimal prevValuePrice = null;
+
 
 			Decimal minPrevValueRSI = Decimal.valueOf(0.0);
+			
+			Decimal minPrevValuePrice = Decimal.valueOf(0.0);
+
 
 			for (int i = index - 1; i >= index - 14; i--) {
 
 				prevValueRSI = rsi.getValue(i);
+				
+				prevValuePrice = rsi.getTimeSeries().getTick(i).getClosePrice();
 
 				if (minPrevValueRSI.toDouble() == 0) {
 					minPrevValueRSI = prevValueRSI;
 				}
 				minPrevValueRSI = minPrevValueRSI.isLessThan(prevValueRSI) ? minPrevValueRSI : prevValueRSI;
+
+				if (minPrevValuePrice.toDouble() == 0) {
+					minPrevValuePrice = prevValuePrice;
+				}
+				minPrevValuePrice = minPrevValuePrice.isLessThan(prevValuePrice) ? minPrevValuePrice : prevValuePrice;
 
 				// Indicator was below 35, and it did cross 35 from below,
 				// return 1 signal
@@ -221,6 +271,9 @@ public class EODRSICalculator {
 						mapReturn.put("buySellHoldSignal", Decimal.ONE);
 
 						mapReturn.put("minPrevValueRSI", minPrevValueRSI);
+						
+						mapReturn.put("minPrevValuePrice", minPrevValuePrice);
+
 						
 						return mapReturn;
 
@@ -246,17 +299,30 @@ public class EODRSICalculator {
 			}
 
 			Decimal prevValueRSI = null;
+			
+			Decimal prevValuePrice = null;
+
 
 			Decimal maxPrevValueRSI = Decimal.valueOf(0.0);
+			
+			Decimal maxPrevValuePrice = Decimal.valueOf(0.0);
+
 
 			for (int i = index - 1; i >= index - 14; i--) {
 
 				prevValueRSI = rsi.getValue(i);
+				
+				prevValuePrice = rsi.getTimeSeries().getTick(i).getClosePrice();
 
 				if (maxPrevValueRSI.toDouble() == 0) {
 					maxPrevValueRSI = prevValueRSI;
 				}
 				maxPrevValueRSI = maxPrevValueRSI.isGreaterThan(prevValueRSI) ? maxPrevValueRSI : prevValueRSI;
+
+				if (maxPrevValuePrice.toDouble() == 0) {
+					maxPrevValuePrice = prevValuePrice;
+				}
+				maxPrevValuePrice = maxPrevValuePrice.isGreaterThan(prevValuePrice) ? maxPrevValuePrice : prevValuePrice;
 
 				// Indicator was above 65, and it did cross 65 from above,
 				// return -1 signal
@@ -271,6 +337,9 @@ public class EODRSICalculator {
 						mapReturn.put("buySellHoldSignal", Decimal.valueOf(-1));
 
 						mapReturn.put("maxPrevValueRSI", maxPrevValueRSI);
+						
+						mapReturn.put("maxPrevValuePrice", maxPrevValuePrice);
+
 						
 						return mapReturn;
 

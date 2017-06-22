@@ -13,7 +13,8 @@ public class IndicatorsBackTestData {
 	
 	private double stop_loss_level;
 
-	
+	private double stop_loss_level_price;
+
 	public int getSignalReferenceId() {
 		return signalReferenceId;
 	}
@@ -49,6 +50,12 @@ public class IndicatorsBackTestData {
 	}
 	public void setStop_loss_level(double stop_loss_level) {
 		this.stop_loss_level = stop_loss_level;
+	}
+	public double getStop_loss_level_price() {
+		return stop_loss_level_price;
+	}
+	public void setStop_loss_level_price(double stop_loss_level_price) {
+		this.stop_loss_level_price = stop_loss_level_price;
 	}
 
 }

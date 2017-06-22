@@ -207,7 +207,7 @@ public class IndicatorsDBHelper {
 
 	public int insertCurrentRSISignal(String symbol, DateTime endTime, int currentMarketTrend,
 			int currentSignal,double stop_loss_level,
-			int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
+			double stop_loss_level_price, int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
 
 		if (retryCount < 0) {
 			return 0;
@@ -223,7 +223,7 @@ public class IndicatorsDBHelper {
 
 		try {
 			return RSIDBHelper.insertCurrentRSISignal(connection, symbol, endTime, 
-					currentMarketTrend, currentSignal,stop_loss_level,
+					currentMarketTrend, currentSignal,stop_loss_level,stop_loss_level_price,
 					retryCount);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
