@@ -22,11 +22,23 @@ public class EODRSICalculator {
 
 	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {
 
+		String symbol = "SBIN";
+		
+		EODRSICalculator calculator = new EODRSICalculator();
+ 
+		calculator.calculateCurrentRSIWithBackTest(symbol,true);
+
+
+	}
+
+	
+	public void calculateCurrentRSIWithBackTest(String symbol, boolean plainBacktesting) throws Exception{
+		
+
+
 		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
 
-		String symbol = "SBIN";
 
-		boolean plainBactesting = true;
 
 		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
 
@@ -43,11 +55,9 @@ public class EODRSICalculator {
 
 		int endDay = data.getEnd();
 
-		EODRSICalculator calculator = new EODRSICalculator();
+		int currentMarketTrend = checkMarketTrend(data, endDay);
 
-		int currentMarketTrend = calculator.checkMarketTrend(data, endDay);
-
-		Map<String, Decimal> mapSignalValues = calculator.generateSignalForIndex(rsi, currentMarketTrend, endDay);
+		Map<String, Decimal> mapSignalValues = generateSignalForIndex(rsi, currentMarketTrend, endDay);
 
 		int currentSignal = (int) mapSignalValues.get("buySellHoldSignal").toDouble();
 
@@ -96,95 +106,105 @@ public class EODRSICalculator {
 		int signalReferenceId = indicatorsDBHelper.insertCurrentRSISignal(symbol, data.getTick(endDay).getEndTime(),
 				currentMarketTrend, currentSignal,stop_loss_level,stop_loss_level_price, 2);
 
-		if (currentSignal != 0 || plainBactesting) {
+		if (currentSignal != 0 || plainBacktesting) {
+			
+			backtesting(startDay,endDay,data,currentMarketTrend,plainBacktesting,signalReferenceId,
+					symbol,indicatorsDBHelper,currentSignal,rsi);
+		}
 
-			List<IndicatorsBackTestData> listIndicatorsBackTestData = new ArrayList<IndicatorsBackTestData>();
-
-			for (int i = endDay - 1; i > startDay; i--) {
-
-				int marketTrend = calculator.checkMarketTrend(data, i);
-
-				if (marketTrend == currentMarketTrend || plainBactesting) {
-					
-					Map<String, Decimal> mapBTSignalValues = calculator.generateSignalForIndex(rsi, marketTrend, i);
-
-					int signal = (int) mapBTSignalValues.get("buySellHoldSignal").toDouble();
-
-					double stop_loss_level_bt = 0;
-					
-					double stop_loss_level_price_bt = 0;
+	
+	}
+	private void backtesting(int startDay, int endDay, TimeSeries data, int currentMarketTrend,
+			boolean plainBactesting, int signalReferenceId, String symbol, IndicatorsDBHelper indicatorsDBHelper, int currentSignal, RSIIndicator rsi) 
+					throws Exception {
 
 
-					if (signal == 1) {
+		List<IndicatorsBackTestData> listIndicatorsBackTestData = new ArrayList<IndicatorsBackTestData>();
 
-						Decimal minPrevValueRSI = mapBTSignalValues.get("minPrevValueRSI");
-						if(minPrevValueRSI != null)
-						{
-							stop_loss_level_bt =  minPrevValueRSI.toDouble();
+		for (int i = endDay - 1; i > startDay; i--) {
 
-						}
-						
-						Decimal minPrevValuePrice = mapBTSignalValues.get("minPrevValuePrice");
-						if(minPrevValuePrice != null)
-						{
-							stop_loss_level_price_bt =  minPrevValuePrice.toDouble();
+			int marketTrend = checkMarketTrend(data, i);
 
-						}
+			if (marketTrend == currentMarketTrend || plainBactesting) {
+				
+				Map<String, Decimal> mapBTSignalValues = generateSignalForIndex(rsi, marketTrend, i);
 
+				int signal = (int) mapBTSignalValues.get("buySellHoldSignal").toDouble();
 
+				double stop_loss_level_bt = 0;
+				
+				double stop_loss_level_price_bt = 0;
 
 
-					} else if (signal == -1) {
-						
-						Decimal maxPrevValueRSI = mapBTSignalValues.get("maxPrevValueRSI");
-						if(maxPrevValueRSI != null)
-						{
-							stop_loss_level_bt = maxPrevValueRSI.toDouble();
+				if (signal == 1) {
 
-						}
-						
-						Decimal maxPrevValuePrice = mapBTSignalValues.get("maxPrevValuePrice");
-						if(maxPrevValuePrice != null)
-						{
-							stop_loss_level_price_bt =  maxPrevValuePrice.toDouble();
-
-						}
-
-					
+					Decimal minPrevValueRSI = mapBTSignalValues.get("minPrevValueRSI");
+					if(minPrevValueRSI != null)
+					{
+						stop_loss_level_bt =  minPrevValueRSI.toDouble();
 
 					}
-					 // calculator.generateSignalForIndex(rsi,marketTrend,calculator,sod,i);
-
-					if (signal == currentSignal || plainBactesting) {
-						// insert into DB
-
-						IndicatorsBackTestData indicatorsBackTestData = new IndicatorsBackTestData();
-
-						indicatorsBackTestData.setSignalReferenceId(signalReferenceId);
-						indicatorsBackTestData.setSymbol(symbol);
-						indicatorsBackTestData.setEndTime(data.getTick(i).getEndTime());
-						indicatorsBackTestData.setCurrentMarketTrend(marketTrend);
-						indicatorsBackTestData.setCurrentSignal(signal);
-						indicatorsBackTestData.setStop_loss_level(stop_loss_level_bt);
-						indicatorsBackTestData.setStop_loss_level_price(stop_loss_level_price_bt);
-
-
-						listIndicatorsBackTestData.add(indicatorsBackTestData);
+					
+					Decimal minPrevValuePrice = mapBTSignalValues.get("minPrevValuePrice");
+					if(minPrevValuePrice != null)
+					{
+						stop_loss_level_price_bt =  minPrevValuePrice.toDouble();
 
 					}
+
+
+
+
+				} else if (signal == -1) {
+					
+					Decimal maxPrevValueRSI = mapBTSignalValues.get("maxPrevValueRSI");
+					if(maxPrevValueRSI != null)
+					{
+						stop_loss_level_bt = maxPrevValueRSI.toDouble();
+
+					}
+					
+					Decimal maxPrevValuePrice = mapBTSignalValues.get("maxPrevValuePrice");
+					if(maxPrevValuePrice != null)
+					{
+						stop_loss_level_price_bt =  maxPrevValuePrice.toDouble();
+
+					}
+
+				
+
+				}
+				 // calculator.generateSignalForIndex(rsi,marketTrend,calculator,sod,i);
+
+				if (signal == currentSignal || plainBactesting) {
+					// insert into DB
+
+					IndicatorsBackTestData indicatorsBackTestData = new IndicatorsBackTestData();
+
+					indicatorsBackTestData.setSignalReferenceId(signalReferenceId);
+					indicatorsBackTestData.setSymbol(symbol);
+					indicatorsBackTestData.setEndTime(data.getTick(i).getEndTime());
+					indicatorsBackTestData.setCurrentMarketTrend(marketTrend);
+					indicatorsBackTestData.setCurrentSignal(signal);
+					indicatorsBackTestData.setStop_loss_level(stop_loss_level_bt);
+					indicatorsBackTestData.setStop_loss_level_price(stop_loss_level_price_bt);
+
+
+					listIndicatorsBackTestData.add(indicatorsBackTestData);
 
 				}
 
-				/*
-				 * value = sof.getValue(i); System.out.println(" value for i = "
-				 * +i+" is- "+value);
-				 */
 			}
 
-			indicatorsDBHelper.insertBackTestRSISignal(listIndicatorsBackTestData, 2);
-
+			/*
+			 * value = sof.getValue(i); System.out.println(" value for i = "
+			 * +i+" is- "+value);
+			 */
 		}
 
+		indicatorsDBHelper.insertBackTestRSISignal(listIndicatorsBackTestData, 2);
+
+			
 	}
 
 	private Map<String, Decimal> generateSignalForIndex(RSIIndicator rsi, int marketTrend, int index) {

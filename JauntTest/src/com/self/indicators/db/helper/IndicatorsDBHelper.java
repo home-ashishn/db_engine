@@ -1,11 +1,15 @@
 package com.self.indicators.db.helper;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,9 +28,9 @@ public class IndicatorsDBHelper {
 	private final ObjectPool connPool;
 
 	List<Tick> ticks = new ArrayList<Tick>();
-	
-	// private static Map<String, List<Tick>> cache = new HashMap<String, List<Tick>>();
 
+	// private static Map<String, List<Tick>> cache = new HashMap<String,
+	// List<Tick>>();
 
 	public IndicatorsDBHelper(ObjectPool connPool) {
 		this.connPool = connPool;
@@ -34,6 +38,14 @@ public class IndicatorsDBHelper {
 
 	public void getIndicatorsBaseData(String symbol, int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
+
+		/*
+		 * SET @symbol_in = NULL; SET @endDate = now(); SET @startDate =
+		 * date_sub(@endDate,interval 1 year); CALL
+		 * `engine_indicators`.`data_accumulation`(
+		 * 
+		 * @symbol_in, @endDate, @startDate);
+		 */
 
 		if (retryCount < 0) {
 			return;
@@ -205,9 +217,9 @@ public class IndicatorsDBHelper {
 
 	}
 
-	public int insertCurrentRSISignal(String symbol, DateTime endTime, int currentMarketTrend,
-			int currentSignal,double stop_loss_level,
-			double stop_loss_level_price, int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
+	public int insertCurrentRSISignal(String symbol, DateTime endTime, int currentMarketTrend, int currentSignal,
+			double stop_loss_level, double stop_loss_level_price, int retryCount)
+			throws NoSuchElementException, IllegalStateException, Exception {
 
 		if (retryCount < 0) {
 			return 0;
@@ -222,9 +234,8 @@ public class IndicatorsDBHelper {
 		connection.setAutoCommit(true);
 
 		try {
-			return RSIDBHelper.insertCurrentRSISignal(connection, symbol, endTime, 
-					currentMarketTrend, currentSignal,stop_loss_level,stop_loss_level_price,
-					retryCount);
+			return RSIDBHelper.insertCurrentRSISignal(connection, symbol, endTime, currentMarketTrend, currentSignal,
+					stop_loss_level, stop_loss_level_price, retryCount);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -263,5 +274,118 @@ public class IndicatorsDBHelper {
 		}
 
 	}
+
+	public List<String> getTop25Equities(int retryCount)
+			throws NoSuchElementException, IllegalStateException, Exception {
+
+		List<String> listSymbol = new ArrayList<String>();
+
+		if (retryCount < 0) {
+			return listSymbol;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		/*
+		 * String sql = "SELECT SYMBOL FROM engine_ea.equity_data_main a " +
+		 * "WHERE a.CURR_DATE = (SELECT max(b.curr_date) FROM engine_ea.equity_data_main b) "
+		 * + "order by a.TURNOVER desc " + "limit 50";
+		 */
+
+		String sql = "SELECT SYMBOL FROM engine_ea.top_25_equity";
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+		connection.setAutoCommit(true);
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+
+		try {
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				String symbolValue = rs.getString("SYMBOL");
+
+				listSymbol.add(symbolValue);
+
+			}
+			ps.close();
+			connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			getTop25Equities(retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(ps);
+			safeClose(connection);
+		}
+
+		return listSymbol;
+
+	}
+
+	public void accumulateDataForSymbol(String symbol, int retryCount) throws Exception {
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		CallableStatement callSt = connection.prepareCall("call engine_indicators.data_accumulation(?,?,?)");
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		
+		callSt.setString(1, symbol);
+		callSt.setString(2, format.format(new Date()));
+		callSt.setString(3, getDateRange(new Date(),365,false));
+
+		
+		try {
+			callSt.execute();
+			callSt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			accumulateDataForSymbol(symbol, retryCount--);
+		} finally {
+
+			safeClose(connection);
+		}
+
+	}
+	
+	
+
+	private String getDateRange(Date date, int i, boolean forward) {
+		// TODO Auto-generated method stub
+
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(date);
+
+		if (forward) {
+			cal.add(Calendar.DATE, i);
+
+		} else {
+			cal.add(Calendar.DATE, -1 * i);
+		}
+
+		return new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+
+	}
+
+
 
 }

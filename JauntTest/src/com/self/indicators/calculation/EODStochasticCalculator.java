@@ -20,221 +20,208 @@ import eu.verdelhan.ta4j.trading.rules.UnderIndicatorRule;
 
 public class EODStochasticCalculator {
 
-	
 	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {
-		
-		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
-		
+
 		String symbol = "SBIN";
-		
+
+		EODStochasticCalculator calculator = new EODStochasticCalculator();
+
+		calculator.calculateCurrentandBackTest(symbol,true);
+
+	}
+
+	public void calculateCurrentandBackTest(String symbol, boolean plainBacktesting) throws Exception {
+
+		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
+
 		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
-		
-		indicatorsDBHelper.getIndicatorsBaseData(symbol,5);
-		
+
+		indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
+
 		TimeSeries data = new TimeSeries(indicatorsDBHelper.getTicks());
 
+		StochasticOscillatorKIndicator sof = new StochasticOscillatorKIndicator(data, 14);
+		StochasticOscillatorDIndicator sod = new StochasticOscillatorDIndicator(sof);
 
-        StochasticOscillatorKIndicator sof = new StochasticOscillatorKIndicator
-        										(data, 14);
-        StochasticOscillatorDIndicator sod = new StochasticOscillatorDIndicator
-				(sof);
+		int startDay = data.getBegin() + 14;
 
-        int startDay = data.getBegin() + 14;
-		
 		int endDay = data.getEnd();
-		
-		EODStochasticCalculator calculator = new EODStochasticCalculator();
-		
-		int currentMarketTrend = calculator.checkMarketTrend(data,endDay);
-		
-		int currentSignal = calculator.generateSignalForIndex(sof,currentMarketTrend,calculator,sod,endDay);
 
-		
+		int currentMarketTrend = checkMarketTrend(data, endDay);
+
+		int currentSignal = generateSignalForIndex(sof, currentMarketTrend, sod, endDay);
+
 		// insert into DB
-		int signalReferenceId = indicatorsDBHelper.insertCurrentStochasticSignal
-				(symbol,data.getTick(endDay).getEndTime(),
-				currentMarketTrend,currentSignal,2);
-		
-			
-		if(currentSignal != 0)
-		{
+		int signalReferenceId = indicatorsDBHelper.insertCurrentStochasticSignal(symbol,
+				data.getTick(endDay).getEndTime(), currentMarketTrend, currentSignal, 2);
 
-				List<IndicatorsBackTestData> listIndicatorsBackTestData = 
-						new ArrayList<IndicatorsBackTestData>();
-			 
-		for (int i = endDay-1; i > startDay; i--) {
+		if (currentSignal != 0 || plainBacktesting) {
 
-				int marketTrend = calculator.checkMarketTrend(data,i);
-			
-			if(marketTrend == currentMarketTrend)
-			{
-				int signal = calculator.generateSignalForIndex(sof,marketTrend,calculator,sod,i);
-				
-				if(signal == currentSignal)
-				{
+			backTest(startDay, endDay, data, symbol, currentMarketTrend, currentSignal, sof, sod, signalReferenceId,
+					indicatorsDBHelper,plainBacktesting);
+		}
+
+	}
+
+	private void backTest(int startDay, int endDay, TimeSeries data, String symbol, int currentMarketTrend,
+			int currentSignal, StochasticOscillatorKIndicator sof, StochasticOscillatorDIndicator sod,
+			int signalReferenceId, IndicatorsDBHelper indicatorsDBHelper, boolean plainBacktesting) throws Exception {
+
+		List<IndicatorsBackTestData> listIndicatorsBackTestData = new ArrayList<IndicatorsBackTestData>();
+
+		for (int i = endDay - 1; i > startDay; i--) {
+
+			int marketTrend = checkMarketTrend(data, i);
+
+			if (marketTrend == currentMarketTrend || plainBacktesting) {
+				int signal = generateSignalForIndex(sof, marketTrend, sod, i);
+
+				if (signal == currentSignal || plainBacktesting) {
 					// insert into DB
-					
+
 					IndicatorsBackTestData indicatorsBackTestData = new IndicatorsBackTestData();
-					
+
 					indicatorsBackTestData.setSignalReferenceId(signalReferenceId);
 					indicatorsBackTestData.setSymbol(symbol);
 					indicatorsBackTestData.setEndTime(data.getTick(i).getEndTime());
 					indicatorsBackTestData.setCurrentMarketTrend(marketTrend);
 					indicatorsBackTestData.setCurrentSignal(signal);
-					
+
 					listIndicatorsBackTestData.add(indicatorsBackTestData);
-					
+
 				}
 
 			}
-			
 
-			/*value = sof.getValue(i);
-			System.out.println(" value for i = "+i+" is- "+value);*/			
+			/*
+			 * value = sof.getValue(i); System.out.println(" value for i = "+i+
+			 * " is- "+value);
+			 */
 		}
-		
-		indicatorsDBHelper.insertBackTestStochasticSignal(listIndicatorsBackTestData,2);
-		
-		}
-		
-		
+
+		indicatorsDBHelper.insertBackTestStochasticSignal(listIndicatorsBackTestData, 2);
+
 	}
-	
 
-	
-	private int generateSignalForIndex(StochasticOscillatorKIndicator sof, int marketTrend, EODStochasticCalculator calculator
-			, StochasticOscillatorDIndicator sod,int index) {
-		
+	private int generateSignalForIndex(StochasticOscillatorKIndicator sof, int marketTrend,
+			StochasticOscillatorDIndicator sod, int index) {
+
 		Decimal valueK = sof.getValue(index);
-		
+
 		int buySellHoldSignal = 0;
-		
-		if( marketTrend == 0)
+
+		if (marketTrend == 0) {
+			buySellHoldSignal = checkSignalforSidewaysMarket(valueK);
+		} else
+
 		{
-			buySellHoldSignal = calculator.checkSignalforSidewaysMarket(valueK);
+			buySellHoldSignal = checkSignalforTrendingMarket(marketTrend, sod, index);
 		}
-		else 
-			
-		{
-			buySellHoldSignal = calculator.checkSignalforTrendingMarket(marketTrend,sod,index);
-		}
-		
-		
+
 		return buySellHoldSignal;
 
-		
 	}
 
-
-	private int checkSignalforTrendingMarket(int marketTrend,
-			StochasticOscillatorDIndicator sod, int index) {
-		// TODO Auto-generated method stub
+	private int checkSignalforTrendingMarket(int marketTrend, StochasticOscillatorDIndicator sod, int index) {
 		
-		if(marketTrend == 1)
-			
+
+		if (marketTrend == 1)
+
 		{
 			Decimal currentValueD = sod.getValue(index);
-			
-			if(currentValueD.toDouble() > 50) return 0; // Indicator did not cross 50 from above, return no signal
-			
+
+			if (currentValueD.toDouble() > 50)
+				return 0; // Indicator did not cross 50 from above, return no
+							// signal
+
 			Decimal prevValueD = null;
 
-			for (int i = index-1; i >= index-14; i--) {
+			for (int i = index - 1; i >= index - 14; i--) {
 				prevValueD = sod.getValue(i);
 
-				// Indicator was above 80, and it did cross 50 from above, return -1 signal				
-				
-				if(prevValueD.toDouble() >= 80) return -1;
+				// Indicator was above 80, and it did cross 50 from above,
+				// return -1 signal
+
+				if (prevValueD.toDouble() >= 80)
+					return -1;
 
 			}
 
 		}
-		
-		if(marketTrend == -1)
-			
+
+		if (marketTrend == -1)
+
 		{
 			Decimal currentValueD = sod.getValue(index);
-			
-			if(currentValueD.toDouble() < 50) return 0; // Indicator did not cross 50 from below, return no signal
+
+			if (currentValueD.toDouble() < 50)
+				return 0; // Indicator did not cross 50 from below, return no
+							// signal
 
 			Decimal prevValueD = null;
 
-			for (int i = index-1; i >= index-14; i--) {
-				prevValueD = sod.getValue(i);				
-				// Indicator was below 200, and it did cross 50 from below, return 1 signal				
+			for (int i = index - 1; i >= index - 14; i--) {
+				prevValueD = sod.getValue(i);
+				// Indicator was below 200, and it did cross 50 from below,
+				// return 1 signal
 
-				if(prevValueD.toDouble() <= 20) return 1;
+				if (prevValueD.toDouble() <= 20)
+					return 1;
 
 			}
 
 		}
-		
-		
-		return 0;
-		
-	}
 
+		return 0;
+
+	}
 
 	private int checkSignalforSidewaysMarket(Decimal valueK) {
 
-		if(valueK.toDouble() >= 80.0)
+		if (valueK.toDouble() >= 80.0)
 			return -1;
-		
-		if(valueK.toDouble() <= 20.0)
+
+		if (valueK.toDouble() <= 20.0)
 			return 1;
-		
+
 		return 0;
 	}
 
+	private int checkMarketTrend(TimeSeries series, int index) {
 
+		ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
+		EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
+		EMAIndicator longEma = new EMAIndicator(closePrice, 26);
 
+		Decimal shortEmaValue = shortEma.getValue(index);
 
-	private int checkMarketTrend(TimeSeries series,int index){
-		
-		
-        ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+		Decimal longEmaValue = longEma.getValue(index);
 
-		
-		
-        EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
-        EMAIndicator longEma = new EMAIndicator(closePrice, 26);
-        
-        Decimal shortEmaValue = shortEma.getValue(index);
-        
-        Decimal longEmaValue = longEma.getValue(index);
+		if (shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.01)))) {
+			return 1;
 
-        if(shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.01))))
-        {
-        	return 1;
+		}
 
-        }
-        
-        else if(longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.01))))
-        	
-        {
-        	return -1;
+		else if (longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.01))))
 
-        }
+		{
+			return -1;
 
-        
-/*        Rule ovRule = new OverIndicatorRule(shortEma, longEma);
-        
-        if (ovRule.isSatisfied(index))
-        	return 1;
-        
-        Rule uiRule = new UnderIndicatorRule(shortEma, longEma);
-        
-        
-        if (uiRule.isSatisfied(index))
-        	return -1;
-*/        
-        return 0;
-        
-		
-		
-		
+		}
+
+		/*
+		 * Rule ovRule = new OverIndicatorRule(shortEma, longEma);
+		 * 
+		 * if (ovRule.isSatisfied(index)) return 1;
+		 * 
+		 * Rule uiRule = new UnderIndicatorRule(shortEma, longEma);
+		 * 
+		 * 
+		 * if (uiRule.isSatisfied(index)) return -1;
+		 */
+		return 0;
+
 	}
-	
-	
+
 }
