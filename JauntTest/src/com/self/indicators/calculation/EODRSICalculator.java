@@ -270,7 +270,10 @@ public class EODRSICalculator {
 				if (minPrevValueRSI.toDouble() == 0) {
 					minPrevValueRSI = prevValueRSI;
 				}
-				minPrevValueRSI = minPrevValueRSI.isLessThan(prevValueRSI) ? minPrevValueRSI : prevValueRSI;
+				
+				if (prevValueRSI.toDouble() > 0) {
+					minPrevValueRSI = minPrevValueRSI.isLessThan(prevValueRSI) ? minPrevValueRSI : prevValueRSI;
+				}
 
 				if (minPrevValuePrice.toDouble() == 0) {
 					minPrevValuePrice = prevValuePrice;
@@ -342,7 +345,10 @@ public class EODRSICalculator {
 				if (maxPrevValuePrice.toDouble() == 0) {
 					maxPrevValuePrice = prevValuePrice;
 				}
-				maxPrevValuePrice = maxPrevValuePrice.isGreaterThan(prevValuePrice) ? maxPrevValuePrice : prevValuePrice;
+				
+				if (prevValueRSI.toDouble() > 0) {
+					maxPrevValuePrice = maxPrevValuePrice.isGreaterThan(prevValuePrice) ? maxPrevValuePrice : prevValuePrice;
+				}
 
 				// Indicator was above 65, and it did cross 65 from above,
 				// return -1 signal

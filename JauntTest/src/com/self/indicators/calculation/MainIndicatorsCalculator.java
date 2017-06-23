@@ -38,6 +38,8 @@ public class MainIndicatorsCalculator {
 			
 			
 		}
+		indicatorsDBHelper.accumulateDataForSymbol("",5);
+
 	}
 	
 	public static void main(String[] args) throws Exception {
