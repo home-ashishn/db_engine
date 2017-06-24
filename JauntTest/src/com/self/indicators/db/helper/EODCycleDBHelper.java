@@ -304,6 +304,11 @@ public class EODCycleDBHelper {
 		CallableStatement callSt = connection.prepareCall("call engine_ea.transfer_equity_data()");
 
 		CallableStatement callSt1 = connection.prepareCall("call engine_ea.keep_top50()");
+		
+		CallableStatement callSt2 = connection.prepareCall("call engine_ea.calculate_top_25_turnover()");
+
+		CallableStatement callSt3 = connection.prepareCall("call engine_ea.verify_top25_data()");
+
 
 		connection.setAutoCommit(true);
 
@@ -328,11 +333,18 @@ public class EODCycleDBHelper {
 			// connection.commit();
 
 			if (isKeep50) {
+				
 				callSt1.execute();
+				callSt1.close();
+				callSt2.execute();
+				callSt2.close();
+				callSt3.execute();
+				callSt3.close();
 
 			}
+			
+			
 
-			callSt1.close();
 
 			// connection.commit();
 

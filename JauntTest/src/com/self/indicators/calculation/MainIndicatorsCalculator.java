@@ -41,6 +41,8 @@ public class MainIndicatorsCalculator {
 			
 		}
 		indicatorsDBHelper.accumulateDataForSymbol("",5);
+		
+		indicatorsDBHelper.calculateIndicatorsConfidence(5);
 
 	}
 	

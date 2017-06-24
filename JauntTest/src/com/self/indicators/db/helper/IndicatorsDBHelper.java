@@ -438,7 +438,7 @@ public class IndicatorsDBHelper {
 			callSt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			calculateIndicatorsConfidence(retryCount);(retryCount--);
+			calculateIndicatorsConfidence(retryCount--);
 		} finally {
 
 			safeClose(connection);
