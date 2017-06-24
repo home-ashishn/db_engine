@@ -63,7 +63,7 @@ public class EODCycleDataExtractor {
 
 		try {
 
-			eodCycleDataExtractorUtil.getTodaysFullData();
+			//eodCycleDataExtractorUtil.getTodaysFullData();
 			
 			eodCycleDataExtractorUtil.fillGapData();
 

@@ -416,6 +416,37 @@ public class IndicatorsDBHelper {
 
 	}
 
+	public void calculateIndicatorsConfidence(int retryCount) throws Exception {
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		CallableStatement callSt = connection.prepareCall("call engine_indicators.calculate_indicators_confidence()");
+
+		
+		try {
+			callSt.execute();
+			callSt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			calculateIndicatorsConfidence(retryCount);(retryCount--);
+		} finally {
+
+			safeClose(connection);
+		}
+
+	}
+
+
 
 
 }
