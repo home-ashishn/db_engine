@@ -386,6 +386,36 @@ public class IndicatorsDBHelper {
 
 	}
 
+	public void initDB(int retryCount) throws Exception {
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		CallableStatement callSt = connection.prepareCall("call engine_indicators.INIT_DB()");
+
+		
+		try {
+			callSt.execute();
+			callSt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			initDB(retryCount--);
+		} finally {
+
+			safeClose(connection);
+		}
+
+	}
+
 
 
 }

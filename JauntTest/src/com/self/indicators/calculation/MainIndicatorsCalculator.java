@@ -12,7 +12,7 @@ public class MainIndicatorsCalculator {
 	
 	
 	
-	private void calculateIndicators() throws Exception{
+	public void calculateIndicators() throws Exception{
 	
 		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
 
@@ -26,6 +26,8 @@ public class MainIndicatorsCalculator {
 		EODRSICalculator rsiCalc = new EODRSICalculator();
 		
 		EODStochasticCalculator stoCalc = new EODStochasticCalculator();
+		
+		indicatorsDBHelper.initDB(5);
 		
 		for (Iterator<String> iterator = symbols.iterator(); iterator.hasNext();) {
 			String symbol = (String) iterator.next();
