@@ -153,6 +153,22 @@ CREATE TABLE `market_sessions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `market_sessions_new`
+--
+
+DROP TABLE IF EXISTS `market_sessions_new`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `market_sessions_new` (
+  `SR_NO` int(11) NOT NULL AUTO_INCREMENT,
+  `SESSION_DATE` date NOT NULL,
+  `IS_EXPIRY` tinyint(4) NOT NULL,
+  `PREV_SESSION_DATE` date NOT NULL,
+  PRIMARY KEY (`SR_NO`,`SESSION_DATE`)
+) ENGINE=InnoDB AUTO_INCREMENT=1024 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `top_25_equity`
 --
 
@@ -191,10 +207,10 @@ DROP TABLE IF EXISTS `top_25_equity_gap`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `top_25_equity_gap` (
-  `CURR_DATE` date NOT NULL,
+  `CURR_DATE` date DEFAULT NULL,
   `symbol` varchar(45) NOT NULL,
   `min_date` date DEFAULT NULL,
-  PRIMARY KEY (`CURR_DATE`,`symbol`)
+  PRIMARY KEY (`symbol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -308,7 +324,8 @@ replace into  engine_ea.top_25_equity_count
 values (var_symbol,(var_count_symbol + 1),(var_turnover_symbol+var_turnover));
 
 
-
+SET var_count_symbol = 0;
+SET var_turnover_symbol = 0;
 
 
 END WHILE;
@@ -337,15 +354,32 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calculate_top_25_turnover`(
-startDate date,
-endDate date
+
 )
 BEGIN
 
 declare date_counter date;
 
+declare max_date date;
 
-set date_counter =  startDate;
+declare start_date date;
+
+declare end_date_row_id int;
+
+
+SELECT max(b.curr_date) FROM engine_ea.equity_data_main b
+into  max_date;
+
+select a.SR_NO from engine_ea.market_sessions a
+where a.SESSION_DATE = max_date
+into end_date_row_id;
+
+select a.SESSION_DATE from engine_ea.market_sessions a
+where a.SR_NO = (end_date_row_id - 4 )
+into start_date;
+
+
+set date_counter =  start_date;
 
 delete from engine_ea.top_25_equity;
 
@@ -353,7 +387,7 @@ delete from engine_ea.top_25_equity_count;
 
 
 
-while  date_counter <=  endDate
+while  date_counter <=  max_date
 
 do
 
@@ -416,17 +450,11 @@ where symbol not in
 (SELECT SYMBOL FROM engine_ea.equity_data_main_top50)
 and curr_date = max_date;
 
-select a.SR_NO from engine_ea.market_sessions a
-where a.SESSION_DATE = max_date
-into end_date_row_id;
 
-select a.SESSION_DATE from engine_ea.market_sessions a
-where a.SR_NO = (end_date_row_id - 4 )
-into start_date;
 
-call engine_ea.calculate_top_25_turnover(start_date,max_date);
+-- call engine_ea.calculate_top_25_turnover(start_date,max_date);
 
-call engine_ea.verify_top25_data();
+-- call engine_ea.verify_top25_data();
 
 END ;;
 DELIMITER ;
@@ -625,6 +653,8 @@ BEGIN
 select max(curr_date) from engine_ea.equity_data_main
 into max_equity_main_date;
 
+delete from top_25_equity_gap;
+
 open top_25_symbol;
 
 rally_loop : LOOP
@@ -651,8 +681,12 @@ and session_date <=
 
 into min_gap_date ;
 
+if( max_equity_main_date >  min_gap_date) then
+
 replace INTO `engine_ea`.`top_25_equity_gap`
 VALUES (max_equity_main_date,var_symbol,min_gap_date);
+
+end if;
 
 end loop;
 
@@ -675,4 +709,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-21 22:30:27
+-- Dump completed on 2017-06-24 23:07:26
