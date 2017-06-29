@@ -28,6 +28,9 @@ public class IndicatorsDBHelper {
 	private final ObjectPool connPool;
 
 	List<Tick> ticks = new ArrayList<Tick>();
+	
+	List<Tick> ticksOBV = new ArrayList<Tick>();
+
 
 	// private static Map<String, List<Tick>> cache = new HashMap<String,
 	// List<Tick>>();
@@ -35,17 +38,77 @@ public class IndicatorsDBHelper {
 	public IndicatorsDBHelper(ObjectPool connPool) {
 		this.connPool = connPool;
 	}
+	
+	
 
-	public void getIndicatorsBaseData(String symbol, int retryCount)
+/*
+	public void getIndicatorsBaseDataForOBV(String symbol, int retryCount)
 			throws NoSuchElementException, IllegalStateException, Exception {
 
-		/*
+		
 		 * SET @symbol_in = NULL; SET @endDate = now(); SET @startDate =
 		 * date_sub(@endDate,interval 1 year); CALL
 		 * `engine_indicators`.`data_accumulation`(
 		 * 
 		 * @symbol_in, @endDate, @startDate);
-		 */
+		 
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		String sql = "SELECT CURR_DATE,HIGH_PRICE,LOW_PRICE,OPEN_PRICE,CLOSE_PRICE" + ",TURNOVER"
+				+ ",TOTAL_TRADED_QUANTITY" + " FROM engine_indicators.equity_data_indiactors" + " WHERE SYMBOL = '"
+				+ symbol + "' " + " ORDER BY CURR_DATE DESC";
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+		connection.setAutoCommit(true);
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+
+		try {
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				DateTime curr_date = new DateTime(rs.getDate("CURR_DATE"));
+
+				double high_price = rs.getFloat("HIGH_PRICE");
+				double low_price = rs.getFloat("LOW_PRICE");
+				double open_price = rs.getFloat("OPEN_PRICE");
+				double close_price = rs.getFloat("CLOSE_PRICE");
+				double turnover_volume = rs.getFloat("TOTAL_TRADED_QUANTITY");
+
+				ticksOBV.add(new Tick(curr_date, open_price, high_price, low_price, close_price, turnover_volume));
+
+			}
+			ps.close();
+			connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			getIndicatorsBaseData(symbol, retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(ps);
+			safeClose(connection);
+		}
+
+	}
+
+
+*/
+	public void getIndicatorsBaseData(String symbol, int retryCount)
+			throws NoSuchElementException, IllegalStateException, Exception {
+
+		ticks = new ArrayList<Tick>();
 
 		if (retryCount < 0) {
 			return;
@@ -111,7 +174,9 @@ public class IndicatorsDBHelper {
 	 * safeClose(res); safeClose(st); safeClose(conn); } return builder.build();
 	 * }
 	 * 
-	 */ private void safeClose(Connection conn) {
+	 */ 
+
+	private void safeClose(Connection conn) {
 		if (conn != null) {
 			try {
 				connPool.returnObject(conn);
@@ -330,7 +395,8 @@ public class IndicatorsDBHelper {
 
 	}
 
-	public void accumulateDataForSymbol(String symbol, int retryCount) throws Exception {
+
+		public void accumulateDataForSymbol(String symbol, int retryCount) throws Exception {
 
 		if (retryCount < 0) {
 			return;
@@ -430,7 +496,7 @@ public class IndicatorsDBHelper {
 
 		connection.setAutoCommit(true);
 
-		CallableStatement callSt = connection.prepareCall("call engine_indicators.calculate_indicators_confidence()");
+		CallableStatement callSt = connection.prepareCall("call engine_indicators.calculate_indicators_confidence_and_calls()");
 
 		
 		try {
@@ -445,6 +511,81 @@ public class IndicatorsDBHelper {
 		}
 
 	}
+
+	
+	
+
+	public int insertCurrentOBVSignal(String symbol, DateTime endTime, int currentMarketTrend, int currentSignal,
+			int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
+
+		if (retryCount < 0) {
+			return 0;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		try {
+			return OBVDBHelper.insertCurrentOBVSignal(connection, symbol, endTime, currentMarketTrend,
+					currentSignal, retryCount);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			safeClose(connection);
+		}
+
+		return 0;
+
+	}
+
+	public void insertBackTestOBVSignal(List<IndicatorsBackTestData> listIndicatorsBackTestData, int retryCount)
+			throws NoSuchElementException, IllegalStateException, Exception {
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		try {
+			OBVDBHelper.insertBackTestOBVSignal(connection, listIndicatorsBackTestData, retryCount);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			safeClose(connection);
+		}
+
+	}
+
+
+
+
+	public List<Tick> getTicksOBV() {
+		return ticksOBV;
+	}
+
+
+
+
+	public void setTicksOBV(List<Tick> ticksOBV) {
+		this.ticksOBV = ticksOBV;
+	}
+
 
 
 

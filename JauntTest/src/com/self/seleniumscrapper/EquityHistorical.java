@@ -66,6 +66,9 @@ public void setUp() throws Exception {
 	
 	// 
    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+   
+	  driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
+
 
   
   
@@ -76,8 +79,8 @@ public void setUp() throws Exception {
   public void downloadFileByDateRange(String symbol,String dateFrom,String DateTo) throws Exception 
   {
 
-	  driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
-	  Thread.sleep(1000);
+	  // driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
+	  Thread.sleep(500);
   driver.findElement(By.id("symbol")).clear();
   driver.findElement(By.id("symbol")).sendKeys(""+symbol);
   driver.findElement(By.id("rdDateToDate")).click();
@@ -113,8 +116,9 @@ public void setUp() throws Exception {
 
   
   public void downloadFileByDateRangeFixed2Y(String symbol) throws Exception {
-	  driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
-	  Thread.sleep(1000);
+
+	  // driver.get(baseUrl /*+ "/products/content/equities/equities/eq_security.htm"*/);
+	  Thread.sleep(500);
   driver.findElement(By.id("symbol")).clear();
   driver.findElement(By.id("symbol")).sendKeys(""+symbol);
   new Select(driver.findElement(By.id("dateRange"))).selectByVisibleText("24 Months");

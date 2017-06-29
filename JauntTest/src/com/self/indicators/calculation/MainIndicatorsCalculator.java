@@ -16,8 +16,6 @@ public class MainIndicatorsCalculator {
 	
 		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
 
-
-
 		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
 
 		
@@ -27,6 +25,9 @@ public class MainIndicatorsCalculator {
 		
 		EODStochasticCalculator stoCalc = new EODStochasticCalculator();
 		
+		EODOBVCalculator obvCalc = new EODOBVCalculator();
+
+		
 		indicatorsDBHelper.initDB(5);
 		
 		for (Iterator<String> iterator = symbols.iterator(); iterator.hasNext();) {
@@ -34,9 +35,13 @@ public class MainIndicatorsCalculator {
 			
 			indicatorsDBHelper.accumulateDataForSymbol(symbol,5);
 			
-			rsiCalc.calculateCurrentRSIWithBackTest(symbol, false);
+			indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
 			
-			stoCalc.calculateCurrentandBackTest(symbol, false);
+			 rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
+			
+			 stoCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
+			
+			obvCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
 			
 			
 		}

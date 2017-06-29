@@ -11,7 +11,7 @@ import org.apache.commons.pool.impl.GenericObjectPoolFactory;
 
 import com.self.dbconnection.MySqlPoolableObjectFactory;
 
-public class IndicatorsGlobal {
+public class IndicatorsLearningGlobal {
 	
 	
 	private ObjectPool pool;
@@ -36,14 +36,14 @@ public class IndicatorsGlobal {
 
 		String host = "localhost";
 		String port = "3306";
-		String schema = "engine_indicators";
+		String schema = "engine_indicators_learning";
 		String user = "root";
 		String password = "root";
 
 		PoolableObjectFactory mySqlPoolableObjectFactory = new MySqlPoolableObjectFactory(host, Integer.parseInt(port),
 				schema, user, password);
 		Config config = new GenericObjectPool.Config();
-		config.maxActive = 1500;
+		config.maxActive = 100;
 		config.testOnBorrow = true;
 		config.testWhileIdle = true;
 		config.timeBetweenEvictionRunsMillis = 10000;
@@ -57,15 +57,15 @@ public class IndicatorsGlobal {
 	
 
 	
-	private static final IndicatorsGlobal instance = new IndicatorsGlobal();
+	private static final IndicatorsLearningGlobal instance = new IndicatorsLearningGlobal();
     
     //private constructor to avoid client applications to use constructor
-    private IndicatorsGlobal(){
+    private IndicatorsLearningGlobal(){
     	this.setPool(initMySqlConnectionPool());
     	
     }
 
-    public static IndicatorsGlobal getInstance(){
+    public static IndicatorsLearningGlobal getInstance(){
         return instance;
     }
 

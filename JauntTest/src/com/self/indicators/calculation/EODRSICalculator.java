@@ -25,25 +25,27 @@ public class EODRSICalculator {
 		String symbol = "SBIN";
 		
 		EODRSICalculator calculator = new EODRSICalculator();
+		
+		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
+
+		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
+		
+		indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
+
  
-		calculator.calculateCurrentRSIWithBackTest(symbol,true);
+		calculator.calculateCurrentRSIWithBackTest(symbol,true,indicatorsDBHelper);
 
 
 	}
 
 	
-	public void calculateCurrentRSIWithBackTest(String symbol, boolean plainBacktesting) throws Exception{
+	public void calculateCurrentRSIWithBackTest(String symbol, boolean plainBacktesting,
+			IndicatorsDBHelper indicatorsDBHelper) throws Exception{
 		
 
 
-		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
-
-
-
-		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
-
 		// to be moved outside so that it is called once for all indicators
-		indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
+		//indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
 
 		TimeSeries data = new TimeSeries(indicatorsDBHelper.getTicks());
 
