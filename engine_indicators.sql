@@ -874,11 +874,12 @@ BEGIN
 
     DECLARE var_symbol varchar(45);
 
+    DECLARE var_curr_date date;
 
 
     DECLARE obv_current_data CURSOR FOR
     SELECT DISTINCT
-        obv_evaluation_run_id,symbol
+        obv_evaluation_run_id,symbol,curr_date
     FROM engine_indicators.obv_evaluation_run_current_data
     -- ORDER BY curr_date ASC
 ;
@@ -899,13 +900,13 @@ rally_loop : LOOP
 
 
 
-FETCH obv_current_data INTO var_obv_evaluation_run_id,var_symbol;
+FETCH obv_current_data INTO var_obv_evaluation_run_id,var_symbol,var_curr_date;
 
  IF no_more_rows = 1 THEN
  LEAVE rally_loop;
  END IF;
 
-call engine_indicators.calc_obv_confidence_by_symbol(var_symbol,var_obv_evaluation_run_id);
+call engine_indicators.calc_obv_confidence_by_symbol(var_symbol,var_obv_evaluation_run_id,var_curr_date);
 
 
 end loop  rally_loop;
@@ -939,11 +940,12 @@ BEGIN
 
     DECLARE var_symbol varchar(45);
 
+    DECLARE var_curr_date date;
 
 
     DECLARE rsi_current_data CURSOR FOR
     SELECT DISTINCT
-        rsi_evaluation_run_id,symbol
+        rsi_evaluation_run_id,symbol,curr_date
     FROM engine_indicators.rsi_evaluation_run_current_data
     -- ORDER BY curr_date ASC
 ;
@@ -964,13 +966,13 @@ rally_loop : LOOP
 
 
 
-FETCH rsi_current_data INTO var_rsi_evaluation_run_id,var_symbol;
+FETCH rsi_current_data INTO var_rsi_evaluation_run_id,var_symbol,var_curr_date;
 
  IF no_more_rows = 1 THEN
  LEAVE rally_loop;
  END IF;
 
-call engine_indicators.calc_rsi_confidence_by_symbol(var_symbol,var_rsi_evaluation_run_id);
+call engine_indicators.calc_rsi_confidence_by_symbol(var_symbol,var_rsi_evaluation_run_id,var_curr_date);
 
 
 end loop  rally_loop;
@@ -1004,11 +1006,12 @@ BEGIN
 
     DECLARE var_symbol varchar(45);
 
+     DECLARE var_curr_date date;
 
 
     DECLARE stochastic_current_data CURSOR FOR
     SELECT DISTINCT
-        stochastic_evaluation_run_id,symbol
+        stochastic_evaluation_run_id,symbol,curr_date
     FROM engine_indicators.stochastic_evaluation_run_current_data
     -- ORDER BY curr_date ASC
 ;
@@ -1029,13 +1032,13 @@ rally_loop : LOOP
 
 
 
-FETCH stochastic_current_data INTO var_stochastic_evaluation_run_id,var_symbol;
+FETCH stochastic_current_data INTO var_stochastic_evaluation_run_id,var_symbol,var_curr_date;
 
  IF no_more_rows = 1 THEN
  LEAVE rally_loop;
  END IF;
 
-call engine_indicators.calc_stochastic_confidence_by_symbol(var_symbol,var_stochastic_evaluation_run_id);
+call engine_indicators.calc_stochastic_confidence_by_symbol(var_symbol,var_stochastic_evaluation_run_id,var_curr_date);
 
 
 end loop  rally_loop;
@@ -1059,7 +1062,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_obv_confidence_by_symbol`(
 input_symbol varchar(45),
-input_obv_evaluation_run_id int)
+input_obv_evaluation_run_id int,
+input_date date)
 BEGIN
 
    -- Declare variables used just for cursor and loop control
@@ -1258,12 +1262,14 @@ set var_three_day_avg_confidence = var_three_day_total_confidence / loop_counter
 
 end if;
 
-if (var_curr_date is not null) then
+if (input_date is not null) then
 
 replace into engine_indicators.obv_backtest_confidence
-values(input_obv_evaluation_run_id,input_symbol,var_curr_date,var_one_day_avg_confidence,
+values(input_obv_evaluation_run_id,input_symbol,input_date,var_one_day_avg_confidence,
                               var_three_day_avg_confidence,
                                     var_one_day_success_confidence,var_three_day_success_confidence);
+
+end if;
 
 
 update  engine_indicators.obv_evaluation_run_current_data
@@ -1274,8 +1280,6 @@ three_day_success_confidence = var_three_day_success_confidence
 
 where obv_evaluation_run_id = input_obv_evaluation_run_id
 and symbol = input_symbol;
-
-end if;
 
 
 close obv_backtest_data;
@@ -1298,7 +1302,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_rsi_confidence_by_symbol`(
 input_symbol varchar(45),
-input_rsi_evaluation_run_id int)
+input_rsi_evaluation_run_id int,
+input_date date)
 BEGIN
 
    -- Declare variables used just for cursor and loop control
@@ -1496,12 +1501,16 @@ set var_three_day_avg_confidence = var_three_day_total_confidence / loop_counter
 end if;
 
 
-if (var_curr_date is not null) then
+if (input_date is not null) then
 replace into engine_indicators.rsi_backtest_confidence
-values(input_rsi_evaluation_run_id,input_symbol,var_curr_date,var_one_day_avg_confidence,
+values(input_rsi_evaluation_run_id,input_symbol,input_date,var_one_day_avg_confidence,
                               var_three_day_avg_confidence,
                                     var_one_day_success_confidence,var_three_day_success_confidence);
 
+
+
+
+end if;
 
 update  engine_indicators.rsi_evaluation_run_current_data
 set  one_day_avg_confidence = var_one_day_avg_confidence,
@@ -1511,9 +1520,6 @@ three_day_success_confidence = var_three_day_success_confidence
 
 where rsi_evaluation_run_id = input_rsi_evaluation_run_id
 and symbol = input_symbol;
-
-end if;
-
 
 
 close rsi_backtest_data;
@@ -1536,7 +1542,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calc_stochastic_confidence_by_symbol`(
 input_symbol varchar(45),
-input_stochastic_evaluation_run_id int)
+input_stochastic_evaluation_run_id int,
+input_date date)
 BEGIN
 
    -- Declare variables used just for cursor and loop control
@@ -1734,13 +1741,17 @@ set var_three_day_avg_confidence = var_three_day_total_confidence / loop_counter
 
 end if;
 
-if (var_curr_date is not null) then
+if (input_date is not null) then
 
 replace into engine_indicators.stochastic_backtest_confidence
-values(input_stochastic_evaluation_run_id,input_symbol,var_curr_date,var_one_day_avg_confidence,
+values(input_stochastic_evaluation_run_id,input_symbol,input_date,var_one_day_avg_confidence,
                               var_three_day_avg_confidence,
                                     var_one_day_success_confidence,var_three_day_success_confidence);
 
+
+
+
+end if;
 
 update  engine_indicators.stochastic_evaluation_run_current_data
 set  one_day_avg_confidence = var_one_day_avg_confidence,
@@ -1750,8 +1761,6 @@ three_day_success_confidence = var_three_day_success_confidence
 
 where stochastic_evaluation_run_id = input_stochastic_evaluation_run_id
 and symbol = input_symbol;
-
-end if;
 
 
 close stochastic_backtest_data;
@@ -2310,4 +2319,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-29 15:32:48
+-- Dump completed on 2017-06-29 17:18:58
