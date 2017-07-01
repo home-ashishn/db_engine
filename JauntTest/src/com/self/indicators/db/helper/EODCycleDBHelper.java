@@ -268,7 +268,8 @@ public class EODCycleDBHelper {
 
 	}
 
-	public void loadDataToDB(String filePath, boolean isKeep50, int retryCount) throws Exception {
+	
+	public void loadDataToDB(String filePath,  int retryCount) throws Exception {
 
 		// filePath = filePath.replace("\\", "\\\\");
 		filePath = filePath.replace("\\", "/");
@@ -301,15 +302,6 @@ public class EODCycleDBHelper {
 
 		Statement ps = connection.createStatement();
 
-		CallableStatement callSt = connection.prepareCall("call engine_ea.transfer_equity_data()");
-
-		CallableStatement callSt1 = connection.prepareCall("call engine_ea.keep_top50()");
-		
-		CallableStatement callSt2 = connection.prepareCall("call engine_ea.calculate_top_25_turnover()");
-
-		CallableStatement callSt3 = connection.prepareCall("call engine_ea.verify_top25_data()");
-
-
 		connection.setAutoCommit(true);
 
 		try {
@@ -318,43 +310,11 @@ public class EODCycleDBHelper {
 
 			ps1.close();
 
-			// connection.commit();
-
-			ps.executeUpdate(sql);
-
-			// connection.commit();
-
-			ps.close();
-
-			callSt.execute();
-
-			callSt.close();
-
-			// connection.commit();
-
-			if (isKeep50) {
-				
-				callSt1.execute();
-				callSt1.close();
-				callSt2.execute();
-				callSt2.close();
-				callSt3.execute();
-				callSt3.close();
-
-			}
-			
-			
-
-
-			// connection.commit();
-
-			connection.setAutoCommit(true);
-
 			connection.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			loadDataToDB(filePath, isKeep50, retryCount--);
+			loadDataToDB(filePath,  retryCount--);
 			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
 		} finally {
 			safeClose(res);
@@ -363,5 +323,165 @@ public class EODCycleDBHelper {
 		}
 
 	}
+
+
+	
+	public void call_transfer_equity_data(int retryCount) throws Exception {
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		CallableStatement callSt = connection.prepareCall("call engine_ea.transfer_equity_data()");
+
+		connection.setAutoCommit(true);
+
+		try {
+
+
+			callSt.execute();
+
+			callSt.close();
+
+			connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			call_transfer_equity_data(retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(callSt);
+			safeClose(connection);
+		}
+
+	}
+
+
+	
+	public void call_keep_top50(int retryCount) throws Exception {
+
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		CallableStatement callSt1 = connection.prepareCall("call engine_ea.keep_top50()");
+
+		connection.setAutoCommit(true);
+
+		try {
+
+				
+				callSt1.execute();
+				callSt1.close();
+
+				connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			call_keep_top50(retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(callSt1);
+			safeClose(connection);
+		}
+
+	}
+
+
+	
+	public void call_calculate_top_25_turnover(int retryCount) throws Exception {
+
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		CallableStatement callSt1 = connection.prepareCall("call engine_ea.calculate_top_25_turnover()");
+
+		connection.setAutoCommit(true);
+
+		try {
+
+				
+				callSt1.execute();
+				callSt1.close();
+
+				connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			call_calculate_top_25_turnover(retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(callSt1);
+			safeClose(connection);
+		}
+
+	}
+
+	
+	public void call_verify_top25_data(int retryCount) throws Exception {
+
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+		ResultSet res = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		CallableStatement callSt1 = connection.prepareCall("call engine_ea.verify_top25_data()");
+
+		connection.setAutoCommit(true);
+
+		try {
+
+				
+				callSt1.execute();
+				callSt1.close();
+
+				connection.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			call_verify_top25_data(retryCount--);
+			throw new MySqlPoolableException("Failed to borrow connection from the pool", e);
+		} finally {
+			safeClose(res);
+			safeClose(callSt1);
+			safeClose(connection);
+		}
+
+	}
+
 
 }

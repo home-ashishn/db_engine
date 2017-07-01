@@ -169,7 +169,23 @@ public class EODCycleDataExtractorUtil {
 
 			String filePath = files[0].getAbsolutePath();
 
-			eodCycleDBHelper.loadDataToDB(filePath, true, 5);
+			eodCycleDBHelper.loadDataToDB(filePath,5);
+			
+			Thread.sleep(5000);
+			
+			eodCycleDBHelper.call_transfer_equity_data(5);
+			
+			Thread.sleep(5000);
+			
+			eodCycleDBHelper.call_keep_top50(5);
+			
+			Thread.sleep(5000);
+			
+			eodCycleDBHelper.call_calculate_top_25_turnover(5);
+			
+			Thread.sleep(5000);
+			
+			eodCycleDBHelper.call_verify_top25_data(5);
 
 			Thread.sleep(5000);
 
@@ -211,7 +227,7 @@ public class EODCycleDataExtractorUtil {
 
 			String filePath = files[0].getAbsolutePath();
 
-			eodCycleDBHelper.loadDataToDB(filePath, false, 5);
+			eodCycleDBHelper.loadDataToDB(filePath,5);
 
 			Thread.sleep(5000);
 
