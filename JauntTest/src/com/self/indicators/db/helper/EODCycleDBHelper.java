@@ -309,6 +309,10 @@ public class EODCycleDBHelper {
 			ps1.executeUpdate(sqlDelete);
 
 			ps1.close();
+			
+			ps.execute(sql);
+			
+			ps.close();
 
 			connection.close();
 
@@ -319,6 +323,7 @@ public class EODCycleDBHelper {
 		} finally {
 			safeClose(res);
 			safeClose(ps);
+			safeClose(ps1);
 			safeClose(connection);
 		}
 

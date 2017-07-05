@@ -416,7 +416,7 @@ public class IndicatorsDBHelper {
 		
 		callSt.setString(1, symbol);
 		callSt.setString(2, format.format(new Date()));
-		callSt.setString(3, getDateRange(new Date(),365,false));
+		callSt.setString(3, getDateRange(new Date(),183,false));
 
 		
 		try {
@@ -571,6 +571,68 @@ public class IndicatorsDBHelper {
 		}
 
 	}
+
+
+
+
+	public int insertCurrentPercentBSignal(String symbol, DateTime endTime 
+			, int currentSignal,int retryCount) throws NoSuchElementException, IllegalStateException, Exception {
+
+		if (retryCount < 0) {
+			return 0;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		try {
+			return PercentBDBHelper.insertCurrentPercentBSignal(connection, 
+					symbol, endTime,
+					currentSignal, retryCount);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			safeClose(connection);
+		}
+
+		return 0;
+
+	}
+
+	public void insertBackTestPercentBSignal(List<IndicatorsBackTestData> listIndicatorsBackTestData, int retryCount)
+			throws NoSuchElementException, IllegalStateException, Exception {
+
+		if (retryCount < 0) {
+			return;
+		}
+
+		Connection connection = null;
+
+		while (connection == null || connection.isClosed()) {
+			connection = (Connection) connPool.borrowObject();
+		}
+
+		connection.setAutoCommit(true);
+
+		try {
+			PercentBDBHelper.insertBackTestPercentBSignal(connection, listIndicatorsBackTestData, retryCount);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			safeClose(connection);
+		}
+
+	}
+
 
 
 

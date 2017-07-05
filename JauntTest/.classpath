@@ -17,15 +17,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/ASHISH/.m2/repository/com/tictactec/ta-lib/0.4.0/ta-lib-0.4.0.jar" sourcepath="D:/TA-LIB-SRC/ta-lib/java/src">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="com.tictactec"/>
-			<attribute name="maven.artifactId" value="ta-lib"/>
-			<attribute name="maven.version" value="0.4.0"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="jaunt1.3.jar"/>
 	<classpathentry kind="src" path="/ta4j"/>
 	<classpathentry kind="output" path="target/classes"/>

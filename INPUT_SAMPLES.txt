@@ -180,3 +180,44 @@ engine_indicators.obv_eod_call b
 where 
 a.symbol = b.symbol
 and a.curr_signal = b.curr_signal
+
+
+------------------------------------------------------------------------------------
+
+select '1',a.symbol,a.curr_signal
+-- ,a.is_one_day_signal,a.is_three_day_signal,
+-- b.is_one_day_signal,b.is_three_day_signal 
+from 
+engine_indicators.rsi_evaluation_run_current_data a,
+engine_indicators.stochastic_evaluation_run_current_data b
+where 
+a.symbol = b.symbol
+and a.curr_signal = b.curr_signal
+
+union
+
+select '2',a.symbol,a.curr_signal
+-- ,a.is_one_day_signal,a.is_three_day_signal,
+-- b.is_one_day_signal,b.is_three_day_signal 
+from 
+engine_indicators.stochastic_evaluation_run_current_data a,
+engine_indicators.obv_evaluation_run_current_data b
+where 
+a.symbol = b.symbol
+and a.curr_signal = b.curr_signal
+
+union
+
+select '3',a.symbol,a.curr_signal
+-- ,a.is_one_day_signal,a.is_three_day_signal,
+-- b.is_one_day_signal,b.is_three_day_signal 
+from 
+engine_indicators.rsi_evaluation_run_current_data a,
+engine_indicators.obv_evaluation_run_current_data b
+where 
+a.symbol = b.symbol
+and a.curr_signal = b.curr_signal
+
+
+
+------------------------------------------------------------------------------------

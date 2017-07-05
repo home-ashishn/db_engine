@@ -49,7 +49,7 @@ public class EODGlobal {
 		PoolableObjectFactory mySqlPoolableObjectFactory = new MySqlPoolableObjectFactory(host, Integer.parseInt(port),
 				schema, user, password);
 		Config config = new GenericObjectPool.Config();
-		config.maxActive = 50;
+		config.maxActive = 500;
 		config.testOnBorrow = true;
 		config.testWhileIdle = true;
 		config.timeBetweenEvictionRunsMillis = 10000;

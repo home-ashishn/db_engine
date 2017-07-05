@@ -230,6 +230,11 @@ public class EODCycleDataExtractorUtil {
 			eodCycleDBHelper.loadDataToDB(filePath,5);
 
 			Thread.sleep(5000);
+			
+			eodCycleDBHelper.call_transfer_equity_data(5);
+
+			Thread.sleep(5000);
+
 
 		}
 	}
