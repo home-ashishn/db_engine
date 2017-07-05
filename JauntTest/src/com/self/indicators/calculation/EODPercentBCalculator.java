@@ -83,12 +83,14 @@ public class EODPercentBCalculator {
 		int buySellHoldSignal = 0;
 
 		if ((percentBIndicator.getValue(i).isGreaterThanOrEqual(Decimal.valueOf(0.8)))
-				&& (arrMFI[i].isGreaterThanOrEqual(Decimal.valueOf(80)))) {
+				// && (arrMFI[i].isGreaterThanOrEqual(Decimal.valueOf(80)))
+				) {
 			buySellHoldSignal = 1; // checkSignalforSidewaysMarket(valueK);
 		} else
 
 		if ((percentBIndicator.getValue(i).isLessThanOrEqual(Decimal.valueOf(0.2)))
-				&& (arrMFI[i].isLessThanOrEqual(Decimal.valueOf(20)))) {
+				// && (arrMFI[i].isLessThanOrEqual(Decimal.valueOf(20)))
+				) {
 			buySellHoldSignal = -1; // checkSignalforSidewaysMarket(valueK);
 		}
 		return buySellHoldSignal;
@@ -102,24 +104,24 @@ public class EODPercentBCalculator {
 
 		int endDay = data.getEnd();
 
-		Decimal[] arrTypicalPrice = new Decimal[endDay - startDay];
+		Decimal[] arrTypicalPrice = new Decimal[endDay - startDay+1];
 
-		Decimal[] arrPriceIndicator = new Decimal[endDay - startDay];
+		Decimal[] arrPriceIndicator = new Decimal[endDay - startDay+1];
 
-		Decimal[] arrOneDayPositiveMoneyFlow = new Decimal[endDay - startDay];
+		Decimal[] arrOneDayPositiveMoneyFlow = new Decimal[endDay - startDay+1];
 
-		Decimal[] arrOneDayNegativeMoneyFlow = new Decimal[endDay - startDay];
+		Decimal[] arrOneDayNegativeMoneyFlow = new Decimal[endDay - startDay+1];
 
-		Decimal[] arr14DayPositiveMoneyFlow = new Decimal[endDay - startDay];
+		Decimal[] arr14DayPositiveMoneyFlow = new Decimal[endDay - startDay+1];
 
-		Decimal[] arr14DayNegativeMoneyFlow = new Decimal[endDay - startDay];
+		Decimal[] arr14DayNegativeMoneyFlow = new Decimal[endDay - startDay+1];
 
-		Decimal[] arr14DayMoneyFlow = new Decimal[endDay - startDay];
+		Decimal[] arr14DayMoneyFlow = new Decimal[endDay - startDay+1];
 
 		arrOneDayPositiveMoneyFlow[0] = Decimal.ZERO;
 		arrOneDayNegativeMoneyFlow[0] = Decimal.ZERO;
 
-		for (int i = startDay; i < endDay; i++) {
+		for (int i = startDay; i <= endDay; i++) {
 
 			Tick tick = data.getTick(i);
 

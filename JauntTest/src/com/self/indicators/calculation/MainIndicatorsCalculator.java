@@ -7,6 +7,8 @@ import java.util.NoSuchElementException;
 import com.self.indicators.db.helper.IndicatorsDBHelper;
 import com.self.main.IndicatorsGlobal;
 
+import eu.verdelhan.ta4j.indicators.trackers.bollinger.PercentBIndicator;
+
 public class MainIndicatorsCalculator {
 	
 	
@@ -27,6 +29,8 @@ public class MainIndicatorsCalculator {
 		
 		EODOBVCalculator obvCalc = new EODOBVCalculator();
 
+		EODPercentBCalculator pbCalc = new EODPercentBCalculator();
+
 		
 		indicatorsDBHelper.initDB(5);
 		
@@ -37,17 +41,19 @@ public class MainIndicatorsCalculator {
 			
 			indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
 			
-			 rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
+/*			 rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
 			
 			 stoCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
 			
 			obvCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
+*/			
+			pbCalc.calculateCurrentandBackTest(symbol, false, indicatorsDBHelper);
 			
 			
 		}
 		indicatorsDBHelper.accumulateDataForSymbol("",5);
 		
-		indicatorsDBHelper.calculateIndicatorsConfidence(5);
+		// indicatorsDBHelper.calculateIndicatorsConfidence(5);
 
 	}
 	
