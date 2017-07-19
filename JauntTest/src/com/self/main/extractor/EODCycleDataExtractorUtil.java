@@ -181,10 +181,14 @@ public class EODCycleDataExtractorUtil {
 			
 			Thread.sleep(5000);
 			
+			eodCycleDBHelper.getConnPool().clear();
+			
 			eodCycleDBHelper.call_calculate_top_25_turnover(5);
 			
 			Thread.sleep(5000);
 			
+			eodCycleDBHelper.getConnPool().clear();
+	
 			eodCycleDBHelper.call_verify_top25_data(5);
 
 			Thread.sleep(5000);

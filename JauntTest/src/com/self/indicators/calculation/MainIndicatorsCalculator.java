@@ -41,12 +41,12 @@ public class MainIndicatorsCalculator {
 			
 			indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
 			
-/*			 rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
+			 rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
 			
 			 stoCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
 			
 			obvCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
-*/			
+			
 			pbCalc.calculateCurrentandBackTest(symbol, false, indicatorsDBHelper);
 			
 			

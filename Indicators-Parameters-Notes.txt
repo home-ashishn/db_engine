@@ -1,0 +1,97 @@
+RSI Calculator -  
+
+	1.		
+		checkMarketTrend -
+		EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
+		EMAIndicator longEma = new EMAIndicator(closePrice, 26);
+
+				if (shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.01)))) {
+			return 1;
+
+		}
+
+		else if (longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.01))))
+
+		{
+			return -1;
+
+		}
+
+	2. LAST 14 DAYS USED TO CALCULATE RSI TREND	
+	
+	3. min_per_day_for_rally_or_drop - rate used as min value to calculate rate of change in rsi in process of
+	check Signal for Trending Market - 
+	
+	e.g
+	
+// 0.5 point per day is rally
+					if ((rsiValue.minus(prevValueRSI)).toDouble() / (index - i) > min_per_day_for_rally_or_drop)
+					
+-----------------------------------------------------------------------------------------------------------------------------					
+
+EODStochasticCalculator - 
+
+	1.		
+		checkMarketTrend -
+		EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
+		EMAIndicator longEma = new EMAIndicator(closePrice, 26);
+
+				if (shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.01)))) {
+			return 1;
+
+		}
+
+		else if (longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.01))))
+
+		{
+			return -1;
+
+		}
+
+	2. LAST 14 DAYS USED TO CALCULATE STOCHASTIC TREND
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------					
+EODOBVCalculator - 
+
+
+
+	1.		
+		checkMarketTrend -
+		EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
+		EMAIndicator longEma = new EMAIndicator(closePrice, 26);
+
+				if (shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.01)))) {
+			return 1;
+
+		}
+
+		else if (longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.01))))
+
+		{
+			return -1;
+
+		}
+		
+		
+    2. 	For OBV's trend Calculation - 
+
+		SMAIndicator shortEma = new SMAIndicator(obvIndicator, 3);
+		SMAIndicator longEma = new SMAIndicator(obvIndicator, 9);
+
+		
+				if (shortEmaValue.isGreaterThan(longEmaValue.multipliedBy(Decimal.valueOf(1.03)))) {
+			return 1;
+
+		}
+
+		else if (longEmaValue.isGreaterThan(shortEmaValue.multipliedBy(Decimal.valueOf(1.03))))
+
+		{
+			return -1;
+
+		}
+
+	
+-----------------------------------------------------------------------------------------------------------------------------					

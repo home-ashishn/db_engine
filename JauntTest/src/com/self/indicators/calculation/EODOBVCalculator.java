@@ -169,16 +169,6 @@ public class EODOBVCalculator {
 
 	}
 
-	private int checkSignalforSidewaysMarket(Decimal valueK) {
-
-		if (valueK.toDouble() >= 80.0)
-			return -1;
-
-		if (valueK.toDouble() <= 20.0)
-			return 1;
-
-		return 0;
-	}
 
 	private int checkMarketTrend(TimeSeries series, int index) {
 

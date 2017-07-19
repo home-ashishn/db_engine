@@ -433,6 +433,7 @@ public class EODCycleDBHelper {
 
 				
 				callSt1.execute();
+				
 				callSt1.close();
 
 				connection.close();
@@ -486,6 +487,11 @@ public class EODCycleDBHelper {
 			safeClose(connection);
 		}
 
+	}
+
+
+	public ObjectPool getConnPool() {
+		return connPool;
 	}
 
 

@@ -650,6 +650,12 @@ public class IndicatorsDBHelper {
 
 
 
+	public ObjectPool getConnPool() {
+		return connPool;
+	}
+
+
+
 
 
 }
