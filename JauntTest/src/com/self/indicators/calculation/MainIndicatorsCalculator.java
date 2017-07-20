@@ -53,7 +53,7 @@ public class MainIndicatorsCalculator {
 		}
 		indicatorsDBHelper.accumulateDataForSymbol("",5);
 		
-		// indicatorsDBHelper.calculateIndicatorsConfidence(5);
+		indicatorsDBHelper.calculateIndicatorsConfidence(5);
 
 	}
 	
@@ -61,7 +61,15 @@ public class MainIndicatorsCalculator {
 		
 		MainIndicatorsCalculator mainIndicatorsCalculator = new MainIndicatorsCalculator();
 		
-		mainIndicatorsCalculator.calculateIndicators();
+		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
+
+		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
+		
+		indicatorsDBHelper.calculateIndicatorsConfidence(5);
+
+
+		
+		// mainIndicatorsCalculator.calculateIndicators();
 		
 	}
 

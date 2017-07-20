@@ -221,3 +221,48 @@ and a.curr_signal = b.curr_signal
 
 
 ------------------------------------------------------------------------------------
+
+
+select 'RSI_CALL',a.symbol,a.curr_signal,a.is_one_day_signal,a.is_three_day_signal from 
+engine_indicators.rsi_eod_call a
+union
+
+select 'STOCHASTIC_CALL',a.symbol,a.curr_signal,a.is_one_day_signal,a.is_three_day_signal from 
+engine_indicators.stochastic_eod_call a
+union
+
+
+select 'OBV_CALL',a.symbol,a.curr_signal,a.is_one_day_signal,a.is_three_day_signal from 
+engine_indicators.obv_eod_call a
+union
+
+
+select 'PERCENTB_CALL',a.symbol,a.curr_signal,a.is_one_day_signal,a.is_three_day_signal from 
+engine_indicators.percentb_eod_call a
+
+------------------------------------------------------------------------------------
+
+
+select 'RSI_CALL',a.symbol,a.curr_signal,a.one_day_avg_confidence,a.three_day_avg_confidence,
+a.one_day_success_confidence,a.three_day_success_confidence from 
+engine_indicators.rsi_evaluation_run_current_data a
+union
+
+select 'STOCHASTIC_CALL',a.symbol,a.curr_signal,a.one_day_avg_confidence,a.three_day_avg_confidence,
+a.one_day_success_confidence,a.three_day_success_confidence from
+engine_indicators.stochastic_evaluation_run_current_data a
+union
+
+
+select 'OBV_CALL',a.symbol,a.curr_signal,a.one_day_avg_confidence,a.three_day_avg_confidence,
+a.one_day_success_confidence,a.three_day_success_confidence from
+engine_indicators.obv_evaluation_run_current_data a
+union
+
+
+select 'PERCENTB_CALL',a.symbol,a.curr_signal,a.one_day_avg_confidence,a.three_day_avg_confidence,
+a.one_day_success_confidence,a.three_day_success_confidence from
+engine_indicators.percentb_evaluation_run_current_data a
+
+
+---------------------------------------------------------------------------------
