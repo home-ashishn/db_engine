@@ -82,14 +82,14 @@ public class EODPercentBCalculator {
 
 		int buySellHoldSignal = 0;
 
-		if ((percentBIndicator.getValue(i).isGreaterThanOrEqual(Decimal.valueOf(0.7)))
-				 && (arrMFI[i].isGreaterThanOrEqual(Decimal.valueOf(70)))
+		if ((percentBIndicator.getValue(i).isGreaterThanOrEqual(Decimal.valueOf(0.75)))
+				 && (arrMFI[i].isGreaterThanOrEqual(Decimal.valueOf(75)))
 				) {
 			buySellHoldSignal = 1; // checkSignalforSidewaysMarket(valueK);
 		} else
 
-		if ((percentBIndicator.getValue(i).isLessThanOrEqual(Decimal.valueOf(0.3)))
-				 && (arrMFI[i].isLessThanOrEqual(Decimal.valueOf(30)))
+		if ((percentBIndicator.getValue(i).isLessThanOrEqual(Decimal.valueOf(0.25)))
+				 && (arrMFI[i].isLessThanOrEqual(Decimal.valueOf(25)))
 				) {
 			buySellHoldSignal = -1; // checkSignalforSidewaysMarket(valueK);
 		}
