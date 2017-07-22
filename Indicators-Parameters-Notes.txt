@@ -1,3 +1,5 @@
+For all indicators - backtesting done for 183 days back !! - Line 419 in IndicatorsDBHelper.
+-------------------------------------------------------------------------------------------------------------------------
 RSI Calculator -  
 
 	1.		

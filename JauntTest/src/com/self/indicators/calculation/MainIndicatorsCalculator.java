@@ -41,9 +41,9 @@ public class MainIndicatorsCalculator {
 			
 			indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
 			
-			 rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
+			rsiCalc.calculateCurrentRSIWithBackTest(symbol, false,indicatorsDBHelper);
 			
-			 stoCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
+			stoCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
 			
 			obvCalc.calculateCurrentandBackTest(symbol, false,indicatorsDBHelper);
 			
@@ -65,11 +65,11 @@ public class MainIndicatorsCalculator {
 
 		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
 		
-		indicatorsDBHelper.calculateIndicatorsConfidence(5);
+		// indicatorsDBHelper.calculateIndicatorsConfidence(5);
 
 
 		
-		// mainIndicatorsCalculator.calculateIndicators();
+		mainIndicatorsCalculator.calculateIndicators();
 		
 	}
 
