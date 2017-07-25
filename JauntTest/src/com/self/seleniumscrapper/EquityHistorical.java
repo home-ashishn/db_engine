@@ -11,11 +11,14 @@ import org.openqa.selenium.support.ui.Select;
 public class EquityHistorical {
   private WebDriver driver;
   private String baseUrl;
+  
+  String foldername = "";
 
   public EquityHistorical(){
 
 	  try {
 		setUp();
+		
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -41,14 +44,22 @@ public void setUp() throws Exception {
     
     capabilities.setCapability("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
 			);
-*/    
-	profile.setPreference("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
+*/ 
+    if("Mac OS X".equals(System.getProperty("os.name")))
+    {
+    		foldername = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+    }
+    else
+    {
+    		foldername = "D:\\NSE_Downloads\\Equity_Historical";
+    }
+	profile.setPreference("browser.download.dir", foldername
 			);
 	profile.setPreference("pref.downloads.disable_button.edit_actions",
 			false);
 	profile.setPreference("browser.download.folderList", 2);
 	profile.setPreference("browser.download.lastDir",
-			"D:\\NSE_Downloads\\Equity_Historical");
+			foldername);
 	profile.setPreference("browser.download.manager.closeWhenDone", true);
 	profile.setPreference(
 			"browser.helperApps.neverAsk.saveToDisk",

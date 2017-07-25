@@ -12,6 +12,9 @@ public class EquityCurrentTime {
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
   
+  String foldername = "";
+
+  
   public EquityCurrentTime(){
 
 	  try {
@@ -38,14 +41,22 @@ public void setUp() throws Exception {
     
     capabilities.setCapability("browser.download.dir", "D:\\NSE_Downloads\\Equity_Historical"
 			);
-*/    
-	profile.setPreference("browser.download.dir", "D:\\NSE_Downloads\\Equity_Daily"
+*/ 
+    if("Mac OS X".equals(System.getProperty("os.name")))
+    {
+    		foldername = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Daily";
+    }
+    else
+    {
+    		foldername = "D:\\NSE_Downloads\\Equity_Daily";
+    }
+	profile.setPreference("browser.download.dir", foldername
 			);
 	profile.setPreference("pref.downloads.disable_button.edit_actions",
 			false);
 	profile.setPreference("browser.download.folderList", 2);
 	profile.setPreference("browser.download.lastDir",
-			"D:\\NSE_Downloads\\Equity_Daily");
+			foldername);
 	profile.setPreference("browser.download.manager.closeWhenDone", true);
 	profile.setPreference(
 			"browser.helperApps.neverAsk.saveToDisk",
