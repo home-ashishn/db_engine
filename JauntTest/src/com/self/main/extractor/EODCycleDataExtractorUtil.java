@@ -51,7 +51,13 @@ public class EODCycleDataExtractorUtil {
 
 		Date dateCounter = dateFrom;
 
-		String folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+		} else {
+			folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		}
 
 		if (equityHistorical == null) {
 			equityHistorical = new EquityHistorical();
@@ -101,23 +107,35 @@ public class EODCycleDataExtractorUtil {
 
 	public void downloadDataForSymbolVariableYearRange(String symbol, int noOfYearsBack) throws Exception {
 
-		String folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
 
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+		} else {
+			folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		}
+		
 		cleanFolder(folderPath);
 
 		if (equityHistorical == null) {
 			equityHistorical = new EquityHistorical();
 		}
 
-		String dateFrom = getDateRange(new Date(), (365 * (noOfYearsBack + 1)),false);
-		String dateTo = getDateRange(new Date(), (365 * noOfYearsBack) + 1,false);
+		String dateFrom = getDateRange(new Date(), (365 * (noOfYearsBack + 1)), false);
+		String dateTo = getDateRange(new Date(), (365 * noOfYearsBack) + 1, false);
 		equityHistorical.downloadFileByDateRange(symbol, dateFrom, dateTo);
 
 	}
 
 	public void downloadDataForSymbol(String symbol) throws Exception {
 
-		String folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+		
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+		} else {
+			folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		}
 
 		cleanFolder(folderPath);
 
@@ -152,7 +170,13 @@ public class EODCycleDataExtractorUtil {
 	public void getTodaysFullData() throws Exception {
 		// TODO Auto-generated method stub
 
-		String folderPath = "D:\\NSE_Downloads\\Equity_Daily";
+		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Daily";
+		
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Daily";
+		} else {
+			folderPath = "D:\\NSE_Downloads\\Equity_Daily";
+		}
 
 		cleanFolder(folderPath);
 
@@ -169,26 +193,26 @@ public class EODCycleDataExtractorUtil {
 
 			String filePath = files[0].getAbsolutePath();
 
-			eodCycleDBHelper.loadDataToDB(filePath,5);
-			
+			eodCycleDBHelper.loadDataToDB(filePath, 5);
+
 			Thread.sleep(5000);
-			
+
 			eodCycleDBHelper.call_transfer_equity_data(5);
-			
+
 			Thread.sleep(5000);
-			
+
 			eodCycleDBHelper.call_keep_top50(5);
-			
+
 			Thread.sleep(5000);
-			
+
 			eodCycleDBHelper.getConnPool().clear();
-			
+
 			eodCycleDBHelper.call_calculate_top_25_turnover(5);
-			
+
 			Thread.sleep(5000);
-			
+
 			eodCycleDBHelper.getConnPool().clear();
-	
+
 			eodCycleDBHelper.call_verify_top25_data(5);
 
 			Thread.sleep(5000);
@@ -218,7 +242,7 @@ public class EODCycleDataExtractorUtil {
 
 	public void loadDataForSymbol() throws Exception {
 
-		String folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
 
 		File folder = new File(folderPath);
 
@@ -231,14 +255,13 @@ public class EODCycleDataExtractorUtil {
 
 			String filePath = files[0].getAbsolutePath();
 
-			eodCycleDBHelper.loadDataToDB(filePath,5);
+			eodCycleDBHelper.loadDataToDB(filePath, 5);
 
 			Thread.sleep(5000);
-			
+
 			eodCycleDBHelper.call_transfer_equity_data(5);
 
 			Thread.sleep(5000);
-
 
 		}
 	}
