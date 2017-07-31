@@ -62,8 +62,8 @@ public class EODStochasticCalculator {
 
 		if (currentSignal != 0 || plainBacktesting) {
 
-			backTest(startDay, endDay, data, symbol, currentMarketTrend, currentSignal, sof, sod, signalReferenceId,
-					indicatorsDBHelper,plainBacktesting);
+			/*backTest(startDay, endDay, data, symbol, currentMarketTrend, currentSignal, sof, sod, signalReferenceId,
+					indicatorsDBHelper,plainBacktesting);*/
 		}
 
 	}

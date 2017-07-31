@@ -69,8 +69,8 @@ public class EODOBVCalculator {
 
 		if (currentSignal != 0 || plainBacktesting) {
 
-			backTest(startDay, endDay, data, symbol, currentMarketTrend, currentSignal, obvIndicator, signalReferenceId,
-					indicatorsDBHelper,plainBacktesting);
+			/*backTest(startDay, endDay, data, symbol, currentMarketTrend, currentSignal, obvIndicator, signalReferenceId,
+					indicatorsDBHelper,plainBacktesting);*/
 		}
 
 	}

@@ -110,8 +110,8 @@ public class EODRSICalculator {
 
 		if (currentSignal != 0 || plainBacktesting) {
 			
-			backtesting(startDay,endDay,data,currentMarketTrend,plainBacktesting,signalReferenceId,
-					symbol,indicatorsDBHelper,currentSignal,rsi);
+			/*backtesting(startDay,endDay,data,currentMarketTrend,plainBacktesting,signalReferenceId,
+					symbol,indicatorsDBHelper,currentSignal,rsi);*/
 		}
 
 	

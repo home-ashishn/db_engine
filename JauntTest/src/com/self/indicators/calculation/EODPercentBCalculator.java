@@ -72,8 +72,8 @@ public class EODPercentBCalculator {
 
 		if (currentSignal != 0 || plainBacktesting) {
 
-			backTest(startDay, endDay, data, symbol, currentSignal, percentBIndicator, arrMFI, signalReferenceId,
-					indicatorsDBHelper, plainBacktesting);
+			/*backTest(startDay, endDay, data, symbol, currentSignal, percentBIndicator, arrMFI, signalReferenceId,
+					indicatorsDBHelper, plainBacktesting);*/
 		}
 
 	}

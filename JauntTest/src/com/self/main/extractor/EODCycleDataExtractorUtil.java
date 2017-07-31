@@ -49,6 +49,16 @@ public class EODCycleDataExtractorUtil {
 
 	public void downloadDataForSymbolForDateRange(String symbol, Date dateFrom, Date dateTo) throws Exception {
 
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(dateTo);
+
+		cal.add(Calendar.DATE, -60);
+		
+		if(dateFrom.before(cal.getTime())){
+			dateFrom = cal.getTime();
+		}
+
 		Date dateCounter = dateFrom;
 
 		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
@@ -114,7 +124,7 @@ public class EODCycleDataExtractorUtil {
 		} else {
 			folderPath = "D:\\NSE_Downloads\\Equity_Historical";
 		}
-		
+
 		cleanFolder(folderPath);
 
 		if (equityHistorical == null) {
@@ -130,7 +140,7 @@ public class EODCycleDataExtractorUtil {
 	public void downloadDataForSymbol(String symbol) throws Exception {
 
 		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
-		
+
 		if ("Mac OS X".equals(System.getProperty("os.name"))) {
 			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
 		} else {
@@ -171,7 +181,7 @@ public class EODCycleDataExtractorUtil {
 		// TODO Auto-generated method stub
 
 		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Daily";
-		
+
 		if ("Mac OS X".equals(System.getProperty("os.name"))) {
 			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Daily";
 		} else {
@@ -243,6 +253,12 @@ public class EODCycleDataExtractorUtil {
 	public void loadDataForSymbol() throws Exception {
 
 		String folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+		
+		if ("Mac OS X".equals(System.getProperty("os.name"))) {
+			folderPath = "/Users/ashishnarang/nse-product-artifacts/NSE_Downloads/Equity_Historical";
+		} else {
+			folderPath = "D:\\NSE_Downloads\\Equity_Historical";
+		}
 
 		File folder = new File(folderPath);
 
