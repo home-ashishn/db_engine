@@ -53,7 +53,7 @@ public class EODCycleDataExtractorUtil {
 
 		cal.setTime(dateTo);
 
-		cal.add(Calendar.DATE, -60);
+		cal.add(Calendar.DATE, -183);
 		
 		if(dateFrom.before(cal.getTime())){
 			dateFrom = cal.getTime();

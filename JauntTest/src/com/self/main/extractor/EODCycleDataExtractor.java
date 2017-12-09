@@ -72,12 +72,18 @@ public class EODCycleDataExtractor {
 			e.printStackTrace();
 		} finally {
 
+			try{
 			if (eodCycleDataExtractorUtil.equityCurrentTime != null) {
 				eodCycleDataExtractorUtil.equityCurrentTime.tearDown();
 			}
 
 			if (eodCycleDataExtractorUtil.equityHistorical != null) {
 				eodCycleDataExtractorUtil.equityHistorical.tearDown();
+			}
+			}
+			catch(Exception e)
+			{
+				
 			}
 		}
 

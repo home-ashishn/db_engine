@@ -23,13 +23,16 @@ public class EODPercentBCalculator {
 
 	public static void main(String[] args) throws NoSuchElementException, IllegalStateException, Exception {
 
-		String symbol = "AUROPHARMA";
+		String symbol = "TATAMOTORS";
 
 		EODPercentBCalculator calculator = new EODPercentBCalculator();
 
 		IndicatorsGlobal indicatorsGlobal = IndicatorsGlobal.getInstance();
 
 		IndicatorsDBHelper indicatorsDBHelper = new IndicatorsDBHelper(indicatorsGlobal.getPool());
+		
+		indicatorsDBHelper.accumulateDataForSymbol(symbol,5);
+
 
 		indicatorsDBHelper.getIndicatorsBaseData(symbol, 5);
 

@@ -18,6 +18,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="jaunt1.3.jar"/>
-	<classpathentry kind="src" path="/ta4j"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
